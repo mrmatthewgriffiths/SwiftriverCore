@@ -12,7 +12,7 @@ class ServiceWrapper {
      * Constructor Method
      * @param string $uri
      */
-    public function __constructor($uri) {
+    public function __construct($uri) {
         $this->uri = $uri;
     }
 
