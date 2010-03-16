@@ -20,8 +20,8 @@ class SwiftriverSourceParsingServiceTest extends \PHPUnit_Framework_TestCase {
      */
     protected function setUp() {
         include_once(dirname(__FILE__)."/../Setup.php");
-        include_once(dirname(__FILE__)."/../../Swiftriver_core/ObjectModel/Channel.php");
-        include_once(dirname(__FILE__)."/../../Swiftriver_core/ObjectModel/Content.php");
+        include_once(dirname(__FILE__)."/../../Core/ObjectModel/Channel.php");
+        include_once(dirname(__FILE__)."/../../Core/ObjectModel/Content.php");
     }
 
     /**

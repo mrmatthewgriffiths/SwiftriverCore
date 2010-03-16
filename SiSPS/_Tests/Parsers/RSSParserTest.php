@@ -17,7 +17,7 @@ class RSSParserTest extends \PHPUnit_Framework_TestCase {
      */
     protected function setUp() {
         include_once(dirname(__FILE__)."/../../Setup.php");
-        include_once(dirname(__FILE__)."/../../../Swiftriver_core/ObjectModel/Content.php");
+        include_once(dirname(__FILE__)."/../../../Core/ObjectModel/Content.php");
         require_once dirname(__FILE__).'/../../Parsers/RSSParser.php';
     }
 

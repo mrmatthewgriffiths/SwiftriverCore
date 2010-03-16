@@ -20,10 +20,10 @@ foreach($iterator as $file) {
 
 class Setup {
     public static function Modules_Directory(){
-        return dirname(__FILE__)."/../Swiftriver_core/Modules";
+        return dirname(__FILE__)."/../Core/Modules";
     }
     public static function Caching_Directory(){
-        return dirname(__FILE__)."/../Swiftriver_core/Cache";
+        return dirname(__FILE__)."/../Core/Cache";
     }
 }
 
