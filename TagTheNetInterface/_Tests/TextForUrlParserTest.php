@@ -5,8 +5,9 @@ require_once 'PHPUnit/Framework.php';
 class TextForUrlParserTest extends \PHPUnit_Framework_TestCase {
 
     protected function setUp() {
-        include(dirname(__FILE__)."/../Setup.php");
-        include_once($configuration["SwiftriverCoreDirectory"]."/ObjectModel/Content.php");
+        include_once(dirname(__FILE__)."/../Setup.php");
+        $config = Setup::Configuration();
+        include_once($config["SwiftriverCoreDirectory"]."/ObjectModel/Content.php");
         include_once(dirname(__FILE__)."/../TextForUrlParser.php");
     }
 

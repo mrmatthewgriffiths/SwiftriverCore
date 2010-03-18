@@ -35,5 +35,13 @@ class ServiceWrapper {
         $returnData = file_get_contents($this->uri, false, $context);
         return $returnData;
     }
+
+    /**
+     *
+     */
+    public function MakeGETRequest() {
+        $returnData = file_get_contents($this->uri, false);
+        return $returnData;
+    }
 }
 ?>
