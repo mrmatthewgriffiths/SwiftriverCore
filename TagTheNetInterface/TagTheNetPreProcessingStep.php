@@ -1,7 +1,9 @@
 <?php
-namespace Swiftriver\SiCDS\SiCDSInterface;
-class SiCDSPreProcessingStep implements \Swiftriver\Core\PreProcessing\IPreProcessingStep {
-
+namespace Swiftriver\TagTheNetInterface;
+class TagTheNetPreProcessingStep implements \Swiftriver\Core\PreProcessing\IPreProcessingStep {
+    /**
+     * Constructor method to include the setup file
+     */
     public function __construct() {
         //include the steup file
         include_once(dirname(__FILE__)."/Setup.php");
@@ -9,13 +11,19 @@ class SiCDSPreProcessingStep implements \Swiftriver\Core\PreProcessing\IPreProce
 
     /**
      * This method, converts the relevant bits of the Content
-     * items to JSON, sends them to the SiCDS and using the
-     * return JSON, only returns content that is unique.
+     * items to JSON, sends them to the TheThe.net service and
+     * using the return JSON, adds tags to the content.
      *
      * @param \Swiftriver\Core\ObjectModel\Content $contentItems
      * @return \Swiftriver\Core\ObjectModel\Content[]
      */
     public function Process($contentItems) {
+
+        $taggedContentItems = array();
+        foreach($contentItems as $item) {
+            $textForUrl =
+        }
+
         //Get the JSON for the call
         $toJSONParser = new ContentToJSONParser();
         $jsonToService = $toJSONParser->Parse($contentItems);
@@ -36,5 +44,6 @@ class SiCDSPreProcessingStep implements \Swiftriver\Core\PreProcessing\IPreProce
         //return the unique content
         return $uniqueContent;
     }
+
 }
 ?>
