@@ -22,7 +22,12 @@ class StartPreProcessingJob {
      * @return string $json
      */
     public function RunService() {
-
+        include_once(dirname(__FILE__)."/ServiceAPIParsers/StartPreProcessingJobParser.php");
+        $parser = new \Swiftriver\Core\ServiceAPI\ServiceAPIParsers\StartPreProcessingJobParser();
+        $channel = $parser->ParseIncommingJSON($this->json);
+        include_once(dirname(__FILE__)."/../SwiftriverCoreService.php");
+        $core = new \Swiftriver\Core\SwiftriverCore();
+        $core->RunCorePreProcessingForNewContent($channel);
     }
 
     /**

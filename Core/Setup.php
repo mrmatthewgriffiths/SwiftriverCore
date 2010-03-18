@@ -13,7 +13,7 @@ $logger = &\Log::singleton('syslog', \LOG_SYSLOG, 'Swiftriver Core');
 class Setup {
     public static function Configuration() {
         return array (
-            "SiSPSDirectory" => dirname(__FILE__)."/../SiSPS",
+            "SiSPSDirectory" => dirname(__FILE__)."/Modules/SiSPS",
             "ModulesDirectory" => dirname(__FILE__)."/Modules",
         );
     }
