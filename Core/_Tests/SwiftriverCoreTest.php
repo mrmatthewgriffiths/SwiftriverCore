@@ -9,11 +9,18 @@ class SwiftriverCoreTest extends \PHPUnit_Framework_TestCase {
     private $object;
 
     protected function setUp() {
-        $this->object = new SwiftriverCore;
+        include_once(dirname(__FILE__)."/../ObjectModel/Channel.php");
+        include_once(dirname(__FILE__)."/../ObjectModel/Content.php");
+        include_once(dirname(__FILE__)."/../SwiftriverCoreService.php");
+        $this->object = new SwiftriverCore();
     }
 
-    public function test() {
-        
+    public function testGetAndParserContentWithAppfricaBlog() {
+        $channel = new \Swiftriver\Core\ObjectModel\Channel();
+        $channel->SetStype("RSS");
+        $channel->SetParameters(array("feedUrl" => "http://feeds.feedburner.com/Appfrica?format=xml"));
+        $content = $this->object->GetAndParserContent($channel);
+        $this->assertEquals(true, isset($content));
     }
 }
 ?>

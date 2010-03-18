@@ -13,9 +13,9 @@ class SwiftriverSourceParsingService {
      * Includes and setup information required for 
      * the service to run.
      */
-    public function __constructor() {
+    public function __construct() {
         //Run any setup needed for the service
-        include_once("Setup.php");
+        include_once(dirname(__FILE__)."/Setup.php");
     }
 
     /**

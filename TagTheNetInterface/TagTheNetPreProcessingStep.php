@@ -1,5 +1,5 @@
 <?php
-namespace Swiftriver\TagTheNetInterface;
+namespace Swiftriver\PreProcessingSteps;
 class TagTheNetPreProcessingStep implements \Swiftriver\Core\PreProcessing\IPreProcessingStep {
     /**
      * Constructor method to include the setup file
@@ -20,11 +20,11 @@ class TagTheNetPreProcessingStep implements \Swiftriver\Core\PreProcessing\IPreP
     public function Process($contentItems) {
         $taggedContentItems = array();
         foreach($contentItems as $item) {
-            $urlParser = new TextForUrlParser($item);
+            $urlParser = new \Swiftriver\TagTheNetInterface\TextForUrlParser($item);
             $text = $urlParser->GetUrlText();
-            $service = new ServiceInterface();
+            $service = new \Swiftriver\TagTheNetInterface\ServiceInterface();
             $json = $service->InterafceWithService("http://tagthe.net/api/", $text);
-            $jsonParser = new ContentFromJSONParser($item, $json);
+            $jsonParser = new \Swiftriver\TagTheNetInterface\ContentFromJSONParser($item, $json);
             $taggedContent = $jsonParser->GetTaggedContent();
             $taggedContentItems[] = $taggedContent;
         }

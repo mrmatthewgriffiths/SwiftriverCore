@@ -9,9 +9,9 @@ class SwiftriverCore {
      * Constructor Method
      * Includes the setup file
      */
-    public function __constructor(){
+    public function __construct(){
         //include the setup file
-        include_once("Setup.php");
+        include_once(dirname(__FILE__)."/Setup.php");
     }
 
     /**
@@ -34,8 +34,12 @@ class SwiftriverCore {
      * @param \Swiftriver\Core\ObjectModel\Channel $channel
      * @return \Swiftriver\Core\ObjectModel\Content[]
      */
-    private function GetAndParserContent($channel) {
-        //TODO: Implement GetAndParserContent
+    public function GetAndParserContent($channel) {
+        $config = Setup::Configuration();
+        $SiSPSFile = $config["SiSPSDirectory"]."/SwiftriverSourceParsingService.php";
+        include_once($SiSPSFile);
+        $service = new \Swiftriver\SiSPS\SwiftriverSourceParsingService();
+        $contentItems = $service->FetchContentFromChannel($channel);
         return $contentItems;
     }
 }
