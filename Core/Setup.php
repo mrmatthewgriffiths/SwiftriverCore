@@ -9,4 +9,7 @@ namespace Swiftriver\Core;
 include_once("Log.php");
 //initialise the logger
 $logger = &\Log::singleton('syslog', \LOG_SYSLOG, 'Swiftriver Core');
+$configuration = array (
+
+);
 ?>

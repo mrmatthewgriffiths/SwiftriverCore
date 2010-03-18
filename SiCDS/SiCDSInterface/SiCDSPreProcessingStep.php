@@ -21,10 +21,13 @@ class SiCDSPreProcessingStep implements \Swiftriver\Core\PreProcessing\IPreProce
         $jsonToService = $toJSONParser->Parse($contentItems);
 
         //Make the webservice call
+        $uri = $serviceUri;
+        $interface = new ServiceInterface();
+        $jsonFromService = $interface->InterafceWithSiCDS($uri, $jsonToService);
 
         //Decode the JSON
         $fromJSONParser = new UniqueContentFromJSONParser();
-        $uniqueIds = $fromJSONParser->Parse($fromJSONParser);
+        $uniqueIds = $fromJSONParser->Parse($jsonFromService);
 
         //Filter out the none unique content
         $filter = new UniqueContentFilter();
@@ -34,7 +37,4 @@ class SiCDSPreProcessingStep implements \Swiftriver\Core\PreProcessing\IPreProce
         return $uniqueContent;
     }
 }
-?>
-
-
 ?>
