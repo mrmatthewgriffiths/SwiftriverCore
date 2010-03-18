@@ -23,10 +23,19 @@ class SwiftriverCore {
      * @param \Swiftriver\Core\ObjectModel\Channel $channel
      */
     public function RunCorePreProcessingForNewContent($channel) {
-        $logger->log("METHOD[RunCoreProcessingForNewContent] Called", PEAR_LOG_INFO);
+        //$logger->log("METHOD[RunCoreProcessingForNewContent] Called", PEAR_LOG_INFO);
 
         //Get the array of content items from the channel
         $items = $this->GetAndParserContent($channel);
+
+        //Process the content
+        $config = Setup::Configuration();
+        $preProcessor = new \Swiftriver\Core\PreProcessing\PreProcessor($config["ModulesDirectory"]);
+        $processedItems = $preProcessor->PreProcessContent($items);
+
+        //Save the content
+        $repo = new \Swiftriver\Core\DAL\ContentRepository();
+        $repo->Save($processedItems);
     }
 
     /**

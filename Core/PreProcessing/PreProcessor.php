@@ -21,8 +21,10 @@ class PreProcessor {
     }
 
     public function PreProcessContent($content) {
-        foreach($this->preProcessingSteps as $preProcessingStep) {
-            $content = $preProcessingStep->Process($content);
+        if(isset($this->preProcessingSteps) && count($this->preProcessingSteps) > 0) {
+            foreach($this->preProcessingSteps as $preProcessingStep) {
+                $content = $preProcessingStep->Process($content);
+            }
         }
         return $content;
     }

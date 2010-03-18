@@ -1,0 +1,13 @@
+[{"title":"On Lessons from Appfrica","text":[{"One of the most rewarding aspects of running this company has been our International Fellows Program which invites developers from all over the world to ..."}]}]
+[{"title":"A Global Passport for Innovators","text":[{"This morning Erik Hersman and I had a conversation about all the innovation spaces turning up across Africa. We agree that it&#8217;s incredibly exciting to ..."}]}]
+[{"title":"The Matatu as an Innovation in North America","text":[{"The share taxi is a common sight across Africa. A van or minibus (usually with a young male hanging out the window shouting the name ..."}]}]
+[{"title":"What Asteroid Mining Could Mean for Developing Countries","text":[{"Guy Consolmagno fears that the future of celestial mining will sink developing countries even deeper into poverty&#8230;
+
+Can you put a price tag on an asteroid? ..."}]}]
+[{"title":"One Million Bones on Washington","text":[{"The One Million Bones project is an art installation to get the world to reflect on the human tragedy of genocide. The image above shows ..."}]}]
+[{"title":"SourceForge Finds Openness in Restraint","text":[{"A few days ago the open source community was livid at a request from the US Department of Commerce that required SourceForge.com to enforce restrictions ..."}]}]
+[{"title":"About the Appfrica Labs Fellows Program","text":[{"The Appfrica Labs office has an open door policy, encouraging people of all cultures, creeds and nationalities to work with us. It&#8217;s often the case ..."}]}]
+[{"title":"The Apple Tablet’s Role in Emerging Markets","text":[{"At a little more than double the price of the One Laptop Per Child&#8217;s XO-1 and equal in price to nearly every decent netbook on ..."}]}]
+[{"title":"Unicorns Happen: Apple Tablet, Zune Phone","text":[{"The internet has a complex. Sometimes we want things to exist so bad that we, the public, simply hang on to any shred of potential ..."}]}]
+[{"title":"The Open Source Embargo","text":[{"Or &#8220;Separate but Equal hits the Open Source Community&#8221;.
+I wrote a blog post a while back about location based profiling on the web. Many websites ..."}]}]
