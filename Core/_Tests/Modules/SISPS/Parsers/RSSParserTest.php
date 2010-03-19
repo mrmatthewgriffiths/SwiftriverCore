@@ -3,7 +3,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-namespace Swiftriver\SiSPS;
+namespace Swiftriver\Core;
 
 require_once 'PHPUnit/Framework.php';
 
@@ -16,9 +16,7 @@ class RSSParserTest extends \PHPUnit_Framework_TestCase {
      * Include the SiSPS Setup
      */
     protected function setUp() {
-        include_once(dirname(__FILE__)."/../../Setup.php");
-        include_once(dirname(__FILE__)."/../../../Core/ObjectModel/Content.php");
-        require_once dirname(__FILE__).'/../../Parsers/RSSParser.php';
+        include_once(dirname(__FILE__)."/../../../../Setup.php");
     }
 
     /**
@@ -27,7 +25,7 @@ class RSSParserTest extends \PHPUnit_Framework_TestCase {
      * array of content Items.
      */
     public function testThatTheRSSParserCanExtractContentItemsFromTheAppfricaBlog() {
-        $parser = new \Swiftriver\SiSPS\Parsers\RSSParser();
+        $parser = new \Swiftriver\Core\Modules\SiSPS\Parsers\RSSParser();
         $content = $parser->GetAndParse(
                 array(
                     "feedUrl" => "http://feeds.feedburner.com/Appfrica?format=xml"

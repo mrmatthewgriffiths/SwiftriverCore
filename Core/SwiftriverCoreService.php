@@ -1,8 +1,4 @@
 <?php
-/* 
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 namespace Swiftriver\Core;
 class SwiftriverCore {
     /**
@@ -14,6 +10,27 @@ class SwiftriverCore {
         include_once(dirname(__FILE__)."/Setup.php");
     }
 
+    public function RegisterNewProcessingJob($channel) {
+        //Setup the logger
+        $logger = Setup::GetLogger();
+        $logger->log("Core::SwiftriverCore::RegisterNewProcessingJob [Method invocation]", \PEAR_LOG_INFO);
+
+        $logger->log("Core::SwiftriverCore::RegisterNewProcessingJob [START: Constructing Repository]", \PEAR_LOG_DEBUG);
+
+        //Construct a new repository
+        $repository = new \Swiftriver\Core\DAL\ChannelProcessingJobRepository();
+
+        $logger->log("Core::SwiftriverCore::RegisterNewProcessingJob [END: Constructing Repository]", \PEAR_LOG_DEBUG);
+
+        $logger->log("Core::SwiftriverCore::RegisterNewProcessingJob [START: Saving Processing Job]", \PEAR_LOG_DEBUG);
+
+        //Add the channel processign job to the repository
+        $repository->Save($channel);
+
+        $logger->log("Core::SwiftriverCore::RegisterNewProcessingJob [END: Saving Processing Job]", \PEAR_LOG_DEBUG);
+        $logger->log("Core::SwiftriverCore::RegisterNewProcessingJob [Method terminated: OK]", \PEAR_LOG_INFO);
+    }
+
     /**
      * Extracts any new content from the Channel described in the
      * $channel parameter. Runs this content throught the configured
@@ -23,8 +40,9 @@ class SwiftriverCore {
      * @param \Swiftriver\Core\ObjectModel\Channel $channel
      */
     public function RunCorePreProcessingForNewContent($channel) {
-        //$logger->log("METHOD[RunCoreProcessingForNewContent] Called", PEAR_LOG_INFO);
-
+        $logger = Setup::GetLogger();
+        $logger->log("Core::SwiftriverCore::RunCorePreProcessingForNewContent[Method invocation]", PEAR_LOG_INFO);
+        
         //Get the array of content items from the channel
         $items = $this->GetAndParserContent($channel);
 
@@ -47,7 +65,7 @@ class SwiftriverCore {
         $config = Setup::Configuration();
         $SiSPSFile = $config["SiSPSDirectory"]."/SwiftriverSourceParsingService.php";
         include_once($SiSPSFile);
-        $service = new \Swiftriver\SiSPS\SwiftriverSourceParsingService();
+        $service = new \Swiftriver\Core\Modules\SiSPS\SwiftriverSourceParsingService();
         $contentItems = $service->FetchContentFromChannel($channel);
         return $contentItems;
     }

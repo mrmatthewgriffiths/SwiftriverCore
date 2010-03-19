@@ -1,9 +1,5 @@
 <?php
-/* 
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-namespace Swiftriver\SiSPS;
+namespace Swiftriver\Core\Modules\SiSPS;
 
 //include all required files:
 $dirItterator = new \RecursiveDirectoryIterator(dirname(__FILE__));

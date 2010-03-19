@@ -6,7 +6,7 @@
  * instructions regarding a channel and return all content
  * items that can be selected from that channel.
  */
-namespace Swiftriver\SiSPS;
+namespace Swiftriver\Core\Modules\SiSPS;
 class SwiftriverSourceParsingService {
     /**
      * Constructor Method

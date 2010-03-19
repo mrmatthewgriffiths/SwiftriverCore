@@ -3,7 +3,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-namespace Swiftriver\SiSPS\Parsers;
+namespace Swiftriver\Core\Modules\SiSPS\Parsers;
 interface IParser{
     /**
      * 

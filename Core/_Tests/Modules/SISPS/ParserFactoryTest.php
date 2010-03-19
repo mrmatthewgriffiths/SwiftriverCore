@@ -1,9 +1,7 @@
 <?php
-namespace Swiftriver\SiSPS;
+namespace Swiftriver\Core;
 
 require_once 'PHPUnit/Framework.php';
-
-require_once dirname(__FILE__).'/../ParserFactory.php';
 
 /**
  * Test class for ParserFactory.
@@ -15,7 +13,7 @@ class ParserFactoryTest extends \PHPUnit_Framework_TestCase {
      * IParser interface
      */
     protected function setUp() {
-        include_once(dirname(__FILE__)."/../Setup.php");
+        include_once(dirname(__FILE__)."/../../../Setup.php");
     }
 
     /**
@@ -25,7 +23,7 @@ class ParserFactoryTest extends \PHPUnit_Framework_TestCase {
     public function testGetParserWithEmptyStringParam() {
         $this->assertEquals(
                 null,
-                ParserFactory::GetParser("")
+                Modules\SiSPS\ParserFactory::GetParser("")
         );
     }
 
@@ -36,7 +34,7 @@ class ParserFactoryTest extends \PHPUnit_Framework_TestCase {
     public function testGetParserWithNullParam() {
         $this->assertEquals(
                 null,
-                ParserFactory::GetParser(null)
+                Modules\SiSPS\ParserFactory::GetParser(null)
         );
     }
 
@@ -47,7 +45,7 @@ class ParserFactoryTest extends \PHPUnit_Framework_TestCase {
     public function testGetParserWithNoneExistantParserName() {
         $this->assertEquals(
                 null,
-                ParserFactory::GetParser("a-none-existant-parser")
+                Modules\SiSPS\ParserFactory::GetParser("a-none-existant-parser")
         );
     }
 
@@ -56,7 +54,7 @@ class ParserFactoryTest extends \PHPUnit_Framework_TestCase {
      * the TestParser object when given the correct parameters.
      */
     public function testGetParserWithValidTestTypeParam() {
-        $parser = ParserFactory::GetParser("Test");
+        $parser = Modules\SiSPS\ParserFactory::GetParser("Test");
         $this->assertEquals(true, isset($parser));
     }
 }

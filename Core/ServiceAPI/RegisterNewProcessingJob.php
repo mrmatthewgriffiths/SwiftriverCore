@@ -1,6 +1,6 @@
 <?php
 namespace Swiftriver\Core\ServiceAPI;
-class StartPreProcessingJob {
+class RegisterNewProcessingJob extends ServiceAPIBase {
     /**
      * The JSON that has been sent to this service
      * @var string
@@ -17,28 +17,20 @@ class StartPreProcessingJob {
     }
 
     /**
-     * Runs the PreProcessing of content as configured in the
-     * SwiftriverCore Configuration
+     * Addes the pre processing job to the DAL
      *
      * @return string $json
      */
     public function RunService() {
         $logger = \Swiftriver\Core\Setup::GetLogger();
-        $logger->log("Core::ServiceAPI::StartPreProcessingJob::RunService [Method invocation]", PEAR_LOG_INFO);
-        $parser = new \Swiftriver\Core\ServiceAPI\ServiceAPIParsers\StartPreProcessingJobParser();
+        $logger->log("Core::ServiceAPI::RegisterNewProcessingJob::RunService [Method invocation]", PEAR_LOG_INFO);
+        $parser = new \Swiftriver\Core\ServiceAPI\ServiceAPIParsers\RegisterNewProcessingJobParser();
         $channel = $parser->ParseIncommingJSON($this->json);
         $core = new \Swiftriver\Core\SwiftriverCore();
         $core->RunCorePreProcessingForNewContent($channel);
+        return parent::FormatMessage("OK");
     }
 
-    /**
-     * Returns the given error in standard JSON format
-     * @param string $error
-     * @return string
-     */
-    public function FormatErrorMessage($error) {
-        return '[{"error":"'.str_replace('"', '\'', $error).'"}]';
-    }
 }
 header('Content-type: application/json');
 if(!isset($_POST) || count($_POST) != 1 || !isset($_POST["data"])) {

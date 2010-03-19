@@ -3,11 +3,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-namespace Swiftriver\SiSPS;
+namespace Swiftriver\Core;
 
 require_once 'PHPUnit/Framework.php';
-
-require_once dirname(__FILE__).'/../SwiftriverSourceParsingService.php';
 
 /**
  * Test class for ParserFactory.
@@ -19,9 +17,7 @@ class SwiftriverSourceParsingServiceTest extends \PHPUnit_Framework_TestCase {
      * IParser interface
      */
     protected function setUp() {
-        include_once(dirname(__FILE__)."/../Setup.php");
-        include_once(dirname(__FILE__)."/../../Core/ObjectModel/Channel.php");
-        include_once(dirname(__FILE__)."/../../Core/ObjectModel/Content.php");
+        include_once(dirname(__FILE__)."/../../../Setup.php");
     }
 
     /**
@@ -30,8 +26,8 @@ class SwiftriverSourceParsingServiceTest extends \PHPUnit_Framework_TestCase {
      */
     public function testFetchContentFromChannelWithTestParser(){
         $channel = new \Swiftriver\Core\ObjectModel\Channel();
-        $channel->SetStype("Test");
-        $service = new \Swiftriver\SiSPS\SwiftriverSourceParsingService();
+        $channel->SetType("Test");
+        $service = new \Swiftriver\Core\Modules\SiSPS\SwiftriverSourceParsingService();
         $contentItems = $service->FetchContentFromChannel($channel);
         $this->assertEquals(true, is_array($contentItems));
         $this->assertEquals(1, count($contentItems));

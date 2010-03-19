@@ -1,0 +1,1 @@
+[{"type":"RSS","parameters":[{"feedUrl":"http:\/\/feeds.feedburner.com\/Appfrica?format=xml"}]}]

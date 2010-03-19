@@ -11,7 +11,7 @@ class StartPreProcessingJobParser {
         $data = json_decode($json, true);
         $data = $data[0];
         $channel = new \Swiftriver\Core\ObjectModel\Channel();
-        $channel->SetStype($data["type"]);
+        $channel->SetType($data["type"]);
         $channel->SetParameters($data["parameters"][0]);
         return $channel;
     }

@@ -37,7 +37,7 @@ class Channel {
      * Sets the type of this Channel
      * @param string $typeIn
      */
-    public function SetStype($typeIn) { $this->type = $typeIn; }
+    public function SetType($typeIn) { $this->type = $typeIn; }
 
     /**
      * Sets the parameters array for this channel

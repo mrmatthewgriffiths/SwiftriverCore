@@ -3,7 +3,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-namespace Swiftriver\SiSPS\Parsers;
+namespace Swiftriver\Core\Modules\SiSPS\Parsers;
 class RSSParser implements IParser {
     /**
      * Implementation of IParser::GetAndParse
@@ -19,13 +19,14 @@ class RSSParser implements IParser {
             return null;
 
         //Include the Simple Pie Framework to get and parse feeds
-        include_once \Swiftriver\SiSPS\Setup::Modules_Directory()."/SimplePie/simplepie.inc";
+        $config = \Swiftriver\Core\Setup::Configuration();
+        include_once $config["ModulesDirectory"]."/SimplePie/simplepie.inc";
 
         //Construct a new SimplePie Parsaer
         $feed = new \SimplePie();
 
         //Set the caching directory
-        $feed->set_cache_location(\Swiftriver\SiSPS\Setup::Caching_Directory());
+        $feed->set_cache_location($config["CachingDirectory"]);
 
         //Pass the feed URL to the SImplePie object
         $feed->set_feed_url($feedUrl);
