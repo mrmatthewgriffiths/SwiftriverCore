@@ -1,5 +1,5 @@
 <?php
-namespace Swiftriver\SiSW;
+namespace Swiftriver\Core\Modules\SiSW;
 class ServiceWrapper {
 
     /**

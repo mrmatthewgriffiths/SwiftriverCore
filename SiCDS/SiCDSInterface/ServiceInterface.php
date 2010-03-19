@@ -12,7 +12,7 @@ class ServiceInterface {
      */
     public function InterafceWithSiCDS($uri, $json) {
         include_once(Setup::Modules_Directory()."/SwiftriverServiceWrapper/ServiceWrapper.php");
-        $service = new \Swiftriver\SiSW\ServiceWrapper($uri);
+        $service = new \Swiftriver\Core\Modules\SiSW\ServiceWrapper($uri);
         $jsonFromService = $service->MakePOSTRequest(array("data" => $json), 5);
         return $jsonFromService;
     }

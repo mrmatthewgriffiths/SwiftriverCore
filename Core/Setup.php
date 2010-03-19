@@ -1,20 +1,17 @@
 <?php
-/* 
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 namespace Swiftriver\Core;
 
 //include the Loging Framework
 include_once("Log.php");
 include_once(dirname(__FILE__)."/SwiftriverCoreService.php");
+include_once(dirname(__FILE__)."/ServiceAPI/ServiceAPIBase.php");
 //include everything else
 $directories = array(
     dirname(__FILE__)."/DAL/",
     dirname(__FILE__)."/ObjectModel/",
     dirname(__FILE__)."/PreProcessing/",
     dirname(__FILE__)."/ServiceAPI/ServiceAPIParsers/",
-    dirname(__FILE__)."/Modules/SwiftriverServiceWrapper/",
+    dirname(__FILE__)."/Modules/SiSW/",
     dirname(__FILE__)."/Modules/SISPS/",
 );
 foreach($directories as $dir) {
@@ -39,7 +36,6 @@ class Setup {
     
     public static function Configuration() {
         return array (
-            "SiSPSDirectory" => dirname(__FILE__)."/Modules/SiSPS",
             "ModulesDirectory" => dirname(__FILE__)."/Modules",
             "CachingDirectory" => dirname(__FILE__)."/Cache",
         );

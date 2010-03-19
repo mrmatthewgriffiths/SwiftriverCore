@@ -14,7 +14,7 @@ class ServiceInterface {
         require($config["SwiftriverModulesDirectory"]."/SwiftriverServiceWrapper/ServiceWrapper.php");
         $uri = str_replace("?view=json", "", $uri);
         $uri = $uri."?view=json&text=".$text;
-        $service = new \Swiftriver\SiSW\ServiceWrapper($uri);
+        $service = new \Swiftriver\Core\Modules\SiSW\ServiceWrapper($uri);
         $jsonFromService = $service->MakeGETRequest();
         return $jsonFromService;
     }

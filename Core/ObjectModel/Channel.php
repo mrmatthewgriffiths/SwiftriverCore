@@ -12,13 +12,19 @@ class Channel {
      *  );
      * @var string 
      */
-    private $type; //type = string
+    private $type; 
 
     /**
      * Parameters used to update the channel with new content;
      * @var array(string)
      */
-    private $parameters; //type = array(array(string))
+    private $parameters; 
+
+    /**
+     * The period in minutes that the channel should be updated
+     * @return int
+     */
+    private $updatePreiod;
 
     /**
      * Gets the type of the channel
@@ -29,20 +35,32 @@ class Channel {
     /**
      * Gets the multi dimentional array of parameters for updating
      * the channel from source.
-     * @return array(array(string))
+     * @return string[]
      */
     public function GetParameters() { return $this->parameters; }
 
     /**
-     * Sets the type of this Channel
-     * @param string $typeIn
+     * Gets the update period in minutes for the channel
+     * @return int
      */
-    public function SetType($typeIn) { $this->type = $typeIn; }
+    public function GetUpdatePeriod() { return $this->updatePreiod; }
+
+    /**
+     * Sets the type of this Channel
+     * @param string $type
+     */
+    public function SetType($type) { $this->type = $type; }
 
     /**
      * Sets the parameters array for this channel
-     * @param array(string $parametersIn
+     * @param array(string $parameters
      */
-    public function SetParameters($parametersIn) { $this->parameters = $parametersIn; }
+    public function SetParameters($parameters) { $this->parameters = $parameters; }
+
+    /**
+     * Sets the update period in munites for the channel
+     * @param int $updatePeriod
+     */
+    public function SetUpdatePeriod($updatePeriod) { $this->updatePreiod = $updatePeriod; }
 }
 ?>

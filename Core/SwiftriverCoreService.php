@@ -63,7 +63,7 @@ class SwiftriverCore {
      */
     public function GetAndParserContent($channel) {
         $config = Setup::Configuration();
-        $SiSPSFile = $config["SiSPSDirectory"]."/SwiftriverSourceParsingService.php";
+        $SiSPSFile = $config["ModulesDirectory"]."/SiSPS/SwiftriverSourceParsingService.php";
         include_once($SiSPSFile);
         $service = new \Swiftriver\Core\Modules\SiSPS\SwiftriverSourceParsingService();
         $contentItems = $service->FetchContentFromChannel($channel);
