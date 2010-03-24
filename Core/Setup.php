@@ -4,13 +4,13 @@ namespace Swiftriver\Core;
 //include the Loging Framework
 include_once("Log.php");
 include_once(dirname(__FILE__)."/SwiftriverCoreService.php");
-include_once(dirname(__FILE__)."/ServiceAPI/ServiceAPIBase.php");
+include_once(dirname(__FILE__)."/ServiceAPI/ServiceAPIClasses/ServiceAPIBase.php");
 //include everything else
 $directories = array(
     dirname(__FILE__)."/DAL/",
     dirname(__FILE__)."/ObjectModel/",
     dirname(__FILE__)."/PreProcessing/",
-    dirname(__FILE__)."/ServiceAPI/ServiceAPIParsers/",
+    dirname(__FILE__)."/ServiceAPI/ServiceAPIClasses/",
     dirname(__FILE__)."/Modules/SiSW/",
     dirname(__FILE__)."/Modules/SISPS/",
 );
@@ -30,7 +30,7 @@ foreach($directories as $dir) {
 class Setup {
     public static function GetLogger() {
         $config = Setup::Configuration();
-        $logger = &\Log::singleton('file', $config["CachingDirectory"]."/log.log" , '    ');
+        $logger = &\Log::singleton('file', $config["CachingDirectory"]."/log.log" , '   ');
         return $logger;
     }
     

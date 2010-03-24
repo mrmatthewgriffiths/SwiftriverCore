@@ -1,5 +1,5 @@
 <?php
-namespace Swiftriver\Core\ServiceAPI;
+namespace Swiftriver\Core\ServiceAPI\ServiceAPIClasses;
 class ServiceAPIBase {
     /**
      * Returns the given error in standard JSON format

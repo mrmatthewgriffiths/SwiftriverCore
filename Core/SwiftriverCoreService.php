@@ -13,7 +13,7 @@ class SwiftriverCore {
     public function RegisterNewProcessingJob($channel) {
         //Setup the logger
         $logger = Setup::GetLogger();
-        $logger->log("Core::SwiftriverCore::RegisterNewProcessingJob [Method invocation]", \PEAR_LOG_INFO);
+        $logger->log("Core::SwiftriverCore::RegisterNewProcessingJob [Method invoked]", \PEAR_LOG_INFO);
 
         $logger->log("Core::SwiftriverCore::RegisterNewProcessingJob [START: Constructing Repository]", \PEAR_LOG_DEBUG);
 
@@ -28,7 +28,7 @@ class SwiftriverCore {
         $repository->Save($channel);
 
         $logger->log("Core::SwiftriverCore::RegisterNewProcessingJob [END: Saving Processing Job]", \PEAR_LOG_DEBUG);
-        $logger->log("Core::SwiftriverCore::RegisterNewProcessingJob [Method terminated: OK]", \PEAR_LOG_INFO);
+        $logger->log("Core::SwiftriverCore::RegisterNewProcessingJob [Method finished]", \PEAR_LOG_INFO);
     }
 
     /**
