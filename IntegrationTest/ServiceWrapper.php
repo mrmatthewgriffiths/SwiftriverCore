@@ -23,7 +23,7 @@ class ServiceWrapper {
      * @return string
      */
     public function MakePOSTRequest($postData, $timeout) {
-        $content = http_build_query($postData);
+        $content = http_build_query($postData, '', '&');
         $context = stream_context_create(
             array(
                 'http' => array(

@@ -19,6 +19,15 @@ class ServiceAPIBase {
         return '[{"message":"'.str_replace('"', '\'', $message).'"}]';
     }
 
-
+    /**
+     * Checks to see if the API key provided matches the configured
+     * API Keys for this Core install
+     * @param string $key
+     * @return bool
+     */
+    public function CheckKey($key) {
+        $keyRepository = new \Swiftriver\Core\DAL\APIKeyRepository();
+        return $keyRepository->IsRegisterdCoreAPIKey($key);
+    }
 }
 ?>
