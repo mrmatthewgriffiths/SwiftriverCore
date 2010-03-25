@@ -3,7 +3,7 @@ namespace Swiftriver\Core\DAL;
 class ContentRepository {
     public function Save($content) {
         $config = \Swiftriver\Core\Setup::Configuration();
-        $file = fopen($config["CachingDirectory"]."/DALCache_ContentRepository.txt", "w");
+        $file = fopen($config->CachingDirectory."/DALCache_ContentRepository.txt", "w");
         foreach($content as $item) {
             $json = '[{"title":"'.$item->GetTitle().'","text":[';
             foreach($item->GetText() as $text) {

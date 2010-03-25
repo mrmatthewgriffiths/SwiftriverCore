@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration name="SiCDS Interface">
+    <properties>
+        <property
+         name="serviceUri"
+         displayName="The fully qualified Uri of the SiCDService"
+         type="string"
+         value="enter the uri here"
+        />
+    </properties>
+</configuration>
