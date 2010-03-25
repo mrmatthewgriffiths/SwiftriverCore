@@ -1,6 +1,9 @@
 <?php
 namespace Swiftriver\Core;
 class Setup {
+    private static $configuration;
+    private static $dalConfiguration;
+
     public static function GetLogger() {
         $logger = &\Log::singleton('file', Setup::Configuration()->CachingDirectory."/log.log" , '   ');
         return $logger;
@@ -10,7 +13,20 @@ class Setup {
      * @return Configuration\ConfigurationHandlers\CoreConfigurationHandler
      */
     public static function Configuration() {
-        return new Configuration\ConfigurationHandlers\CoreConfigurationHandler(dirname(__FILE__)."/Configuration/ConfigurationFiles/CoreConfiguration.xml");
+        if(isset(self::$configuration))
+            return self::$configuration;
+        self::$configuration = new Configuration\ConfigurationHandlers\CoreConfigurationHandler(dirname(__FILE__)."/Configuration/ConfigurationFiles/CoreConfiguration.xml");
+        return self::$configuration;
+    }
+
+    /**
+     * @return Configuration\ConfigurationHandlers\DALConfigurationHandler
+     */
+    public static function DALConfiguration() {
+        if(isset(self::$dalConfiguration))
+            return self::$dalConfiguration;
+        self::$dalConfiguration = new Configuration\ConfigurationHandlers\DALConfigurationHandler(dirname(__FILE__)."/Configuration/ConfigurationFiles/DALConfiguration.xml");
+        return self::$dalConfiguration;
     }
 }
 //include the Loging Framework
@@ -27,6 +43,7 @@ foreach($iterator as $file) {
         }
     }
 }
+
 
 //Include some specific files
 include_once(dirname(__FILE__)."/SwiftriverCoreService.php");
@@ -54,5 +71,22 @@ foreach($directories as $dir) {
     }
 }
 
+//Include all the DAL Data Context Files
+foreach(Setup::DALConfiguration()->DataContextIncludeDirectories as $dir) {
+    $directory = Setup::Configuration()->ModulesDirectory.$dir;
+    if(!file_exists($directory))
+        continue;
+
+    $dirItterator = new \RecursiveDirectoryIterator($directory);
+    $iterator = new \RecursiveIteratorIterator($dirItterator, \RecursiveIteratorIterator::SELF_FIRST);
+    foreach($iterator as $file) {
+        if($file->isFile()) {
+            $filePath = $file->getPathname();
+            if(strpos($filePath, ".php")) {
+                include_once($filePath);
+            }
+        }
+    }
+}
 
 ?>

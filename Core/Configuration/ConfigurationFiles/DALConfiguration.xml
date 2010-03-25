@@ -7,5 +7,13 @@
          type="string"
          value="\SomeTestClass"
         />
+        <!-- This has been commented out so that a DB connection is not called during the test
+        <property
+         name="APIKeyDataContextPath"
+         displayName="Enter the fully path relative to the modules directory where the APIKey Data Content Files are contained"
+         type="string"
+         value="/DataContext/MySQL/APIKeyDataContext/"
+        />
+        -->
     </properties>
 </configuration>
