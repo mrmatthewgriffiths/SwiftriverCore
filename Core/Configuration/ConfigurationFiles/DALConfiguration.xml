@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration name="Data Abstraction Layer Configuration">
+    <properties>
+        <property 
+         name="APIKeyDataContextType"
+         displayName="Enter the fully qualifed type of the API key data content - rememebr the namespace starting with '\'"
+         type="string"
+         value="\SomeTestClass"
+        />
+    </properties>
+</configuration>
