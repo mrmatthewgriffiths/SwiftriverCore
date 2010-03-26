@@ -27,12 +27,6 @@ class Channel {
     private $updatePreiod;
 
     /**
-     * The unique ID of this processing job in the data store
-     * @var int
-     */
-    private $id;
-
-    /**
      * Gets the type of the channel
      * @return string
      */
@@ -52,10 +46,17 @@ class Channel {
     public function GetUpdatePeriod() { return $this->updatePreiod; }
 
     /**
-     * Gets the unique data store Id for this channel processing job
-     * @return int
+     * Gets the unique data store Id for this channel processing job, this
+     * is made up of the type and parameters written to a string
+     * @return string
      */
-    public function GetId() { return $this->id; }
+    public function GetId() { 
+        $id = $this->type;
+        foreach(array_keys($this->parameters) as $key) {
+            $id .= $key.$this->parameters[$key];
+        }
+        return $id;
+    }
 
     /**
      * Sets the type of this Channel
@@ -74,11 +75,5 @@ class Channel {
      * @param int $updatePeriod
      */
     public function SetUpdatePeriod($updatePeriod) { $this->updatePreiod = $updatePeriod; }
-
-    /**
-     * Sets the unique Id for this content processing job
-     * @param int $id
-     */
-    public function SetId($id) { $this->id = $id; }
 }
 ?>
