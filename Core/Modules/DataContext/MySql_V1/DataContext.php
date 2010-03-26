@@ -61,7 +61,34 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
      * @param \Swiftriver\Core\ObjectModel\Channel $channel
      */
     public static function AddNewChannelProgessingJob($channel) {
+        if(!isset($channel))
+            return;
+        $id = ereg_replace("[^A-Za-z0-9 _]", "", $channel->GetId());
+        $query = "SELECT COUNT(*) FROM channelprocessingjobs WHERE id = '".$id."';";
+        $result = self::RunQuery($query);
+        $result = mysql_result($result, 0);
+        if($result > 0)
+            return;
+        $type = $channel->GetType();
+        $updatePeriod = $channel->GetUpdatePeriod();
+        $rawParameters = $channel->GetParameters();
+        $parameters = "";
+        foreach(array_keys($channel->GetParameters()) as $key) {
+            $encodedKey = urlencode($key);
+            $encodedValue = urlencode($rawParameters[$key]);
+            $parameters .= $encodedKey.",".$encodedValue."|";
+        }
+        $parameters = rtrim($parameters, "|");
 
+        $query = "INSERT INTO channelprocessingjobs VALUES(".
+                 "'".$id."',".
+                 "'".$type."',".
+                 $updatePeriod.",".
+                 "null,".
+                 "null,".
+                 "0,".
+                 "true);";
+        $result = self::RunQuery($query);
     }
 
     /**

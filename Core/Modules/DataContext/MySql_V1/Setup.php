@@ -21,7 +21,22 @@ class Setup {
         $database = (string)Setup::$Configuration->Database;
         $bool = mysql_select_db($database, $mysql);
         $error = mysql_error($mysql);
+        
+        //Create the API keys table
         $query = "CREATE TABLE IF NOT EXISTS coreapikeys (apikey VARCHAR( 50 ) NOT NULL);";
+        $bool = mysql_query($query, $mysql);
+        $error = mysql_error($mysql);
+
+        //Create the channelprocessingjobs table
+        $query = "CREATE TABLE IF NOT EXISTS channelprocessingjobs (
+                    id LONGTEXT NOT NULL ,
+                    type VARCHAR( 50 ) NOT NULL ,
+                    updateperiod INT NOT NULL ,
+                    lastrun DATE NULL ,
+                    lastsucess DATE NULL ,
+                    timesrun INT NOT NULL,
+                    active BIT NOT NULL
+                    )";
         $bool = mysql_query($query, $mysql);
         $error = mysql_error($mysql);
         mysql_close($mysql);
