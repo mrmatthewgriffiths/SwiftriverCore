@@ -1,6 +1,6 @@
 <?php
-namespace Swiftriver\Core\Modules\DataContext\MySql\APIKeyDataContext;
-class MySQLAPIKeyDataContextConfigurationHandler extends \Swiftriver\Core\Configuration\ConfigurationHandlers\BaseConfigurationHandler {
+namespace Swiftriver\Core\Modules\DataContext\MySql_V1;
+class DataContextConfigurationHandler extends \Swiftriver\Core\Configuration\ConfigurationHandlers\BaseConfigurationHandler {
 
     /**
      * @var string

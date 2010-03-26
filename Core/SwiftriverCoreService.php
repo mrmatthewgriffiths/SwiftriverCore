@@ -18,14 +18,14 @@ class SwiftriverCore {
         $logger->log("Core::SwiftriverCore::RegisterNewProcessingJob [START: Constructing Repository]", \PEAR_LOG_DEBUG);
 
         //Construct a new repository
-        $repository = new \Swiftriver\Core\DAL\ChannelProcessingJobRepository();
+        $repository = new DAL\Repositories\ChannelProcessingJobRepository();
 
         $logger->log("Core::SwiftriverCore::RegisterNewProcessingJob [END: Constructing Repository]", \PEAR_LOG_DEBUG);
 
         $logger->log("Core::SwiftriverCore::RegisterNewProcessingJob [START: Saving Processing Job]", \PEAR_LOG_DEBUG);
 
         //Add the channel processign job to the repository
-        $repository->Save($channel);
+        $repository->AddNewChannelProgessingJob($channel);
 
         $logger->log("Core::SwiftriverCore::RegisterNewProcessingJob [END: Saving Processing Job]", \PEAR_LOG_DEBUG);
         $logger->log("Core::SwiftriverCore::RegisterNewProcessingJob [Method finished]", \PEAR_LOG_INFO);

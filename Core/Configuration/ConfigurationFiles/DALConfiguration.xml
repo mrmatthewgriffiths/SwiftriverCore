@@ -2,18 +2,16 @@
 <configuration name="Data Abstraction Layer Configuration">
     <properties>
         <property 
-         name="APIKeyDataContextType"
+         name="DataContextType"
          displayName="Enter the fully qualifed type of the API key data content - rememebr the namespace starting with '\'"
          type="string"
-         value="\SomeTestClass"
+         value="\Swiftriver\Core\Modules\DataContext\MySql_V1\DataContext"
         />
-        <!-- This has been commented out so that a DB connection is not called during the test
         <property
-         name="APIKeyDataContextPath"
+         name="DataContextPath"
          displayName="Enter the fully path relative to the modules directory where the APIKey Data Content Files are contained"
          type="string"
-         value="/DataContext/MySQL/APIKeyDataContext/"
+         value="/DataContext/MySQL_V1/"
         />
-        -->
     </properties>
 </configuration>

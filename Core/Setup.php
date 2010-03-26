@@ -72,18 +72,18 @@ foreach($directories as $dir) {
 }
 
 //Include all the DAL Data Context Files
-foreach(Setup::DALConfiguration()->DataContextIncludeDirectories as $dir) {
-    $directory = Setup::Configuration()->ModulesDirectory.$dir;
-    if(!file_exists($directory))
-        continue;
-
-    $dirItterator = new \RecursiveDirectoryIterator($directory);
-    $iterator = new \RecursiveIteratorIterator($dirItterator, \RecursiveIteratorIterator::SELF_FIRST);
-    foreach($iterator as $file) {
-        if($file->isFile()) {
-            $filePath = $file->getPathname();
-            if(strpos($filePath, ".php")) {
-                include_once($filePath);
+$relativeDir = Setup::DALConfiguration()->DataContextDirectory;
+if(isset($relativeDir) && $relativeDir != "") {
+    $directory = Setup::Configuration()->ModulesDirectory.$relativeDir;
+    if(file_exists($directory)) {
+        $dirItterator = new \RecursiveDirectoryIterator($directory);
+        $iterator = new \RecursiveIteratorIterator($dirItterator, \RecursiveIteratorIterator::SELF_FIRST);
+        foreach($iterator as $file) {
+            if($file->isFile()) {
+                $filePath = $file->getPathname();
+                if(strpos($filePath, ".php")) {
+                    include_once($filePath);
+                }
             }
         }
     }

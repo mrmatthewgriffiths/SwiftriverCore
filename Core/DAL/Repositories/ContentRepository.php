@@ -1,5 +1,5 @@
 <?php
-namespace Swiftriver\Core\DAL;
+namespace Swiftriver\Core\DAL\Repositories;
 class ContentRepository {
     public function Save($content) {
         $config = \Swiftriver\Core\Setup::Configuration();
