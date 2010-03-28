@@ -25,5 +25,24 @@ interface IChannelProcessingJobDataContext {
      * @param \Swiftriver\Core\ObjectModel\Channel $channel
      */
     public static function MarkChannelProcessingJobAsComplete($channel);
+
+    /**
+     * Given a Channel processing job, this method marks it as active
+     * @param \Swiftriver\Core\ObjectModel\Channel $channel
+     */
+    public static function ActivateChannelProcessingJob($channel);
+
+    /**
+     * Given a Channel processing job, this method marks it as deactive
+     * @param \Swiftriver\Core\ObjectModel\Channel $channel
+     */
+    public static function DeactivateChannelProcessingJob($channel);
+
+
+    /**
+     * Given a Channel processing job, this method deletes it from the data store
+     * @param \Swiftriver\Core\ObjectModel\Channel $channel
+     */
+    public static function RemoveChannelProcessingJob($channel);
 }
 ?>

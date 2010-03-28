@@ -155,7 +155,54 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
      * @param \Swiftriver\Core\ObjectModel\Channel $channel
      */
     public static function MarkChannelProcessingJobAsComplete($channel) {
-        
+        if(!isset($channel))
+            return;
+
+        $query = "UPDATE channelprocessingjobs SET ".
+                 "lastsucess = '".date("Y-m-d H:i:s", time())."' ".
+                 "WHERE id = '".ereg_replace("[^A-Za-z0-9 _]", "", $channel->GetId())."';";
+        $result = self::RunQuery($query);
+    }
+
+    /**
+     * Given a Channel processing job, this method marks it as active
+     * @param \Swiftriver\Core\ObjectModel\Channel $channel
+     */
+    public static function ActivateChannelProcessingJob($channel) {
+        if(!isset($channel))
+            return;
+
+        $query = "UPDATE channelprocessingjobs SET ".
+                 "active = 1 ".
+                 "WHERE id = '".ereg_replace("[^A-Za-z0-9 _]", "", $channel->GetId())."';";
+        $result = self::RunQuery($query);
+    }
+
+    /**
+     * Given a Channel processing job, this method marks it as deactive
+     * @param \Swiftriver\Core\ObjectModel\Channel $channel
+     */
+    public static function DeactivateChannelProcessingJob($channel) {
+        if(!isset($channel))
+            return;
+
+        $query = "UPDATE channelprocessingjobs SET ".
+                 "active = 0 ".
+                 "WHERE id = '".ereg_replace("[^A-Za-z0-9 _]", "", $channel->GetId())."';";
+        $result = self::RunQuery($query);
+    }
+
+    /**
+     * Given a Channel processing job, this method deletes it from the data store
+     * @param \Swiftriver\Core\ObjectModel\Channel $channel
+     */
+    public static function RemoveChannelProcessingJob($channel) {
+        if(!isset($channel))
+            return;
+
+        $query = "DELETE FROM channelprocessingjobs ".
+                 "WHERE id = '".ereg_replace("[^A-Za-z0-9 _]", "", $channel->GetId())."';";
+        $result = self::RunQuery($query);
     }
 
     public static function RunQuery($query) {

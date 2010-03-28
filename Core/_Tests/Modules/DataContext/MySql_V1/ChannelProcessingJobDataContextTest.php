@@ -19,16 +19,17 @@ class ChannelProcessingJobDataContextTest extends \PHPUnit_Framework_TestCase {
         }
     }
 
-    public function testAddNewChannelProgessingJob() {
+    public function test() {
         $channel = new ObjectModel\Channel();
         $channel->SetType("test");
         $channel->SetUpdatePeriod(5);
         $channel->SetParameters(array("feedUrl" => "http://something", "something" => "elshdjsh87d7f76&^&*^SHGGT^&"));
         Modules\DataContext\MySql_V1\DataContext::AddNewChannelProgessingJob($channel);
-    }
+        Modules\DataContext\MySql_V1\DataContext::ActivateChannelProcessingJob($channel);
+        Modules\DataContext\MySql_V1\DataContext::SelectNextDueChannelProcessingJob(time());
+        Modules\DataContext\MySql_V1\DataContext::DeactivateChannelProcessingJob($channel);
+        Modules\DataContext\MySql_V1\DataContext::RemoveChannelProcessingJob($channel);
 
-    public function testSelectNextDueChannelProcessingJob() {
-        $channel = Modules\DataContext\MySql_V1\DataContext::SelectNextDueChannelProcessingJob(time());
     }
 }
 
