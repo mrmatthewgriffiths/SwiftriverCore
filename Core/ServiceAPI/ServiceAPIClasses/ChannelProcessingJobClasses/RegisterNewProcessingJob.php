@@ -24,10 +24,19 @@ class RegisterNewProcessingJob extends ChannelProcessingJobBase {
 
         $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::RegisterNewProcessingJob::RunService [END: Parsing the JSON input]", \PEAR_LOG_DEBUG);
 
-        $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::RegisterNewProcessingJob::RunService [START: Registering new processing job with Core]", \PEAR_LOG_DEBUG);
+        $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::RegisterNewProcessingJob::RunService [START: Constructing Repository]", \PEAR_LOG_DEBUG);
 
-        $core = new \Swiftriver\Core\SwiftriverCore();
-        $core->RegisterNewProcessingJob($channel);
+        //Construct a new repository
+        $repository = new \Swiftriver\Core\DAL\Repositories\ChannelProcessingJobRepository();
+
+        $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::RegisterNewProcessingJob::RunService [END: Constructing Repository]", \PEAR_LOG_DEBUG);
+
+        $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::RegisterNewProcessingJob::RunService [START: Saving Processing Job]", \PEAR_LOG_DEBUG);
+
+        //Add the channel processign job to the repository
+        $repository->AddNewChannelProgessingJob($channel);
+
+        $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::RegisterNewProcessingJob::RunService [END: Saving Processing Job]", \PEAR_LOG_DEBUG);
 
         $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::RegisterNewProcessingJob::RunService [END: Registering new processing job with Core]", \PEAR_LOG_INFO);
 
