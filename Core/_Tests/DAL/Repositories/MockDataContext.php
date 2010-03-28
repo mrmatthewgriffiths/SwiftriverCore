@@ -23,5 +23,9 @@ class MockDataContext implements DAL\DataContextInterfaces\IDataContext {
     }
     public static function RemoveChannelProcessingJob($channel) {
     }
+    public static function ListAllChannelProcessingJobs() {
+        
+    }
+
 }
 ?>

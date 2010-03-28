@@ -205,6 +205,42 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
         $result = self::RunQuery($query);
     }
 
+    /**
+     * Lists all the current Channel Processing Jobs in the core
+     * @return \Swiftriver\Core\ObjectModel\Channel[]
+     */
+    public static function ListAllChannelProcessingJobs() {
+        $query = "SELECT * FROM channelprocessingjobs ORDER BY nextrun limit 1;";
+        $result = self::RunQuery($query);
+        if(!$result) {
+            return null;
+        }
+        $channels = array();
+        while($row = mysql_fetch_array($result, \MYSQL_ASSOC)) {
+            $type = $row["type"];
+            $parameters = $row["parameters"];
+            $updatePeriod = $row["updateperiod"];
+            $nextrun = strtotime($row["nextrun"]);
+            $lastrun = strtotime($row["lastrun"]);
+            $lastsucess = strtotime($row["lastsucess"]);
+            $timesrun = $row["timesrun"];
+            $active = $row["active"];
+            $channel = new \Swiftriver\Core\ObjectModel\Channel();
+            $channel->SetType($type);
+            $channel->SetUpdatePeriod($updatePeriod);
+            $params = array();
+            foreach(explode("|", $parameters) as $parameter) {
+                $pair = explode(",", $parameter);
+                $key = urldecode($pair[0]);
+                $value = urldecode($pair[1]);
+                $params[$key] = $value;
+            }
+            $channel->SetParameters($params);
+            $channels[] = $channel;
+        }
+        return $channels;
+    }
+
     public static function RunQuery($query) {
         //TODO: Logging
         $url = (string)Setup::$Configuration->DataBaseUrl;

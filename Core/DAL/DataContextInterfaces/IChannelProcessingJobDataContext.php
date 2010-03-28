@@ -44,5 +44,11 @@ interface IChannelProcessingJobDataContext {
      * @param \Swiftriver\Core\ObjectModel\Channel $channel
      */
     public static function RemoveChannelProcessingJob($channel);
+
+    /**
+     * Lists all the current Channel Processing Jobs in the core
+     * @return \Swiftriver\Core\ObjectModel\Channel[]
+     */
+    public static function ListAllChannelProcessingJobs();
 }
 ?>

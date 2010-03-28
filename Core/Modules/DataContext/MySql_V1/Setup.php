@@ -23,22 +23,22 @@ class Setup {
         $error = mysql_error($mysql);
         
         //Create the API keys table
-        $query = "CREATE TABLE IF NOT EXISTS coreapikeys (apikey VARCHAR( 50 ) NOT NULL);";
+        $query = "CREATE TABLE IF NOT EXISTS coreapikeys (apikey VARCHAR( 50 ) NOT NULL) CHARACTER SET utf8 COLLATE utf8_unicode_ci ;";
         $bool = mysql_query($query, $mysql);
         $error = mysql_error($mysql);
 
         //Create the channelprocessingjobs table
         $query = "CREATE TABLE IF NOT EXISTS channelprocessingjobs (
-                    id LONGTEXT NOT NULL ,
-                    type VARCHAR( 50 ) NOT NULL ,
-                    parameters LONGTEXT NULL ,
+                    id LONGTEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
+                    type VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
+                    parameters LONGTEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ,
                     updateperiod INT NOT NULL ,
                     nextrun DATETIME NOT NULL,
                     lastrun DATETIME NULL ,
                     lastsucess DATETIME NULL ,
                     timesrun INT NOT NULL,
                     active BIT NOT NULL
-                    )";
+                    ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ";
         $bool = mysql_query($query, $mysql);
         $error = mysql_error($mysql);
         mysql_close($mysql);

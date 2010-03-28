@@ -26,10 +26,24 @@ class ChannelProcessingJobDataContextTest extends \PHPUnit_Framework_TestCase {
         $channel->SetParameters(array("feedUrl" => "http://something", "something" => "elshdjsh87d7f76&^&*^SHGGT^&"));
         Modules\DataContext\MySql_V1\DataContext::AddNewChannelProgessingJob($channel);
         Modules\DataContext\MySql_V1\DataContext::ActivateChannelProcessingJob($channel);
-        Modules\DataContext\MySql_V1\DataContext::SelectNextDueChannelProcessingJob(time());
+        $channel = Modules\DataContext\MySql_V1\DataContext::SelectNextDueChannelProcessingJob(time());
+        $this->assertEquals(true, isset($channel));
+        $channels = Modules\DataContext\MySql_V1\DataContext::ListAllChannelProcessingJobs();
+        $found = false;
+        foreach($channels as $c) {
+            if($c->GetId() == $channel->GetId())
+                $found = true;
+        }
+        $this->assertEquals(true, $found);
         Modules\DataContext\MySql_V1\DataContext::DeactivateChannelProcessingJob($channel);
         Modules\DataContext\MySql_V1\DataContext::RemoveChannelProcessingJob($channel);
-
+        $channels = Modules\DataContext\MySql_V1\DataContext::ListAllChannelProcessingJobs();
+        $found = false;
+        foreach($channels as $c) {
+            if($c->GetId() == $channel->GetId())
+                $found = true;
+        }
+        $this->assertEquals(false, $found);
     }
 }
 
