@@ -34,6 +34,33 @@ class ChannelProcessingJobRepository {
     }
 
     /**
+     * Given a Channel processing job, this method deletes it from the data store
+     * @param \Swiftriver\Core\ObjectModel\Channel $channel
+     */
+    public function RemoveChannelProcessingJob($channel) {
+        $dc = $this->dataContext;
+        $dc::RemoveChannelProcessingJob($channel);
+    }
+
+    /**
+     * Given a Channel processing job, this method marks it as active
+     * @param \Swiftriver\Core\ObjectModel\Channel $channel
+     */
+    public function ActivateChannelProcessingJob($channel) {
+        $dc = $this->dataContext;
+        $dc::ActivateChannelProcessingJob($channel);
+    }
+
+    /**
+     * Given a Channel processing job, this method marks it as deactive
+     * @param \Swiftriver\Core\ObjectModel\Channel $channel
+     */
+    public function DeactivateChannelProcessingJob($channel) {
+        $dc = $this->dataContext;
+        $dc::DeactivateChannelProcessingJob($channel);
+    }
+
+    /**
      * Given a date time, this function returns the next due
      * channel processing job.
      *
@@ -57,5 +84,14 @@ class ChannelProcessingJobRepository {
         $dc::MarkChannelProcessingJobAsComplete($channel);
     }
 
+    /**
+     * Lists all the current Channel Processing Jobs in the core
+     * @return \Swiftriver\Core\ObjectModel\Channel[]
+     */
+    public function ListAllChannelProcessingJobs() {
+        $dc = $this->dataContext;
+        $channels = $dc::ListAllChannelProcessingJobs();
+        return $channels;
+    }
 }
 ?>
