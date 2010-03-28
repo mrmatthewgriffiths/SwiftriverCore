@@ -11,12 +11,12 @@ class SwiftriverCoreTest extends \PHPUnit_Framework_TestCase {
         $this->object = new SwiftriverCore();
     }
 
-    public function testGetAndParserContentWithAppfricaBlog() {
+    /*public function testGetAndParserContentWithAppfricaBlog() {
         $channel = new \Swiftriver\Core\ObjectModel\Channel();
         $channel->SetType("RSS");
         $channel->SetParameters(array("feedUrl" => "http://feeds.feedburner.com/Appfrica?format=xml"));
         $content = $this->object->GetAndParserContent($channel);
         $this->assertEquals(true, isset($content));
-    }
+    }*/
 }
 ?>

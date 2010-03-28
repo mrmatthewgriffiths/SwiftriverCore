@@ -1,5 +1,5 @@
 <?php
-namespace Swiftriver\Core\ServiceAPI;
+namespace Swiftriver\Core\ServiceAPI\ChannelProcessingJobServices;
 header('Content-type: application/json');
 //Check for the existance of the unique Swift instance Key
 if(!isset($_POST["key"])) {
@@ -19,7 +19,7 @@ else {
     include_once(dirname(__FILE__)."/../Setup.php");
 
     //create a new service instance
-    $service = new ServiceAPIClasses\RegisterNewProcessingJob();
+    $service = new \Swiftriver\Core\ServiceAPI\ServiceAPIClasses\RegisterNewProcessingJob();
 
     //Check that the key supplied works with this core instance
     if(!$service->CheckKey($_POST["key"])) {

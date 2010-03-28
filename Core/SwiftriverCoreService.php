@@ -31,6 +31,8 @@ class SwiftriverCore {
         $logger->log("Core::SwiftriverCore::RegisterNewProcessingJob [Method finished]", \PEAR_LOG_INFO);
     }
 
+
+
     /**
      * Extracts any new content from the Channel described in the
      * $channel parameter. Runs this content throught the configured
@@ -39,7 +41,7 @@ class SwiftriverCore {
      *
      * @param \Swiftriver\Core\ObjectModel\Channel $channel
      */
-    public function RunCorePreProcessingForNewContent($channel) {
+    /*public function RunCorePreProcessingForNewContent($channel) {
         $logger = Setup::GetLogger();
         $logger->log("Core::SwiftriverCore::RunCorePreProcessingForNewContent[Method invocation]", PEAR_LOG_INFO);
         
@@ -54,20 +56,20 @@ class SwiftriverCore {
         //Save the content
         $repo = new \Swiftriver\Core\DAL\ContentRepository();
         $repo->Save($processedItems);
-    }
+    }*/
 
     /**
      *
      * @param \Swiftriver\Core\ObjectModel\Channel $channel
      * @return \Swiftriver\Core\ObjectModel\Content[]
      */
-    public function GetAndParserContent($channel) {
+    /*public function GetAndParserContent($channel) {
         $config = Setup::Configuration();
         $SiSPSFile = $config->ModulesDirectory."/SiSPS/SwiftriverSourceParsingService.php";
         include_once($SiSPSFile);
         $service = new \Swiftriver\Core\Modules\SiSPS\SwiftriverSourceParsingService();
         $contentItems = $service->FetchContentFromChannel($channel);
         return $contentItems;
-    }
+    }*/
 }
 ?>
