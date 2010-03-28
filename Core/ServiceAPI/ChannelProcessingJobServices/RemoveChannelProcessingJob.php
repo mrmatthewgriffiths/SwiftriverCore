@@ -19,7 +19,7 @@ else {
     include_once(dirname(__FILE__)."/../../Setup.php");
 
     //create a new service instance
-    $service = new \Swiftriver\Core\ServiceAPI\ServiceAPIClasses\ChannelProcessingJobClasses\RegisterNewProcessingJob();
+    $service = new \Swiftriver\Core\ServiceAPI\ServiceAPIClasses\ChannelProcessingJobClasses\RemoveChannelProcessingJob();
 
     //Check that the key supplied works with this core instance
     if(!$service->CheckKey($_POST["key"])) {

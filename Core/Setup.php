@@ -46,13 +46,12 @@ foreach($iterator as $file) {
 
 
 //Include some specific files
-include_once(dirname(__FILE__)."/SwiftriverCoreService.php");
 include_once(dirname(__FILE__)."/ServiceAPI/ServiceAPIClasses/ServiceAPIBase.php");
 
 //include everything else
 $directories = array(
-    dirname(__FILE__)."/DAL/",
     dirname(__FILE__)."/ObjectModel/",
+    dirname(__FILE__)."/DAL/",
     dirname(__FILE__)."/PreProcessing/",
     dirname(__FILE__)."/ServiceAPI/ServiceAPIClasses/",
     Setup::Configuration()->ModulesDirectory."/SiSW/",

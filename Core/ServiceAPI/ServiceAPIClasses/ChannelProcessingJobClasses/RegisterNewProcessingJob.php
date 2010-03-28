@@ -4,6 +4,7 @@ class RegisterNewProcessingJob extends ChannelProcessingJobBase {
     /**
      * Adds the pre processing job to the DAL
      *
+     * @param string $json
      * @return string $json
      */
     public function RunService($json) {
@@ -37,8 +38,6 @@ class RegisterNewProcessingJob extends ChannelProcessingJobBase {
         $repository->AddNewChannelProgessingJob($channel);
 
         $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::RegisterNewProcessingJob::RunService [END: Saving Processing Job]", \PEAR_LOG_DEBUG);
-
-        $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::RegisterNewProcessingJob::RunService [END: Registering new processing job with Core]", \PEAR_LOG_INFO);
 
         //return an OK messagae
         return parent::FormatMessage("OK");

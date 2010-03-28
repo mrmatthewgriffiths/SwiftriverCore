@@ -1,6 +1,12 @@
 <?php
 namespace Swiftriver\Core\ServiceAPI\ServiceAPIClasses\ChannelProcessingJobClasses;
 class RemoveChannelProcessingJob extends ChannelProcessingJobBase {
+    /**
+     * Removes a channel processing job from the DAL
+     * 
+     * @param string $json
+     * @return string 
+     */
     public function RunService($json) {
         //Setup the logger
         $logger = \Swiftriver\Core\Setup::GetLogger();
@@ -19,12 +25,19 @@ class RemoveChannelProcessingJob extends ChannelProcessingJobBase {
 
         $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::RemoveChannelProcessingJob::RunService [END: Parsing the JSON input]", \PEAR_LOG_DEBUG);
 
-        $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::RemoveChannelProcessingJob::RunService [START: Removing channel processing job from the core]", \PEAR_LOG_DEBUG);
+        $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::RemoveChannelProcessingJob::RunService [START: Constructing Repository]", \PEAR_LOG_DEBUG);
 
-        $core = new \Swiftriver\Core\SwiftriverCore();
-        $core->RegisterNewProcessingJob($channel);
+        //Construct a new repository
+        $repository = new \Swiftriver\Core\DAL\Repositories\ChannelProcessingJobRepository();
 
-        $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::RemoveChannelProcessingJob::RunService [END: Removing channel processing job from the core]", \PEAR_LOG_INFO);
+        $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::RemoveChannelProcessingJob::RunService [END: Constructing Repository]", \PEAR_LOG_DEBUG);
+
+        $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::RemoveChannelProcessingJob::RunService [START: Remove Processing Job]", \PEAR_LOG_DEBUG);
+
+        //Remove the processing job
+        $repository->RemoveChannelProcessingJob($channel);
+
+        $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::RemoveChannelProcessingJob::RunService [END: Remove Processing Job]", \PEAR_LOG_DEBUG);
 
         //return an OK messagae
         return parent::FormatMessage("OK");    }
