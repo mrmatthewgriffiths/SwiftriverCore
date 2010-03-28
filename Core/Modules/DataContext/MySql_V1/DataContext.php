@@ -71,6 +71,8 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
             return;
         $type = $channel->GetType();
         $updatePeriod = $channel->GetUpdatePeriod();
+        $nextrun = time() + ($updatePeriod * 60);
+        $nextrun = date("Y-m-d H:i:s", $nextrun);
         $rawParameters = $channel->GetParameters();
         $parameters = "";
         foreach(array_keys($channel->GetParameters()) as $key) {
@@ -83,7 +85,9 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
         $query = "INSERT INTO channelprocessingjobs VALUES(".
                  "'".$id."',".
                  "'".$type."',".
+                 "'".$parameters."',".
                  $updatePeriod.",".
+                 "'".$nextrun."',".
                  "null,".
                  "null,".
                  "0,".
@@ -99,7 +103,49 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
      * @return \Swiftriver\Core\ObjectModel\Channel
      */
     public static function SelectNextDueChannelProcessingJob($time){
+        if(!isset($time))
+            $time = time();
+        $query = "SELECT * FROM channelprocessingjobs WHERE active = 1 ORDER BY nextrun limit 1;";
+        $result = self::RunQuery($query);
+        if(!$result) {
+            return null;
+        }
+        $channel = new \Swiftriver\Core\ObjectModel\Channel();
+        $timesrun = null;
+        while($row = mysql_fetch_array($result, \MYSQL_ASSOC)) {
+            $type = $row["type"];
+            $parameters = $row["parameters"];
+            $updatePeriod = $row["updateperiod"];
+            $nextrun = strtotime($row["nextrun"]);
+            $lastrun = strtotime($row["lastrun"]);
+            $lastsucess = strtotime($row["lastsucess"]);
+            $timesrun = $row["timesrun"];
+            $active = $row["active"];
+            $channel->SetType($type);
+            $channel->SetUpdatePeriod($updatePeriod);
+            $params = array();
+            foreach(explode("|", $parameters) as $parameter) {
+                $pair = explode(",", $parameter);
+                $key = urldecode($pair[0]);
+                $value = urldecode($pair[1]);
+                $params[$key] = $value;
+            }
+            $channel->SetParameters($params);
+        }
 
+        if(!isset($channel))
+            return null;
+
+        $nextrun = time() + ($channel->GetUpdatePeriod() * 60);
+        $nextrun = date("Y-m-d H:i:s", $nextrun);
+        $query = "UPDATE channelprocessingjobs SET ".
+                 "nextrun = '".$nextrun."', ".
+                 "timesrun = ".($timesrun+1).", ".
+                 "lastrun = '".date("Y-m-d H:i:s", time())."' ".
+                 "WHERE id = '".ereg_replace("[^A-Za-z0-9 _]", "", $channel->GetId())."';";
+        $result = self::RunQuery($query);
+
+        return $channel;
     }
 
     /**

@@ -31,9 +31,11 @@ class Setup {
         $query = "CREATE TABLE IF NOT EXISTS channelprocessingjobs (
                     id LONGTEXT NOT NULL ,
                     type VARCHAR( 50 ) NOT NULL ,
+                    parameters LONGTEXT NULL ,
                     updateperiod INT NOT NULL ,
-                    lastrun DATE NULL ,
-                    lastsucess DATE NULL ,
+                    nextrun DATETIME NOT NULL,
+                    lastrun DATETIME NULL ,
+                    lastsucess DATETIME NULL ,
                     timesrun INT NOT NULL,
                     active BIT NOT NULL
                     )";

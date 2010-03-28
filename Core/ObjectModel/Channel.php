@@ -57,7 +57,7 @@ class Channel {
         }
         return $id;
     }
-
+   
     /**
      * Sets the type of this Channel
      * @param string $type
