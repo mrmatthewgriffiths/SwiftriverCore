@@ -37,7 +37,7 @@ class Setup {
                     lastrun DATETIME NULL ,
                     lastsucess DATETIME NULL ,
                     timesrun INT NOT NULL,
-                    active BIT NOT NULL
+                    active TINYINT NOT NULL
                     ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ";
         $bool = mysql_query($query, $mysql);
         $error = mysql_error($mysql);

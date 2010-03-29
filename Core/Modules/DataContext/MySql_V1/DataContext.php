@@ -91,7 +91,7 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
                  "null,".
                  "null,".
                  "0,".
-                 "true);";
+                 "1);";
         $result = self::RunQuery($query);
     }
 
@@ -123,6 +123,7 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
             $active = $row["active"];
             $channel->SetType($type);
             $channel->SetUpdatePeriod($updatePeriod);
+            $channel->SetActive(!isset($active) || $active != "0");
             $params = array();
             foreach(explode("|", $parameters) as $parameter) {
                 $pair = explode(",", $parameter);
@@ -228,6 +229,7 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
             $channel = new \Swiftriver\Core\ObjectModel\Channel();
             $channel->SetType($type);
             $channel->SetUpdatePeriod($updatePeriod);
+            $channel->SetActive(!isset($active) || $active != 0);
             $params = array();
             foreach(explode("|", $parameters) as $parameter) {
                 $pair = explode(",", $parameter);

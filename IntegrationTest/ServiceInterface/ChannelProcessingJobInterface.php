@@ -26,6 +26,26 @@ if(isset($_POST)) {
             $json = $service->MakePOSTRequest(array("key" => "test", "data" => $channel), 5);
             echo "<div class='return'>".$json."</div>";
             break;
+        case "activate" :
+            $service = new ServiceWrapper("http://local.swiftcore.com/ServiceAPI/ChannelProcessingJobServices/ListAllChannelProcessingJobs.php");
+            $json = $service->MakePOSTRequest(array("key" => "test"), 5);
+            $channels = json_decode($json);
+            $channels = $channels->{"channels"};
+            $service = new ServiceWrapper("http://local.swiftcore.com/ServiceAPI/ChannelProcessingJobServices/ActivateChannelProcessingJob.php");
+            $channel = json_encode($channels[$_POST["channelNumber"]]);
+            $json = $service->MakePOSTRequest(array("key" => "test", "data" => $channel), 5);
+            echo "<div class='return'>".$json."</div>";
+            break;
+        case "deactivate" :
+            $service = new ServiceWrapper("http://local.swiftcore.com/ServiceAPI/ChannelProcessingJobServices/ListAllChannelProcessingJobs.php");
+            $json = $service->MakePOSTRequest(array("key" => "test"), 5);
+            $channels = json_decode($json);
+            $channels = $channels->{"channels"};
+            $service = new ServiceWrapper("http://local.swiftcore.com/ServiceAPI/ChannelProcessingJobServices/DeactivateChannelProcessingJob.php");
+            $channel = json_encode($channels[$_POST["channelNumber"]]);
+            $json = $service->MakePOSTRequest(array("key" => "test", "data" => $channel), 5);
+            echo "<div class='return'>".$json."</div>";
+            break;
     }
 }
 
@@ -60,6 +80,7 @@ $channels = $channels->{"channels"};
                             <td>Type</td>
                             <td>Update Period</td>
                             <td>Parameters</td>
+                            <td>Active?</td>
                             <td></td>
                         </tr>
                     </thead>
@@ -80,18 +101,32 @@ $channels = $channels->{"channels"};
                                             <?php endforeach; ?>
                                         </table>
                                     </td>
+                                    <td><?php echo(($channels[$i]->active == "true") ? "yes" : "no"); ?></td>
                                     <td>
                                         <form action="<?php echo($_SERVER["PHP_SELF"]); ?>" method="POST">
                                             <input type="hidden" name="action" value="remove" />
                                             <input type="hidden" name="channelNumber" value="<?php echo($i); ?>" />
                                             <input type="submit" value="remove" />
                                         </form>
+                                        <?php if($channels[$i]->active != "true") : ?>
+                                        <form action="<?php echo($_SERVER["PHP_SELF"]); ?>" method="POST">
+                                            <input type="hidden" name="action" value="activate" />
+                                            <input type="hidden" name="channelNumber" value="<?php echo($i); ?>" />
+                                            <input type="submit" value="activate" />
+                                        </form>
+                                        <?php else: ?>
+                                        <form action="<?php echo($_SERVER["PHP_SELF"]); ?>" method="POST">
+                                            <input type="hidden" name="action" value="deactivate" />
+                                            <input type="hidden" name="channelNumber" value="<?php echo($i); ?>" />
+                                            <input type="submit" value="deactivate" />
+                                        </form>
+                                        <?php endif; ?>
                                     </td>
                                 </tr>
                             <?php endfor; ?>
                         <?php else: ?>
                         <tr>
-                            <td colspan="4">
+                            <td colspan="5">
                                 <div class="no-results">
                                     <p>There are currently no channel processing jobs in the data store.</p>
                                 </div>

@@ -47,6 +47,7 @@ foreach($iterator as $file) {
 
 //Include some specific files
 include_once(dirname(__FILE__)."/ServiceAPI/ServiceAPIClasses/ServiceAPIBase.php");
+include_once(dirname(__FILE__)."/ServiceAPI/ServiceAPIClasses/ChannelProcessingJobClasses/ChannelProcessingJobBase.php");
 
 //include everything else
 $directories = array(

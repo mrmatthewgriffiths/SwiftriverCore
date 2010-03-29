@@ -27,6 +27,12 @@ class Channel {
     private $updatePreiod;
 
     /**
+     * If this job is currently active or not
+     * @var bool
+     */
+    private $active;
+
+    /**
      * Gets the type of the channel
      * @return string
      */
@@ -44,6 +50,12 @@ class Channel {
      * @return int
      */
     public function GetUpdatePeriod() { return $this->updatePreiod; }
+
+    /**
+     * Gets the active switch for this channel
+     * @return bool
+     */
+    public function GetActive() { return $this->active; }
 
     /**
      * Gets the unique data store Id for this channel processing job, this
@@ -75,5 +87,11 @@ class Channel {
      * @param int $updatePeriod
      */
     public function SetUpdatePeriod($updatePeriod) { $this->updatePreiod = $updatePeriod; }
+
+    /**
+     * Sets the active flag for this content
+     * @param bool $active
+     */
+    public function SetActive($active) { $this->active = $active; }
 }
 ?>
