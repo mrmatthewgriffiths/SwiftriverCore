@@ -7,7 +7,7 @@ class ServiceAPIBase {
      * @return string
      */
     protected function FormatErrorMessage($error) {
-        return '[{"error":"'.str_replace('"', '\'', $error).'"}]';
+        return '{"error":"'.str_replace('"', '\'', $error).'"}';
     }
 
     /**
@@ -16,7 +16,7 @@ class ServiceAPIBase {
      * @return string
      */
     protected function FormatMessage($message) {
-        return '[{"message":"'.str_replace('"', '\'', $message).'"}]';
+        return '{"message":"'.str_replace('"', '\'', $message).'"}';
     }
 
     /**

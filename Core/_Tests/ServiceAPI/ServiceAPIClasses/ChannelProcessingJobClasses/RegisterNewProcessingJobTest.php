@@ -18,7 +18,7 @@ class RegisterNewProcessingJobTest extends \PHPUnit_Framework_TestCase  {
     }
 
     public function testRunServiceWithGoodJSON() {
-        $json = '[{"type":"Test","updatePeriod":"5","parameters":[{"test":"test"}]}]';
+        $json = '{"type":"Test","updatePeriod":"5","parameters":[{"test":"test"}]}';
         $message = $this->object->RunService($json);
         $this->assertEquals(true, strpos($message, "OK") != 0);
     }

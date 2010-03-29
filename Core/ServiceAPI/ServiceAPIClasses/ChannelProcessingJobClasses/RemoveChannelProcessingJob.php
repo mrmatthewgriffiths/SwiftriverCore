@@ -39,6 +39,8 @@ class RemoveChannelProcessingJob extends ChannelProcessingJobBase {
 
         $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::RemoveChannelProcessingJob::RunService [END: Remove Processing Job]", \PEAR_LOG_DEBUG);
 
+        $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::RemoveChannelProcessingJob::RunService [Method finished]", \PEAR_LOG_INFO);
+
         //return an OK messagae
         return parent::FormatMessage("OK");    }
 }

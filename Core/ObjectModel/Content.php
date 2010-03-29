@@ -39,7 +39,7 @@ class Content {
 
     /**
      * The array of DIFs
-     * @var \Swiftriver\Core\ObjectModel\DuplicationIdentificationField[]
+     * @var \Swiftriver\Core\ObjectModel\DuplicationIdentificationFieldCollection[]
      */
     private $difs;
 
@@ -81,7 +81,7 @@ class Content {
 
     /**
      * Gest the array of difs associated with this content
-     * @return \Swiftriver\Core\ObjectModel\DuplicationIdentificationField[]
+     * @return \Swiftriver\Core\ObjectModel\DuplicationIdentificationFieldCollection[]
      */
     public function GetDifs()      { return $this->difs; }
 
@@ -123,7 +123,7 @@ class Content {
 
     /**
      * Sets the array of difs associated with this content
-     * @param \Swiftriver\Core\ObjectModel\DuplicationIdentificationField[] $difsIn
+     * @param \Swiftriver\Core\ObjectModel\DuplicationIdentificationFieldCollection[] $difsIn
      */
     public function SetDifs($difsIn)       { $this->difs = $difsIn; }
 

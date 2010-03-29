@@ -11,4 +11,4 @@ class TestParser implements IParser {
         return array($item);
     }
 }
-?>,
+?>

@@ -9,16 +9,6 @@
 namespace Swiftriver\Core\Modules\SiSPS;
 class SwiftriverSourceParsingService {
     /**
-     * Constructor Method
-     * Includes and setup information required for 
-     * the service to run.
-     */
-    public function __construct() {
-        //Run any setup needed for the service
-        include_once(dirname(__FILE__)."/Setup.php");
-    }
-
-    /**
      * This method will take the information prvided in the
      * instance of a Swiftriver\Core\ObjectModel\Channel object
      * and will make a call to the channel to fetch and content

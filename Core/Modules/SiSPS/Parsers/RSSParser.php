@@ -19,6 +19,7 @@ class RSSParser implements IParser {
             return null;
 
         //Include the Simple Pie Framework to get and parse feeds
+        
         $config = \Swiftriver\Core\Setup::Configuration();
         include_once $config->ModulesDirectory."/SimplePie/simplepie.inc";
 

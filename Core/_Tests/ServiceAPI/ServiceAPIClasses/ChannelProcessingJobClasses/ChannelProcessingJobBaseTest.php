@@ -12,7 +12,7 @@ class ChannelProcessingJobBaseTest extends \PHPUnit_Framework_TestCase  {
     }
 
     public function testParseJSONToChannel() {
-        $json = '[{"type":"Test","updatePeriod":"5","parameters":[{"test":"test"}]}]';
+        $json = '{"type":"Test","updatePeriod":"5","parameters":[{"key":"test","value":"test"}]}';
         $channel = $this->object->ParseJSONToChannel($json);
         $this->assertEquals(true, isset($channel));
         $this->assertEquals("Test", $channel->GetType());
@@ -26,6 +26,14 @@ class ChannelProcessingJobBaseTest extends \PHPUnit_Framework_TestCase  {
         $json = 'this is bad json and will not pass the parser';
         $channel = $this->object->ParseJSONToChannel($json);
         $this->assertEquals(false, isset($channel));
+    }
+
+    public function testParseChannelsToJSON() {
+        $channel = new ObjectModel\Channel();
+        $channel->SetType("Test");
+        $channel->SetUpdatePeriod(5);
+        $channel->SetParameters(array("one_k" => "one_v", "two_k" => "two_v"));
+        $json = $this->object->ParseChannelsToJSON(array($channel));
     }
 }
 ?>

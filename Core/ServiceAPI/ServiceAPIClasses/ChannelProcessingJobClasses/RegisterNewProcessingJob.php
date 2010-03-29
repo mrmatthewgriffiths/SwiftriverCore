@@ -39,6 +39,8 @@ class RegisterNewProcessingJob extends ChannelProcessingJobBase {
 
         $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::RegisterNewProcessingJob::RunService [END: Saving Processing Job]", \PEAR_LOG_DEBUG);
 
+        $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::RegisterNewProcessingJob::RunService [Method finished]", \PEAR_LOG_INFO);
+
         //return an OK messagae
         return parent::FormatMessage("OK");
     }

@@ -210,7 +210,7 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
      * @return \Swiftriver\Core\ObjectModel\Channel[]
      */
     public static function ListAllChannelProcessingJobs() {
-        $query = "SELECT * FROM channelprocessingjobs ORDER BY nextrun limit 1;";
+        $query = "SELECT * FROM channelprocessingjobs ORDER BY nextrun;";
         $result = self::RunQuery($query);
         if(!$result) {
             return null;
