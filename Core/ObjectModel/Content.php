@@ -8,6 +8,12 @@ class Content {
     private $id;
 
     /**
+     * The current state of the content
+     * @var int
+     */
+    private $state;
+
+    /**
      * The title of the content
      * @var string
      */
@@ -48,7 +54,16 @@ class Content {
      * @return string
      */
     public function GetId()        { return $this->id; }
-    
+
+
+    /**
+     * Gets the current state of the content
+     * This is best intepreted with the help of a
+     * Swiftriver\Core\StateTransition\StateController object
+     * @return int
+     */
+    public function GetState()      { return $this->state; }
+
     /**
      * Gets the title of the content
      * @return string
@@ -59,7 +74,7 @@ class Content {
      * Gets the array of text for the content
      * @return string[]
      */
-    public function GetText()      { return $this->text; }
+    public function GetText()      { return isset($this->text) ? $this->text : array(); }
 
     /**
      * Gets the hyperlink to the original content
@@ -71,7 +86,7 @@ class Content {
      * Gets the array of tags for the content
      * @return \Swiftriver\Core\ObjectModel\Tag[]
      */
-    public function GetTags()      { return $this->tags; }
+    public function GetTags()      { return isset($this->tags) ? $this->tags : array(); }
 
     /**
      * Gets the source associated with the content
@@ -83,13 +98,20 @@ class Content {
      * Gest the array of difs associated with this content
      * @return \Swiftriver\Core\ObjectModel\DuplicationIdentificationFieldCollection[]
      */
-    public function GetDifs()      { return $this->difs; }
+    public function GetDifs()      { return isset($this->difs) ? $this->difs : array(); }
 
     /**
      * Sets the ID of the content
      * @param string $idIn
      */
     public function SetId($idIn)           { $this->id = $idIn; }
+
+    /**
+     * Sets the state of this content, best used with the help of a
+     * Swiftriver\Core\StateTransition\StateController object
+     * @param int $state
+     */
+    public function SetState($state)       { $this->state = $state; }
 
     /**
      * Sets the title of the content
@@ -127,6 +149,12 @@ class Content {
      */
     public function SetDifs($difsIn)       { $this->difs = $difsIn; }
 
-
+    /**
+     * Static function to generate new unique IDs from content
+     * @return string
+     */
+    public static function GenerateUniqueId() {
+        return md5(uniqid(rand(), true));
+    }
 }
 ?>

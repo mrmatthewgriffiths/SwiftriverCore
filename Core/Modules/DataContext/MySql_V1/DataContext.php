@@ -243,6 +243,126 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
         return $channels;
     }
 
+    /**
+     * Given a set of content items, this method will persist
+     * them to the data store, if they already exists then this
+     * method should update the values in the data store.
+     *
+     * @param \Swiftriver\Core\ObjectModel\Content[] $content
+     */
+    public static function SaveContent($content){
+        //initiate the redbean dal contoller
+        $rb = RedBeanController::RedBean();
+
+        //loop throught each oitem of content
+        foreach($content as $item) {
+            $potentials = RedBeanController::Finder()->where("contentitems", "textid = :id limit 1", array(":id" => $item->GetId()));
+            if(isset($potentials) && is_array($potentials)) {
+                //set the content to be the one from the DB
+                $i = $potentials[1]; //1 base - how silly ?!?!?!
+            } else {
+                //tell the dal what table we are dealing with
+                $i = $rb->dispense("contentitems");
+
+                //copy over the properties
+                $i->textId = $item->GetId();
+            }
+
+            $i->state = $item->GetState();
+            $i->title = $item->GetTitle();
+            $i->link = $item->GetLink();
+
+            //comit the content to the DB
+            $rb->store($i);
+
+            //First remove all existing text
+            $textToRemove = RedBeanController::GetRelatedBeans($i, "content_text");
+            if(isset($textToRemove) && is_array($textToRemove)) {
+                foreach($textToRemove as $ttr) {
+                    $rb->trash($ttr);
+                }
+            }
+            
+            //Then add the nest text 
+            foreach($item->GetText() as $text) {
+                //initiare the db table
+                $t = $rb->dispense("content_text");
+
+                //extratc the text
+                $t->text = $text;
+
+                //store the text
+                $rb->store($t);
+
+                //Assocate the text with the content
+                RedBeanController::Associate($t, $i);
+            }
+
+            //first remove the existing tags
+            $tagsToRemove = RedBeanController::GetRelatedBeans($i, "content_tags");
+            if(isset($tagsToRemove) && is_array($tagsToRemove)) {
+                foreach($tagsToRemove as $ttr) {
+                    $rb->trash($ttr);
+                }
+            }
+
+            //then add all new tags
+            foreach($item->GetTags() as $tag) {
+                //initiate the tags db table
+                $t = $rb->dispense("content_tags");
+
+                //get the tag properties
+                $t->type = $tag->GetType();
+                $t->text = $tag->GetText();
+
+                //store the tag
+                $rb->store($t);
+
+                //Associate the tag with the content
+                RedBeanController::Associate($t, $i);
+            }
+
+            //first remove all existing difcollection and their difs
+            $difCollectionsToRemove = RedBeanController::GetRelatedBeans($i, "dif_collections");
+            if(isset($difCollectionsToRemove) && is_array($difCollectionsToRemove)) {
+                foreach($difCollectionsToRemove as $dctr) {
+                    $rb->trash($dctr);
+                }
+            }
+
+            //loop through the DFICollections
+            foreach($item->GetDifs() as $collection) {
+                //initiate the dif collection db table
+                $c = $rb->dispense("dif_collections");
+
+                //Get the properties
+                $c->name = $collection->GetName();
+                
+                //store the collection
+                $rb->store($c);
+
+                //Associate the collection with the contet
+                RedBeanController::Associate($c, $i);
+
+                //Loop through the difs
+                foreach($collection->GetDifs() as $dif) {
+                    //initiate the dif db table
+                    $d = $rb->dispense("difs");
+
+                    //Get the properties
+                    $d->type = $dif->GetType();
+                    $d->value = $dif->GetValue();
+
+                    //store the dif
+                    $rb->store($d);
+
+                    //associate the dif with the collection
+                    RedBeanController::Associate($d, $c);
+                }
+            }
+        }
+    }
+
     public static function RunQuery($query) {
         //TODO: Logging
         $url = (string)Setup::$Configuration->DataBaseUrl;

@@ -8,7 +8,8 @@ namespace Swiftriver\Core\DAL\DataContextInterfaces;
  */
 interface IDataContext extends 
     IAPIKeyDataContext,
-    IChannelProcessingJobDataContext {
+    IChannelProcessingJobDataContext,
+    IContentDataContext {
 
 }
 ?>

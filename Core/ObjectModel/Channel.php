@@ -43,7 +43,7 @@ class Channel {
      * the channel from source.
      * @return string[]
      */
-    public function GetParameters() { return $this->parameters; }
+    public function GetParameters() { return isset($this->parameters) ? $this->parameters : array(); }
 
     /**
      * Gets the update period in minutes for the channel

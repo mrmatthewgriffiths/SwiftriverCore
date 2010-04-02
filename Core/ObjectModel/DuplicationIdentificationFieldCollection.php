@@ -8,10 +8,17 @@ class DuplicationIdentificationFieldCollection {
     private $difs;
 
     /**
+     * the name of this collection
+     * @var string
+     */
+    private $name;
+
+    /**
      * Builds a new DIFC with a collection of DIFs
      * @param DuplicationIdentificationField[] $difs
      */
-    public function __construct($difs) {
+    public function __construct($name, $difs) {
+        $this->name = $name;
         $this->difs = $difs;
     }
 
@@ -21,6 +28,14 @@ class DuplicationIdentificationFieldCollection {
      */
     public function GetDifs() {
         return $this->difs;
+    }
+
+    /**
+     * Returns the name of this collection
+     * @return string
+     */
+    public function GetName() {
+        return $this->name;
     }
 }
 ?>

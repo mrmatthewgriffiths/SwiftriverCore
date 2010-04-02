@@ -3,7 +3,10 @@ namespace Swiftriver\Core\PreProcessing;
 class PreProcessor {
     private $preProcessingSteps;
 
-    public function __construct($modulesDirectory) {
+    public function __construct($modulesDirectory = null) {
+        if($modulesDirectory == null) {
+            $modulesDirectory = \Swiftriver\Core\Setup::Configuration()->ModulesDirectory;
+        }
         $this->preProcessingSteps = array();
         $dirItterator = new \RecursiveDirectoryIterator($modulesDirectory);
         $iterator = new \RecursiveIteratorIterator($dirItterator, \RecursiveIteratorIterator::SELF_FIRST);

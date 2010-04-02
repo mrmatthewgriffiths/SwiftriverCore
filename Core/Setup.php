@@ -71,22 +71,16 @@ foreach($directories as $dir) {
     }
 }
 
-//Include all the DAL Data Context Files
+//Include the DAL Data Context Setup file
 $relativeDir = Setup::DALConfiguration()->DataContextDirectory;
 if(isset($relativeDir) && $relativeDir != "") {
     $directory = Setup::Configuration()->ModulesDirectory.$relativeDir;
     if(file_exists($directory)) {
-        $dirItterator = new \RecursiveDirectoryIterator($directory);
-        $iterator = new \RecursiveIteratorIterator($dirItterator, \RecursiveIteratorIterator::SELF_FIRST);
-        foreach($iterator as $file) {
-            if($file->isFile()) {
-                $filePath = $file->getPathname();
-                if(strpos($filePath, ".php")) {
-                    include_once($filePath);
-                }
-            }
+        //include the setup file - if there is one
+        $setupfile = $directory."/Setup.php";
+        if(file_exists($setupfile)) {
+            include_once($setupfile);
         }
     }
 }
-
 ?>

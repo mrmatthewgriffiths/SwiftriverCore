@@ -12,11 +12,15 @@ class RSSParser implements IParser {
      *  'feedUrl' = The url to the RSS feed
      */
     public function GetAndParse($parameters) {
-
         //Extract the required variables
         $feedUrl = $parameters["feedUrl"];
         if(!isset($feedUrl) || ($feedUrl == ""))
             return null;
+
+        //Create the source that will be used by all the content items
+        //Passing in the feed uri which can be used to uniquly
+        //identify the source of the content
+        $source = new \Swiftriver\Core\ObjectModel\Source($feedUrl);
 
         //Include the Simple Pie Framework to get and parse feeds
         
@@ -41,6 +45,7 @@ class RSSParser implements IParser {
         //Loop throught the Feed Items
         foreach($feed->get_items() as $feedItem) {
             //Extract all the relevant feedItem info
+            $id = \Swiftriver\Core\ObjectModel\Content::GenerateUniqueId();
             $title = $feedItem->get_title();
             $description = $feedItem->get_description();
             $contentLink = $feedItem->get_permalink();
@@ -49,9 +54,11 @@ class RSSParser implements IParser {
             $item = new \Swiftriver\Core\ObjectModel\Content();
 
             //Fill the COntenty Item
+            $item->SetId($id);
             $item->SetTitle($title);
             $item->SetLink($contentLink);
             $item->SetText(array($description));
+            $item->SetSource($source);
 
             //Add the item to the Content array
             $contentItems[] = $item;

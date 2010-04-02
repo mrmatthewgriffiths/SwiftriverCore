@@ -23,7 +23,12 @@ class DuplicationIdentificationField {
      * @var string
      */
     private $value;
-    
+
+    public function  __construct($type, $value) {
+        $this->type = $type;
+        $this->value = $value;
+    }
+
     /**
      * Sets the type of this dif
      * @param string $typeIn
