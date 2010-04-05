@@ -11,7 +11,7 @@ class RSSParser implements IParser {
      * Required Parameter Values =
      *  'feedUrl' = The url to the RSS feed
      */
-    public function GetAndParse($parameters) {
+    public function GetAndParse($parameters, $lastsucess) {
         //Extract the required variables
         $feedUrl = $parameters["feedUrl"];
         if(!isset($feedUrl) || ($feedUrl == ""))
@@ -44,6 +44,14 @@ class RSSParser implements IParser {
 
         //Loop throught the Feed Items
         foreach($feed->get_items() as $feedItem) {
+            //Extract the date of the content
+            $contentdate = $feedItem->get_local_date("Y-m-d H:i:s");
+            if(isset($lastsucess) && is_numeric($lastsucess) && isset($contentdate) && is_numeric($contentdate)) {
+                if($contentdate < $lastsucess) {
+                    continue;
+                }
+            }
+
             //Extract all the relevant feedItem info
             $id = \Swiftriver\Core\ObjectModel\Content::GenerateUniqueId();
             $title = $feedItem->get_title();

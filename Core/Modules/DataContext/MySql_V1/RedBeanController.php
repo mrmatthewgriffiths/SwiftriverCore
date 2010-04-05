@@ -32,7 +32,7 @@ class RedBeanController {
         //Construct a new Red Bean Toolbox, if it has not been set in the mean time
         if(!isset(self::$toolbox))
             self::$toolbox = \RedBean_Setup::kickstartDev($dsn, $username, $password);
-        
+
         //return it
         return self::$toolbox;
     }
@@ -56,7 +56,7 @@ class RedBeanController {
 	\RedBean_Plugin_Constraint::addConstraint($bean1, $bean2);
     }
 
-    public static function GetRelatedBeans($bean1, $type) {
+    public static function GetRelatedBeans($bean, $type) {
         //Get a new association manager
         $association = new \RedBean_AssociationManager(self::Toolbox());
 

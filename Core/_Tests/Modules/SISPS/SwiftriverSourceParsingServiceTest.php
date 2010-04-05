@@ -28,7 +28,7 @@ class SwiftriverSourceParsingServiceTest extends \PHPUnit_Framework_TestCase {
         $channel = new \Swiftriver\Core\ObjectModel\Channel();
         $channel->SetType("Test");
         $service = new \Swiftriver\Core\Modules\SiSPS\SwiftriverSourceParsingService();
-        $contentItems = $service->FetchContentFromChannel($channel);
+        $contentItems = $service->FetchContentFromChannel($channel, null);
         $this->assertEquals(true, is_array($contentItems));
         $this->assertEquals(1, count($contentItems));
         $this->assertEquals("testId", $contentItems[0]->GetId());

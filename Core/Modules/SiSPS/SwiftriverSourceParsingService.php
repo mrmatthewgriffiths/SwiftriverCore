@@ -29,7 +29,7 @@ class SwiftriverSourceParsingService {
         $parameters = $channel->GetParameters();
 
         //Get and parse all avaliable content items from the parser
-        $contentItems = $factory->GetAndParse($parameters);
+        $contentItems = $factory->GetAndParse($parameters, $channel->GetLastSucess());
 
         //Return the content items
         return $contentItems;

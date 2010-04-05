@@ -29,7 +29,8 @@ class RSSParserTest extends \PHPUnit_Framework_TestCase {
         $content = $parser->GetAndParse(
                 array(
                     "feedUrl" => "http://feeds.feedburner.com/Appfrica?format=xml"
-                )
+                ),
+                mktime(0, 0, 0, 1, 1, 1970)
         );
         $this->assertEquals(true, isset($content));
         $this->assertEquals(true, is_array($content));

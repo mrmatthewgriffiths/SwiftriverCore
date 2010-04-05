@@ -33,6 +33,12 @@ class Channel {
     private $active;
 
     /**
+     * The last time this processing job was sucessfully run
+     * @var datetime
+     */
+    private $lastSucess;
+
+    /**
      * Gets the type of the channel
      * @return string
      */
@@ -69,6 +75,14 @@ class Channel {
         }
         return $id;
     }
+
+    /**
+     * Returns the last time this job was sucessfully run
+     * @return datetime
+     */
+    public function GetLastSucess() {
+        return $this->lastSucess;
+    }
    
     /**
      * Sets the type of this Channel
@@ -93,5 +107,13 @@ class Channel {
      * @param bool $active
      */
     public function SetActive($active) { $this->active = $active; }
+
+    /**
+     * Sets the last time this job was sucessfully run
+     * @param datetime $lastSucess
+     */
+    public function SetLastSucess($lastSucess) {
+        $this->lastSucess = $lastSucess;
+    }
 }
 ?>
