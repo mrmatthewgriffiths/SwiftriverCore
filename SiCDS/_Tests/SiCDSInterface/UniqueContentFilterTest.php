@@ -16,7 +16,7 @@ class UniqueContentFilterTest extends \PHPUnit_Framework_TestCase {
         $contentItems = array();
         for($i = 1; $i < 10; $i++) {
             $item = new \SwiftRiver\Core\ObjectModel\Content();
-            $item->SetId("testId".$i);
+            $item->id = "testId".$i;
             $contentItems[] = $item;
         }
         $uniqueIds = array("testId2");
@@ -24,7 +24,7 @@ class UniqueContentFilterTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals(true, isset($uniqueContent));
         $this->assertEquals(true, is_array($uniqueContent));
         $this->assertEquals(1, count($uniqueContent));
-        $this->assertEquals("testId2", $uniqueContent[0]->GetId());
+        $this->assertEquals("testId2", $uniqueContent[0]->id);
     }
 }
 ?>

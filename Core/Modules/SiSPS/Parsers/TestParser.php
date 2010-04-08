@@ -7,7 +7,7 @@ namespace Swiftriver\Core\Modules\SiSPS\Parsers;
 class TestParser implements IParser {
     public function GetAndParse($parameters, $lastsucess) {
         $item = new \Swiftriver\Core\ObjectModel\Content();
-        $item->SetId("testId");
+        $item->id = "testId";
         return array($item);
     }
 }

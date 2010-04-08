@@ -30,8 +30,11 @@ class ContentRepository {
      * @param \Swiftriver\Core\ObjectModel\Content[] $content
      */
     public function SaveContent($content) {
+        $logger = \Swiftriver\Core\Setup::GetLogger();
+        $logger->log("Core::DAL::Repositories::ContentRepository::SaveContent [Method invoked]", \PEAR_LOG_DEBUG);
         $dc = new $this->dataContext();
         $dc::SaveContent($content);
+        $logger->log("Core::DAL::Repositories::ContentRepository::SaveContent [Method Finished]", \PEAR_LOG_DEBUG);
     }
 
     /**
@@ -41,9 +44,13 @@ class ContentRepository {
      * @param string[] $ids
      * @return \Swiftriver\Core\ObjectModel\Content[]
      */
-    public static function GetContent($ids) {
+    public function GetContent($ids) {
+        $logger = \Swiftriver\Core\Setup::GetLogger();
+        $logger->log("Core::DAL::Repositories::ContentRepository::GetContent [Method invoked]", \PEAR_LOG_DEBUG);
         $dc = new $this->dataContext();
-        $dc::GetContent($content);
+        $content = $dc::GetContent($content);
+        $logger->log("Core::DAL::Repositories::ContentRepository::GetContent [Method finished]", \PEAR_LOG_DEBUG);
+        return $content;
     }
 
     /**
@@ -51,9 +58,31 @@ class ContentRepository {
      * from the data store.
      * @param \Swiftriver\Core\ObjectModel\Content[] $content
      */
-    public static function DeleteContent($content) {
+    public function DeleteContent($content) {
+        $logger = \Swiftriver\Core\Setup::GetLogger();
+        $logger->log("Core::DAL::Repositories::ContentRepository::DeleteContent [Method invoked]", \PEAR_LOG_DEBUG);
         $dc = new $this->dataContext();
         $dc::DeleteContent($content);
+        $logger->log("Core::DAL::Repositories::ContentRepository::DeleteContent [Method finshed]", \PEAR_LOG_DEBUG);
+    }
+
+    /**
+     * Given a status, pagesize, page start index and possibly
+     * an order by calse, this method will return a page of content.
+     *
+     * @param int $state
+     * @param int $pagesize
+     * @param int $pagestart
+     * @param string $orderby
+     * @return array("totalCount" => int, "contentItems" => Content[])
+     */
+    public function GetPagedContentByState($state, $pagesize, $pagestart, $orderby = null) {
+        $logger = \Swiftriver\Core\Setup::GetLogger();
+        $logger->log("Core::DAL::Repositories::ContentRepository::GetPagedContentByState [Method invoked]", \PEAR_LOG_DEBUG);
+        $dc = new $this->dataContext();
+        $content = $dc::GetPagedContentByState($state, $pagesize, $pagestart, $orderby);
+        $logger->log("Core::DAL::Repositories::ContentRepository::GetPagedContentByState [Method finished]", \PEAR_LOG_DEBUG);
+        return $content;
     }
 }
 ?>

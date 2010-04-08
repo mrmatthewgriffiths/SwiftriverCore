@@ -19,7 +19,7 @@ class TextForUrlParserTest extends \PHPUnit_Framework_TestCase {
     public function testWithNoTextButTitle() {
         $item = new \Swiftriver\Core\ObjectModel\Content();
         $title = "this is a test title";
-        $item->SetTitle($title);
+        $item->title = $title;
         $parser = new TextForUrlParser($item);
         $this->assertEquals(urlencode($title), $parser->GetUrlText());
     }
@@ -27,9 +27,9 @@ class TextForUrlParserTest extends \PHPUnit_Framework_TestCase {
     public function testWithTextAndTitle() {
         $item = new \Swiftriver\Core\ObjectModel\Content();
         $title = "this is a test title";
-        $item->SetTitle($title);
+        $item->title = $title;
         $text = array("one line of text", "a second line of text");
-        $item->SetText($text);
+        $item->text = $text;
         $parser = new TextForUrlParser($item);
         $formattedText = $title;
         foreach($text as $t) {
@@ -44,7 +44,7 @@ class TextForUrlParserTest extends \PHPUnit_Framework_TestCase {
         for($i = 0; $i<2500; $i++) {
             $title .= " x";
         }
-        $item->SetTitle($title);
+        $item->title = $title;
         $parser = new TextForUrlParser($item);
         $this->assertEquals(2000, strlen($parser->GetUrlText()));
     }

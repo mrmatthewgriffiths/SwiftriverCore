@@ -21,7 +21,7 @@ class RunNextProcessingJob extends ChannelProcessingJobBase {
         $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::RunNextProcessingJob::RunService [START: Fetching next processing Job]", \PEAR_LOG_DEBUG);
 
         //Get the next due channel processign job
-        $channel = $channelRepository->SelectNextDueChannelProcessingJob();
+        $channel = $channelRepository->SelectNextDueChannelProcessingJob(time());
         if($channel == null) {
             $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::RunNextProcessingJob::RunService [INFO: No processing jobs due]", \PEAR_LOG_DEBUG);
             $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::RunNextProcessingJob::RunService [END: Fetching next processing Job]", \PEAR_LOG_DEBUG);
@@ -36,6 +36,13 @@ class RunNextProcessingJob extends ChannelProcessingJobBase {
         $SiSPS = new \Swiftriver\Core\Modules\SiSPS\SwiftriverSourceParsingService();
         $rawContent = $SiSPS->FetchContentFromChannel($channel);
 
+        if(!isset($rawContent) || !is_array($rawContent) || count($rawContent) < 1) {
+            $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::RunNextProcessingJob::RunService [END: Get and parse content]", \PEAR_LOG_DEBUG);
+            $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::RunNextProcessingJob::RunService [No content found.]", \PEAR_LOG_DEBUG);
+            $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::RunNextProcessingJob::RunService [Method finished]", \PEAR_LOG_INFO);
+            return parent::FormatMessage("OK");
+        }
+
         $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::RunNextProcessingJob::RunService [END: Get and parse content]", \PEAR_LOG_DEBUG);
 
         $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::RunNextProcessingJob::RunService [START: Running core processing]", \PEAR_LOG_DEBUG);
@@ -43,7 +50,7 @@ class RunNextProcessingJob extends ChannelProcessingJobBase {
         $preProcessor = new \Swiftriver\Core\PreProcessing\PreProcessor();
         $processedContent = $preProcessor->PreProcessContent($rawContent);
 
-        $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::RunNextProcessingJob::RunService [END: Parsing channel processing jobs to JSON]", \PEAR_LOG_DEBUG);
+        $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::RunNextProcessingJob::RunService [END: Running core processing]", \PEAR_LOG_DEBUG);
 
         $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::RunNextProcessingJob::RunService [START: Save content to the data store]", \PEAR_LOG_DEBUG);
 

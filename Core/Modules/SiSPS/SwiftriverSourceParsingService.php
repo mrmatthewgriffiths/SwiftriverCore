@@ -19,17 +19,36 @@ class SwiftriverSourceParsingService {
      * @return Swiftriver\Core\ObjectModel\Content[] $contentItems
      */
     public function FetchContentFromChannel($channel) {
+        $logger = \Swiftriver\Core\Setup::GetLogger();
+        $logger->log("Core::Modules::SiSPS::SwiftriverSourceParsingService::FetchContentFromChannel [Method invoked]", \PEAR_LOG_DEBUG);
+
+        if(!isset($channel) || $channel == null) {
+            $logger->log("Core::Modules::SiSPS::SwiftriverSourceParsingService::FetchContentFromChannel [The channel object param is null]", \PEAR_LOG_DEBUG);
+            $logger->log("Core::Modules::SiSPS::SwiftriverSourceParsingService::FetchContentFromChannel [Method finished]", \PEAR_LOG_DEBUG);
+            return;
+        }
+
         //get the type of the channel
-        $channelType = $channel->GetType();
+        $channelType = $channel->type;
+
+        $logger->log("Core::Modules::SiSPS::SwiftriverSourceParsingService::FetchContentFromChannel [Channel type is $channelType]", \PEAR_LOG_DEBUG);
 
         //Get a Parser from the ParserFactory based on the channel type
-        $factory = ParserFactory::GetParser($channelType);
+        $parser = ParserFactory::GetParser($channelType);
+
+        $logger->log("Core::Modules::SiSPS::SwiftriverSourceParsingService::FetchContentFromChannel [Constructed parser from factory]", \PEAR_LOG_DEBUG);
 
         //Extract the parameters from the channel object
-        $parameters = $channel->GetParameters();
+        $parameters = $channel->parameters;
+
+        $logger->log("Core::Modules::SiSPS::SwiftriverSourceParsingService::FetchContentFromChannel [START: parser->GetAndParse]", \PEAR_LOG_DEBUG);
 
         //Get and parse all avaliable content items from the parser
-        $contentItems = $factory->GetAndParse($parameters, $channel->GetLastSucess());
+        $contentItems = $parser->GetAndParse($parameters, $channel->lastSucess);
+
+        $logger->log("Core::Modules::SiSPS::SwiftriverSourceParsingService::FetchContentFromChannel [END: parser->GetAndParse]", \PEAR_LOG_DEBUG);
+
+        $logger->log("Core::Modules::SiSPS::SwiftriverSourceParsingService::FetchContentFromChannel [Method finished]", \PEAR_LOG_DEBUG);
 
         //Return the content items
         return $contentItems;

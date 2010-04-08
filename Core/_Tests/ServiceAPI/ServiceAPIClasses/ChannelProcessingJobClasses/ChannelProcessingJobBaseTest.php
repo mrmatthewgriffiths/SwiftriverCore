@@ -12,12 +12,12 @@ class ChannelProcessingJobBaseTest extends \PHPUnit_Framework_TestCase  {
     }
 
     public function testParseJSONToChannel() {
-        $json = '{"type":"Test","updatePeriod":"5","parameters":[{"key":"test","value":"test"}]}';
+        $json = '{"type":"Test","updatePeriod":5,"parameters":{"test":"test"},"active":1}';
         $channel = $this->object->ParseJSONToChannel($json);
         $this->assertEquals(true, isset($channel));
-        $this->assertEquals("Test", $channel->GetType());
-        $this->assertEquals(5, $channel->GetUpdatePeriod());
-        $params = $channel->GetParameters();
+        $this->assertEquals("Test", $channel->type);
+        $this->assertEquals(5, $channel->updatePeriod);
+        $params = $channel->parameters;
         $this->assertEquals(true, is_array($params));
         $this->assertEquals("test", $params["test"]);
     }
@@ -30,9 +30,9 @@ class ChannelProcessingJobBaseTest extends \PHPUnit_Framework_TestCase  {
 
     public function testParseChannelsToJSON() {
         $channel = new ObjectModel\Channel();
-        $channel->SetType("Test");
-        $channel->SetUpdatePeriod(5);
-        $channel->SetParameters(array("one_k" => "one_v", "two_k" => "two_v"));
+        $channel->type = "Test";
+        $channel->updatePeriod = 5;
+        $channel->parameters = array("one_k" => "one_v", "two_k" => "two_v");
         $json = $this->object->ParseChannelsToJSON(array($channel));
     }
 }

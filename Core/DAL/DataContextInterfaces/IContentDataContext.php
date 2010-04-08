@@ -18,6 +18,18 @@ interface IContentDataContext {
      * @return \Swiftriver\Core\ObjectModel\Content[]
      */
     public static function GetContent($ids);
+    
+    /**
+     * Given a status, pagesize, page start index and possibly
+     * an order by calse, this method will return a page of content.
+     * 
+     * @param int $state
+     * @param int $pagesize
+     * @param int $pagestart
+     * @param string $orderby
+     * @return array("totalCount" => int, "contentItems" => Content[])
+     */
+    public static function GetPagedContentByState($state, $pagesize, $pagestart, $orderby = null);
 
     /**
      * Given an array of content items, this method removes them

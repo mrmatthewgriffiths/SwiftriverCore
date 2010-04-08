@@ -17,7 +17,7 @@ class UniqueContentFilter {
         //Loop through the two array looking for unique content
         foreach($contentItems as $item) {
             foreach($uniqueIds as $id) {
-                if($item->GetId() == $id) {
+                if($item->id == $id) {
                     $uniqueContent[] = $item;
                 }
             }

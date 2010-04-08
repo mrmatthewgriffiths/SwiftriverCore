@@ -1,63 +1,18 @@
 <?php
 namespace Swiftriver\IntegrationTests;
 include_once(dirname(__FILE__)."/../ServiceWrapper.php");
-$service = new ServiceWrapper("http://local.swiftcore.com/ServiceAPI/ChannelProcessingJobServices/RunNextProcessingJob.php");
-$json = $service->MakeAsyncPostRequest(array("key" => "test"));
-echo($json);
-
 
 if(isset($_POST)) {
     $action = $_POST["action"];
     switch ($action) {
-        case "add-new-processing-job" :
-            $json = '{"type":"'.$_POST["type"].'",'.
-                    '"updatePeriod":"'.$_POST["updatePeriod"].'",'.
-                    '"parameters":['.
-                        '{"key":"'.$_POST["parameter_1_key"].'","value":"'.$_POST["paramter_1_value"].'"},'.
-                        '{"key":"'.$_POST["parameter_2_key"].'","value":"'.$_POST["paramter_2_value"].'"}'.
-                    ']}';
-            echo "<div class='return'>".$json."<br/></div>";
-            $service = new ServiceWrapper("http://local.swiftcore.com/ServiceAPI/ChannelProcessingJobServices/RegisterNewProcessingJob.php");
-            echo "<div class='return'>".$service->MakePOSTRequest(array("key" => "test", "data" => $json), 5)."<br/></div>";
-            break;
-        case "remove" :
-            $service = new ServiceWrapper("http://local.swiftcore.com/ServiceAPI/ChannelProcessingJobServices/ListAllChannelProcessingJobs.php");
-            $json = $service->MakePOSTRequest(array("key" => "test"), 5);
-            $channels = json_decode($json);
-            $channels = $channels->{"channels"};
-            $service = new ServiceWrapper("http://local.swiftcore.com/ServiceAPI/ChannelProcessingJobServices/RemoveChannelProcessingJob.php");
-            $channel = json_encode($channels[$_POST["channelNumber"]]);
-            $json = $service->MakePOSTRequest(array("key" => "test", "data" => $channel), 5);
-            echo "<div class='return'>".$json."</div>";
-            break;
-        case "activate" :
-            $service = new ServiceWrapper("http://local.swiftcore.com/ServiceAPI/ChannelProcessingJobServices/ListAllChannelProcessingJobs.php");
-            $json = $service->MakePOSTRequest(array("key" => "test"), 5);
-            $channels = json_decode($json);
-            $channels = $channels->{"channels"};
-            $service = new ServiceWrapper("http://local.swiftcore.com/ServiceAPI/ChannelProcessingJobServices/ActivateChannelProcessingJob.php");
-            $channel = json_encode($channels[$_POST["channelNumber"]]);
-            $json = $service->MakePOSTRequest(array("key" => "test", "data" => $channel), 5);
-            echo "<div class='return'>".$json."</div>";
-            break;
-        case "deactivate" :
-            $service = new ServiceWrapper("http://local.swiftcore.com/ServiceAPI/ChannelProcessingJobServices/ListAllChannelProcessingJobs.php");
-            $json = $service->MakePOSTRequest(array("key" => "test"), 5);
-            $channels = json_decode($json);
-            $channels = $channels->{"channels"};
-            $service = new ServiceWrapper("http://local.swiftcore.com/ServiceAPI/ChannelProcessingJobServices/DeactivateChannelProcessingJob.php");
-            $channel = json_encode($channels[$_POST["channelNumber"]]);
-            $json = $service->MakePOSTRequest(array("key" => "test", "data" => $channel), 5);
-            echo "<div class='return'>".$json."</div>";
-            break;
+
     }
 }
 
-$service = new ServiceWrapper("http://local.swiftcore.com/ServiceAPI/ChannelProcessingJobServices/ListAllChannelProcessingJobs.php");
-$json = $service->MakePOSTRequest(array("key" => "test"), 5);
+$service = new ServiceWrapper("http://local.swiftcore.com/ServiceAPI/ContentServices/GetPagedContentByState.php");
+$json = $service->MakePOSTRequest(array("key" => "test", "data" => '{"state":0,"pagesize":20,"pagestart":0}'), 5);
 echo "<div class='return'>".$json."</div>";
-$channels = json_decode($json);
-$channels = $channels->{"channels"};
+die();
 ?>
 <html>
     <head>
@@ -154,7 +109,6 @@ $channels = $channels->{"channels"};
                     <div class="form-row">
                         <label for="updatePeriod">Select the amount of minutes between updates:</label>
                         <select name="updatePeriod">
-                            <option value="1">1 minute</option>
                             <option value="5">5 minutes</option>
                             <option value="15">15 minutes</option>
                             <option value="30">30 minutes</option>

@@ -36,9 +36,9 @@ class RSSParserTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals(true, is_array($content));
         foreach($content as $item) {
             $this->assertEquals(true, isset($item));
-            $title = $item->GetTitle();
-            $link = $item->GetLink();
-            $text = $item->GetText();
+            $title = $item->title;
+            $link = $item->link;
+            $text = $item->text;
             $this->assertEquals(true, isset($title));
             $this->assertEquals(true, isset($link));
             $this->assertEquals(true, isset($text));

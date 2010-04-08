@@ -29,8 +29,11 @@ class ChannelProcessingJobRepository {
      * @param \Swiftriver\Core\ObjectModel\Channel $channel
      */
     public function AddNewChannelProgessingJob($channel) {
+        $logger = \Swiftriver\Core\Setup::GetLogger();
+        $logger->log("Core::DAL::Repositories::ChannelProcessingJobRepository::AddNewChannelProgessingJob [Method invoked]", \PEAR_LOG_DEBUG);
         $dc = $this->dataContext;
         $dc::AddNewChannelProgessingJob($channel);
+        $logger->log("Core::DAL::Repositories::ChannelProcessingJobRepository::AddNewChannelProgessingJob [Method Finished]", \PEAR_LOG_DEBUG);
     }
 
     /**
@@ -38,8 +41,11 @@ class ChannelProcessingJobRepository {
      * @param \Swiftriver\Core\ObjectModel\Channel $channel
      */
     public function RemoveChannelProcessingJob($channel) {
+        $logger = \Swiftriver\Core\Setup::GetLogger();
+        $logger->log("Core::DAL::Repositories::ChannelProcessingJobRepository::RemoveChannelProcessingJob [Method invoked]", \PEAR_LOG_DEBUG);
         $dc = $this->dataContext;
         $dc::RemoveChannelProcessingJob($channel);
+        $logger->log("Core::DAL::Repositories::ChannelProcessingJobRepository::RemoveChannelProcessingJob [Method finished]", \PEAR_LOG_DEBUG);
     }
 
     /**
@@ -47,8 +53,11 @@ class ChannelProcessingJobRepository {
      * @param \Swiftriver\Core\ObjectModel\Channel $channel
      */
     public function ActivateChannelProcessingJob($channel) {
+        $logger = \Swiftriver\Core\Setup::GetLogger();
+        $logger->log("Core::DAL::Repositories::ChannelProcessingJobRepository::ActivateChannelProcessingJob [Method invoked]", \PEAR_LOG_DEBUG);
         $dc = $this->dataContext;
         $dc::ActivateChannelProcessingJob($channel);
+        $logger->log("Core::DAL::Repositories::ChannelProcessingJobRepository::ActivateChannelProcessingJob [Method finished]", \PEAR_LOG_DEBUG);
     }
 
     /**
@@ -56,8 +65,11 @@ class ChannelProcessingJobRepository {
      * @param \Swiftriver\Core\ObjectModel\Channel $channel
      */
     public function DeactivateChannelProcessingJob($channel) {
+        $logger = \Swiftriver\Core\Setup::GetLogger();
+        $logger->log("Core::DAL::Repositories::ChannelProcessingJobRepository::DeactivateChannelProcessingJob [Method invoked]", \PEAR_LOG_DEBUG);
         $dc = $this->dataContext;
         $dc::DeactivateChannelProcessingJob($channel);
+        $logger->log("Core::DAL::Repositories::ChannelProcessingJobRepository::DeactivateChannelProcessingJob [Method finished]", \PEAR_LOG_DEBUG);
     }
 
     /**
@@ -68,8 +80,11 @@ class ChannelProcessingJobRepository {
      * @return \Swiftriver\Core\ObjectModel\Channel
      */
     public function SelectNextDueChannelProcessingJob($time) {
+        $logger = \Swiftriver\Core\Setup::GetLogger();
+        $logger->log("Core::DAL::Repositories::ChannelProcessingJobRepository::SelectNextDueChannelProcessingJob [Method invoked]", \PEAR_LOG_DEBUG);
         $dc = $this->dataContext;
         $channel = $dc::SelectNextDueChannelProcessingJob($time);
+        $logger->log("Core::DAL::Repositories::ChannelProcessingJobRepository::SelectNextDueChannelProcessingJob [Method finished]", \PEAR_LOG_DEBUG);
         return $channel;
     }
 
@@ -80,8 +95,11 @@ class ChannelProcessingJobRepository {
      * @param \Swiftriver\Core\ObjectModel\Channel $channel
      */
     public function MarkChannelProcessingJobAsComplete($channel) {
+        $logger = \Swiftriver\Core\Setup::GetLogger();
+        $logger->log("Core::DAL::Repositories::ChannelProcessingJobRepository::MarkChannelProcessingJobAsComplete [Method invoked]", \PEAR_LOG_DEBUG);
         $dc = $this->dataContext;
         $dc::MarkChannelProcessingJobAsComplete($channel);
+        $logger->log("Core::DAL::Repositories::ChannelProcessingJobRepository::MarkChannelProcessingJobAsComplete [Method finished]", \PEAR_LOG_DEBUG);
     }
 
     /**
@@ -89,8 +107,11 @@ class ChannelProcessingJobRepository {
      * @return \Swiftriver\Core\ObjectModel\Channel[]
      */
     public function ListAllChannelProcessingJobs() {
+        $logger = \Swiftriver\Core\Setup::GetLogger();
+        $logger->log("Core::DAL::Repositories::ChannelProcessingJobRepository::ListAllChannelProcessingJobs [Method invoked]", \PEAR_LOG_DEBUG);
         $dc = $this->dataContext;
         $channels = $dc::ListAllChannelProcessingJobs();
+        $logger->log("Core::DAL::Repositories::ChannelProcessingJobRepository::ListAllChannelProcessingJobs [Method finished]", \PEAR_LOG_DEBUG);
         return $channels;
     }
 }

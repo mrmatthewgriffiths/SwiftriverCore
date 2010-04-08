@@ -16,41 +16,17 @@ class DuplicationIdentificationField {
      * The type of this DIF
      * @var string
      */
-    private $type;
+    public $type;
     
     /**
      * The value of this DIF
      * @var string
      */
-    private $value;
+    public $value;
 
     public function  __construct($type, $value) {
         $this->type = $type;
         $this->value = $value;
     }
-
-    /**
-     * Sets the type of this dif
-     * @param string $typeIn
-     */
-    public function SetType($typeIn){ $this->type = $typeIn; }
-    
-    /**
-     * Sets the value of this dif
-     * @param string $valueIn
-     */
-    public function SetValue($valueIn){ $this->value = $valueIn; }
-
-    /**
-     * Returns the type of this DIF
-     * @return string
-     */
-    public function GetType() { return $this->type; }
-    
-    /**
-     * Returns the value of this DIF
-     * @return string
-     */
-    public function GetValue() { return $this->value; }
 }
 ?>

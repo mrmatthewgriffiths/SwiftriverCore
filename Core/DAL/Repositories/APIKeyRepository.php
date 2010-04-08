@@ -32,8 +32,12 @@ class APIKeyRepository {
      * @return bool
      */
     public function IsRegisterdCoreAPIKey($key) {
+        $logger = \Swiftriver\Core\Setup::GetLogger();
+        $logger->log("Core::DAL::Repositories::APIKeyRepository::IsRegisterdCoreAPIKey [Method invoked]", \PEAR_LOG_DEBUG);
         $dc = $this->dataContext;
-        return $dc::IsRegisterdCoreAPIKey($key);
+        $isreg = $dc::IsRegisterdCoreAPIKey($key);
+        $logger->log("Core::DAL::Repositories::APIKeyRepository::IsRegisterdCoreAPIKey [Method finished]", \PEAR_LOG_DEBUG);
+        return $isreg;
     }
 
     /**
@@ -44,8 +48,11 @@ class APIKeyRepository {
      * @return bool
      */
     public function AddRegisteredAPIKey($key) {
+        $logger = \Swiftriver\Core\Setup::GetLogger();
+        $logger->log("Core::DAL::Repositories::APIKeyRepository::AddRegisteredAPIKey [Method invoked]", \PEAR_LOG_DEBUG);
         $dc = $this->dataContext;
-        return $dc::AddRegisteredCoreAPIKey($key);
+        $dc::AddRegisteredCoreAPIKey($key);
+        $logger->log("Core::DAL::Repositories::APIKeyRepository::AddRegisteredAPIKey [Method finished]", \PEAR_LOG_DEBUG);
     }
 
     /**
@@ -56,8 +63,11 @@ class APIKeyRepository {
      * @return bool
      */
     public function RemoveRegisteredAPIKey($key){
+        $logger = \Swiftriver\Core\Setup::GetLogger();
+        $logger->log("Core::DAL::Repositories::APIKeyRepository::RemoveRegisteredAPIKey [Method invoked]", \PEAR_LOG_DEBUG);
         $dc = $this->dataContext;
-        return $dc::RemoveRegisteredCoreAPIKey($key);
+        $dc::RemoveRegisteredCoreAPIKey($key);
+        $logger->log("Core::DAL::Repositories::APIKeyRepository::RemoveRegisteredAPIKey [Method finished]", \PEAR_LOG_DEBUG);
     }
 }
 ?>

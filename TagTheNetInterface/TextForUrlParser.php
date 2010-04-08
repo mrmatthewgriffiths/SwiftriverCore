@@ -23,10 +23,10 @@ class TextForUrlParser {
             return null;
         
         //Get the title for the content
-        $urlText = $this->content->GetTitle();
+        $urlText = $this->content->title;
 
         //Get the lines of text
-        $textLines = $this->content->GetText();
+        $textLines = $this->content->text;
 
         //Loop through all text from the content
         if(isset($textLines)) {

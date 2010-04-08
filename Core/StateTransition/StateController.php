@@ -30,7 +30,7 @@ class StateController {
      * @return string
      */
     public function GetCurrentState() {
-        $state = $this->content->GetState();
+        $state = $this->content->state;
         if(!isset($state) || !is_numeric($state) || $state >= count($this->States))
             $state = 0;
         return $this->States[$state];

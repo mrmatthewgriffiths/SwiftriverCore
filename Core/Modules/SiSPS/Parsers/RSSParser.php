@@ -12,29 +12,56 @@ class RSSParser implements IParser {
      *  'feedUrl' = The url to the RSS feed
      */
     public function GetAndParse($parameters, $lastsucess) {
+        $logger = \Swiftriver\Core\Setup::GetLogger();
+        $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [Method invoked]", \PEAR_LOG_DEBUG);
+
+        $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [START: Extracting required parameters]", \PEAR_LOG_DEBUG);
+
         //Extract the required variables
         $feedUrl = $parameters["feedUrl"];
-        if(!isset($feedUrl) || ($feedUrl == ""))
+        if(!isset($feedUrl) || ($feedUrl == "")) {
+            $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [the parapeter 'feedUrl' was not supplued. Returning null]", \PEAR_LOG_DEBUG);
+            $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [Method finished]", \PEAR_LOG_DEBUG);
             return null;
+        }
+
+        $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [END: Extracting required parameters]", \PEAR_LOG_DEBUG);
+
+        $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [START: Constructing source object]", \PEAR_LOG_DEBUG);
 
         //Create the source that will be used by all the content items
         //Passing in the feed uri which can be used to uniquly
         //identify the source of the content
         $source = new \Swiftriver\Core\ObjectModel\Source($feedUrl);
 
+        $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [END: Constructing source object]", \PEAR_LOG_DEBUG);
+
+        $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [START: Including the SimplePie module]", \PEAR_LOG_DEBUG);
+
         //Include the Simple Pie Framework to get and parse feeds
         
         $config = \Swiftriver\Core\Setup::Configuration();
         include_once $config->ModulesDirectory."/SimplePie/simplepie.inc";
 
+        $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [END: Including the SimplePie module]", \PEAR_LOG_DEBUG);
+
         //Construct a new SimplePie Parsaer
         $feed = new \SimplePie();
 
+        //Get the cach directory
+        $cacheDirectory = $config->CachingDirectory;
+
+        $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [Setting the caching directory to $cacheDirectory]", \PEAR_LOG_DEBUG);
+
         //Set the caching directory
-        $feed->set_cache_location($config->CachingDirectory);
+        $feed->set_cache_location($cacheDirectory);
+
+        $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [Setting the feed url to $feedUrl]", \PEAR_LOG_DEBUG);
 
         //Pass the feed URL to the SImplePie object
         $feed->set_feed_url($feedUrl);
+
+        $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [Initilising the feed]", \PEAR_LOG_DEBUG);
 
         //Run the SimplePie
         $feed->init();
@@ -42,15 +69,22 @@ class RSSParser implements IParser {
         //Create the Content array
         $contentItems = array();
 
+        $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [START: Parsing feed items]", \PEAR_LOG_DEBUG);
+
         //Loop throught the Feed Items
         foreach($feed->get_items() as $feedItem) {
             //Extract the date of the content
-            $contentdate = $feedItem->get_local_date("Y-m-d H:i:s");
+            $contentdate =  strtotime($feedItem->get_local_date());
             if(isset($lastsucess) && is_numeric($lastsucess) && isset($contentdate) && is_numeric($contentdate)) {
                 if($contentdate < $lastsucess) {
+                    $textContentDate = date("c", $timestamp);
+                    $textLastSucess = date("c", $lastsucess);
+                    $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [Skipped feed item as date $textContentDate less than last sucessful run ($textLastSucess)]", \PEAR_LOG_DEBUG);
                     continue;
                 }
             }
+
+            $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [Adding feed item]", \PEAR_LOG_DEBUG);
 
             //Extract all the relevant feedItem info
             $id = \Swiftriver\Core\ObjectModel\Content::GenerateUniqueId();
@@ -62,15 +96,19 @@ class RSSParser implements IParser {
             $item = new \Swiftriver\Core\ObjectModel\Content();
 
             //Fill the COntenty Item
-            $item->SetId($id);
-            $item->SetTitle($title);
-            $item->SetLink($contentLink);
-            $item->SetText(array($description));
-            $item->SetSource($source);
+            $item->id = $id;
+            $item->title = $title;
+            $item->link = $contentLink;
+            $item->text = array($description);
+            $item->source = $source;
 
             //Add the item to the Content array
             $contentItems[] = $item;
         }
+
+        $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [END: Parsing feed items]", \PEAR_LOG_DEBUG);
+
+        $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [Method invoked]", \PEAR_LOG_DEBUG);
 
         //return the content array
         return $contentItems;

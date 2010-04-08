@@ -18,7 +18,7 @@ class ChannelProcessingJobBase extends \Swiftriver\Core\ServiceAPI\ServiceAPICla
         $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::ChannelProcessingJobBase::ParseJSONToChannel [Extracting data from the JSON objects]", \PEAR_LOG_DEBUG);
 
         if(!isset($data) || !$data) {
-            $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::ChannelProcessingJobBase::ParseJSONToChannel [ERROR: No objects present at data[0], returning null]", \PEAR_LOG_DEBUG);
+            $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::ChannelProcessingJobBase::ParseJSONToChannel [ERROR: There was an error decoding the JSON string, returning null]", \PEAR_LOG_DEBUG);
             return null;
         }
 
@@ -28,23 +28,24 @@ class ChannelProcessingJobBase extends \Swiftriver\Core\ServiceAPI\ServiceAPICla
         $updatePeriod = $data->updatePeriod;
         $active = $data->active;
         $parameters = $data->parameters;
-        if(!isset($type) || !isset($updatePeriod) || !isset($parameters) || !is_array($parameters)) {
+        if(!isset($type) || !isset($updatePeriod) || !isset($parameters)) {
             $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::ChannelProcessingJobBase::ParseJSONToChannel [ERROR: either the 'type', 'updatePeriod' or 'parameters array' could not be found, returning null]", \PEAR_LOG_DEBUG);
             return null;
         }
 
         $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::ChannelProcessingJobBase::ParseJSONToChannel [Constructing Channel object]", \PEAR_LOG_DEBUG);
 
-        $formattedParams = array();
-        foreach($parameters as $params) {
-            $formattedParams[$params->key] = $params->value;
-        }
-
         $channel = new \Swiftriver\Core\ObjectModel\Channel();
-        $channel->SetType($type);
-        $channel->SetUpdatePeriod($updatePeriod);
-        $channel->SetActive($active);
-        $channel->SetParameters($formattedParams);
+        $channel->type = $type;
+        $channel->updatePeriod = $updatePeriod;
+        $channel->active = $active;
+
+        $params = array();
+        foreach($parameters as $key => $value) {
+            $params[$key] = $value;
+        }
+        
+        $channel->parameters = $params;
 
         $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::ChannelProcessingJobBase::ParseJSONToChannel [Method finished]", \PEAR_LOG_INFO);
 
@@ -62,20 +63,26 @@ class ChannelProcessingJobBase extends \Swiftriver\Core\ServiceAPI\ServiceAPICla
 
         //$logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::ChannelProcessingJobBase::ParseChannelsToJSON [Calling json_decode]", \PEAR_LOG_DEBUG);
         $json = '{"channels":[';
+        
         if(isset($channels) && is_array($channels) && count($channels) > 0) {
             foreach($channels as $channel) {
-                $active = ($channel->GetActive()) ? 'true' : 'false';
-                $json .= '{"type":"'.$channel->GetType().'",'.
-                          '"updatePeriod":"'.$channel->GetUpdatePeriod().'",'.
+                $json .= json_encode($channel).",";
+                /*
+                $active = ($channel->active) ? 'true' : 'false';
+                                $json .= '{"type":"'.$channel->type.'",'.
+                          '"updatePeriod":"'.$channel->updatePeriod.'",'.
                           '"active":"'.$active.'",'.
                           '"parameters":[';
-                $parameters = $channel->GetParameters();
+                $parameters = $channel->parameters;
                 foreach(array_keys($parameters) as $key) {
                     $json .= '{"key":"'.$key.'","value":"'.$parameters[$key].'"},';
                 }
                 $json = rtrim($json, ",").']},';
+                */
             }
         }
+        
+        
         $json = rtrim($json, ",").']}';
 
         $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::ChannelProcessingJobBase::ParseChannelsToJSON [Method finsihed]", \PEAR_LOG_INFO);

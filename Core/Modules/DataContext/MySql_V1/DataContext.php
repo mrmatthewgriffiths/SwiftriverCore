@@ -69,13 +69,13 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
         $result = mysql_result($result, 0);
         if($result > 0)
             return;
-        $type = $channel->GetType();
-        $updatePeriod = $channel->GetUpdatePeriod();
+        $type = $channel->type;
+        $updatePeriod = $channel->updatePeriod;
         $nextrun = time() + ($updatePeriod * 60);
         $nextrun = date("Y-m-d H:i:s", $nextrun);
-        $rawParameters = $channel->GetParameters();
+        $rawParameters = $channel->parameters;
         $parameters = "";
-        foreach(array_keys($channel->GetParameters()) as $key) {
+        foreach(array_keys($channel->parameters) as $key) {
             $encodedKey = urlencode($key);
             $encodedValue = urlencode($rawParameters[$key]);
             $parameters .= $encodedKey.",".$encodedValue."|";
@@ -121,11 +121,11 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
             $lastsucess = strtotime($row["lastsucess"]);
             $timesrun = $row["timesrun"];
             $active = $row["active"];
-            $channel->SetType($type);
-            $channel->SetUpdatePeriod($updatePeriod);
-            $channel->SetActive(!isset($active) || $active != "0");
+            $channel->type = $type;
+            $channel->updatePeriod = $updatePeriod;
+            $channel->active = !isset($active) || $active != "0";
             if(isset($lastsucess) && $lastsucess != 0) {
-                $channel->SetLastSucess($lastsucess);
+                $channel->lastSucess = $lastsucess;
             }
             $params = array();
             foreach(explode("|", $parameters) as $parameter) {
@@ -134,13 +134,13 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
                 $value = urldecode($pair[1]);
                 $params[$key] = $value;
             }
-            $channel->SetParameters($params);
+            $channel->parameters = $params;
         }
 
-        if(!isset($channel))
+        if(!isset($channel->type) || !isset($channel->parameters))
             return null;
 
-        $nextrun = time() + ($channel->GetUpdatePeriod() * 60);
+        $nextrun = time() + ($channel->updatePeriod * 60);
         $nextrun = date("Y-m-d H:i:s", $nextrun);
         $query = "UPDATE channelprocessingjobs SET ".
                  "nextrun = '".$nextrun."', ".
@@ -230,10 +230,10 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
             $timesrun = $row["timesrun"];
             $active = $row["active"];
             $channel = new \Swiftriver\Core\ObjectModel\Channel();
-            $channel->SetType($type);
-            $channel->SetUpdatePeriod($updatePeriod);
-            $channel->SetActive(!isset($active) || $active != 0);
-            $channel->SetLastSucess($lastsucess);
+            $channel->type = $type;
+            $channel->updatePeriod = $updatePeriod;
+            $channel->active = !isset($active) || $active != 0;
+            $channel->lastSucess = $lastsucess;
             $params = array();
             foreach(explode("|", $parameters) as $parameter) {
                 $pair = explode(",", $parameter);
@@ -241,7 +241,7 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
                 $value = urldecode($pair[1]);
                 $params[$key] = $value;
             }
-            $channel->SetParameters($params);
+            $channel->parameters = $params;
             $channels[] = $channel;
         }
         return $channels;
@@ -266,16 +266,19 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
             $i = $rb->dispense("contentitems");
 
             //copy over the properties
-            $i->textId = $item->GetId();
-            $i->state = $item->GetState();
-            $i->title = $item->GetTitle();
-            $i->link = $item->GetLink();
+            $i->textId = $item->id;
+            //this is a bit silly but if the value is 0 then the redbean
+            //initilises the column as something other than int, this way
+            //i can ensure int type and just knock off 10 on the way out !?!?
+            $i->state = $item->state + 10;
+            $i->title = $item->title;
+            $i->link = $item->link;
 
             //comit the content to the DB
             $rb->store($i);
 
             //Then add the new text
-            foreach($item->GetText() as $text) {
+            foreach($item->text as $text) {
                 //initiare the db table
                 $t = $rb->dispense("content_text");
 
@@ -290,13 +293,13 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
             }
 
             //then add all new tags
-            foreach($item->GetTags() as $tag) {
+            foreach($item->tags as $tag) {
                 //initiate the tags db table
                 $t = $rb->dispense("content_tags");
 
                 //get the tag properties
-                $t->type = $tag->GetType();
-                $t->text = $tag->GetText();
+                $t->type = $tag->type;
+                $t->text = $tag->text;
 
                 //store the tag
                 $rb->store($t);
@@ -306,12 +309,12 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
             }
 
             //loop through the DFICollections
-            foreach($item->GetDifs() as $collection) {
+            foreach($item->difs as $collection) {
                 //initiate the dif collection db table
                 $c = $rb->dispense("dif_collections");
 
                 //Get the properties
-                $c->name = $collection->GetName();
+                $c->name = $collection->name;
                 
                 //store the collection
                 $rb->store($c);
@@ -320,13 +323,13 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
                 RedBeanController::Associate($c, $i);
 
                 //Loop through the difs
-                foreach($collection->GetDifs() as $dif) {
+                foreach($collection->difs as $dif) {
                     //initiate the dif db table
                     $d = $rb->dispense("difs");
 
                     //Get the properties
-                    $d->type = $dif->GetType();
-                    $d->value = $dif->GetValue();
+                    $d->type = $dif->type;
+                    $d->value = $dif->value;
 
                     //store the dif
                     $rb->store($d);
@@ -338,10 +341,10 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
 
             //Finally create and associate the source content
             //Get the source
-            $source = $item->GetSource();
+            $source = $item->source;
 
             //load the potential from the db
-            $potentialSources = RedBeanController::Finder()->where("source", "textId = :id limit 1", array(":id" => $source->GetId()));
+            $potentialSources = RedBeanController::Finder()->where("source", "textId = :id limit 1", array(":id" => $source->id));
 
             //if the source exists use it or create it
             if(isset($potentialSources) && is_array($potentialSources) && count($potentialSources) == 1) {
@@ -352,8 +355,8 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
             }
 
             //set the source properties
-            $s->textId = $source->GetId();
-            $s->score = $source->GetScore();
+            $s->textId = $source->id;
+            $s->score = $source->score;
 
             //Save the source
             $rb->store($s);
@@ -398,10 +401,10 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
             $item = new \Swiftriver\Core\ObjectModel\Content();
 
             //set the base properties
-            $item->SetId($id);
-            $item->SetTitle($c->title);
-            $item->SetLink($c->link);
-            $item->SetState($c->state);
+            $item->id = $id;
+            $item->title = $c->title;
+            $item->link = $c->link;
+            $item->state = $c->state - 10;
 
             //get the source
             $sources = ($rb->batch("source", RedBeanController::GetRelatedBeans($c, "source")));
@@ -410,8 +413,8 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
             if(isset($sources) && is_array($sources) && count($sources) > 0) {
                 $source = reset($sources);
                 $s = new \Swiftriver\Core\ObjectModel\Source($source->textId);
-                $s->SetScore($source->score);
-                $item->SetSource($s);
+                $s->score = $source->score;
+                $item->source = $s;
             }
 
 
@@ -429,7 +432,7 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
             }
 
             //set the text to the content
-            $item->SetText($textArray);
+            $item->text = $textArray;
 
             //get the associated tags
             $tags = ($rb->batch("content_tags", RedBeanController::GetRelatedBeans($c, "content_tags")));
@@ -447,7 +450,7 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
             }
 
             //add the tags to the content
-            $item->SetTags($tagArray);
+            $item->tags = $tagArray;
 
             //Get and add all the dif collections
             $difCollections = ($rb->batch("dif_collections", RedBeanController::GetRelatedBeans($c, "dif_collections")));
@@ -482,7 +485,7 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
             }
 
             //add the difcollections to the content
-            $item->SetDifs($dca);
+            $item->difs = $dca;
 
             //add the content to the content array
             $content[] = $item;
@@ -503,7 +506,7 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
 
         //loop throught each oitem of content
         foreach($content as $item) {
-            $potentials = RedBeanController::Finder()->where("contentitems", "textid = :id limit 1", array(":id" => $item->GetId()));
+            $potentials = RedBeanController::Finder()->where("contentitems", "textid = :id limit 1", array(":id" => $item->id));
             if(!isset($potentials) || !is_array($potentials) || count($potentials) == 0) {
                 continue;
             }
@@ -544,6 +547,41 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
             //Remove the content
             $rb->trash($i);
         }
+    }
+
+    /**
+     * Given a state, pagesize, page start index and possibly
+     * an order by calse, this method will return a page of content.
+     *
+     * @param int $state
+     * @param int $pagesize
+     * @param int $pagestart
+     * @param string $orderby
+     * @return array("totalCount" => int, "contentItems" => Content[])
+     */
+    public static function GetPagedContentByState($state, $pagesize, $pagestart, $orderby = null) {
+        //initilise the red bean controller
+        $rb = RedBeanController::RedBean();
+
+        //apply the +10 hack to the state
+        $state += 10;
+
+        //get the total count to return
+        $totalCount = RedBeanController::DataBaseAdapter()->getCell(
+                "select count(id) from contentitems where state = :state",
+                array(":state" => $state));
+
+        //set the return as an int
+        $totalCount = (int) $totalCount;
+
+        //Get the page of IDs
+        $ids = RedBeanController::DataBaseAdapter()->getCol(
+                "select textId from contentitems where state = $state limit $pagestart , $pagesize");
+
+        //Get the content items
+        $content = self::GetContent($ids);
+
+        return array ("totalCount" => $totalCount, "contentItems" => $content);
     }
 
     public static function RunQuery($query) {

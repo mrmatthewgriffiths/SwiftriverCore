@@ -16,12 +16,12 @@ class ContentToJSONParserTest extends \PHPUnit_Framework_TestCase {
 
     public function testParseWithOneContentItemWithOneDiff() {
         $content = new \Swiftriver\Core\ObjectModel\Content();
-        $content->SetId("testId");
+        $content->id = "testId";
         $dif = new \Swiftriver\Core\ObjectModel\DuplicationIdentificationField();
-        $dif->SetType('testType');
-        $dif->SetValue('testValue');
+        $dif->type = 'testType';
+        $dif->value = 'testValue';
         $difs = array($dif);
-        $content->SetDifs($difs);
+        $content->difs = $difs;
         $contentItems = array($content);
         $json = $this->object->Parse($contentItems);
         $this->assertEquals('[{"id":"testId","difs":[{"type":"testType","value":"testValue"}]}]', $json);
@@ -29,20 +29,20 @@ class ContentToJSONParserTest extends \PHPUnit_Framework_TestCase {
 
     public function testParseWithTWOContentItemWithOneDiff() {
         $content1 = new \Swiftriver\Core\ObjectModel\Content();
-        $content1->SetId("testId");
+        $content1->id = "testId";
         $dif1 = new \Swiftriver\Core\ObjectModel\DuplicationIdentificationField();
-        $dif1->SetType('testType');
-        $dif1->SetValue('testValue');
+        $dif1->type = 'testType';
+        $dif1->value = 'testValue';
         $difs1 = array($dif1);
-        $content1->SetDifs($difs1);
+        $content1->difs = $difs1;
 
         $content2 = new \Swiftriver\Core\ObjectModel\Content();
-        $content2->SetId("testId2");
+        $content2->id = "testId2";
         $dif2 = new \Swiftriver\Core\ObjectModel\DuplicationIdentificationField();
-        $dif2->SetType('testType2');
-        $dif2->SetValue('testValue2');
+        $dif2->type = 'testType2';
+        $dif2->value = 'testValue2';
         $difs2 = array($dif2);
-        $content2->SetDifs($difs2);
+        $content2->difs = $difs2;
 
         $contentItems = array($content1, $content2);
 
@@ -52,15 +52,15 @@ class ContentToJSONParserTest extends \PHPUnit_Framework_TestCase {
 
     public function testParseWithTWOContentItemButOnlyOneWithDifs() {
         $content1 = new \Swiftriver\Core\ObjectModel\Content();
-        $content1->SetId("testId");
+        $content1->id = "testId";
         $dif1 = new \Swiftriver\Core\ObjectModel\DuplicationIdentificationField();
-        $dif1->SetType('testType');
-        $dif1->SetValue('testValue');
+        $dif1->type = 'testType';
+        $dif1->value = 'testValue';
         $difs1 = array($dif1);
-        $content1->SetDifs($difs1);
+        $content1->difs = $difs1;
 
         $content2 = new \Swiftriver\Core\ObjectModel\Content();
-        $content2->SetId("testId2");
+        $content2->id = "testId2";
 
         $contentItems = array($content1, $content2);
 
@@ -70,15 +70,15 @@ class ContentToJSONParserTest extends \PHPUnit_Framework_TestCase {
 
     public function testParseWithOneContentItemWithTwoDifs() {
         $content = new \Swiftriver\Core\ObjectModel\Content();
-        $content->SetId("testId");
+        $content->id = "testId";
         $dif1 = new \Swiftriver\Core\ObjectModel\DuplicationIdentificationField();
-        $dif1->SetType('testType');
-        $dif1->SetValue('testValue');
+        $dif1->type = 'testType';
+        $dif1->value = 'testValue';
         $dif2 = new \Swiftriver\Core\ObjectModel\DuplicationIdentificationField();
-        $dif2->SetType('testType2');
-        $dif2->SetValue('testValue2');
+        $dif2->type = 'testType2';
+        $dif2->value = 'testValue2';
         $difs = array($dif1, $dif2);
-        $content->SetDifs($difs);
+        $content->difs = $difs;
         $contentItems = array($content);
         $json = $this->object->Parse($contentItems);
         $this->assertEquals('[{"id":"testId","difs":[{"type":"testType","value":"testValue"},{"type":"testType2","value":"testValue2"}]}]', $json);
@@ -97,7 +97,7 @@ class ContentToJSONParserTest extends \PHPUnit_Framework_TestCase {
 
     public function testParseWithOneContentItemWithNoDifs() {
         $content = new \Swiftriver\Core\ObjectModel\Content();
-        $content->SetId("testId");
+        $content->id = "testId";
         $contentItems = array($content);
         $json = $this->object->Parse($contentItems);
         $this->assertEquals(null, $json);

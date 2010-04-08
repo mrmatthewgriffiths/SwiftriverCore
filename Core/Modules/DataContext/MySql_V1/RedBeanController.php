@@ -71,5 +71,13 @@ class RedBeanController {
     public static function Finder() {
         return new \RedBean_Plugin_Finder();
     }
+
+    /**
+     *
+     * @return \RedBean_Adapter_DBAdapter
+     */
+    public static function DataBaseAdapter() {
+        return self::Toolbox()->getDatabaseAdapter();
+    }
 }
 ?>

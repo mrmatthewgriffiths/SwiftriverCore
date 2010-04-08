@@ -75,7 +75,7 @@ class ContentFromJSONParser {
         }
 
         //Add the tags to the content
-        $this->content->SetTags($tags);
+        $this->content->tags = $tags;
 
         //return the tagged content
         return $this->content;

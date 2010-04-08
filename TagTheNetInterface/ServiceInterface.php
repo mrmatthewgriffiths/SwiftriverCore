@@ -10,8 +10,8 @@ class ServiceInterface {
      * @return string
      */
     public function InterafceWithService($uri, $text) {
-        $config = Setup::Configuration();
-        require($config["SwiftriverModulesDirectory"]."/SwiftriverServiceWrapper/ServiceWrapper.php");
+        $config = \Swiftriver\Core\Setup::Configuration();
+        include_once($config->ModulesDirectory."/SiSW/ServiceWrapper.php");
         $uri = str_replace("?view=json", "", $uri);
         $uri = $uri."?view=json&text=".$text;
         $service = new \Swiftriver\Core\Modules\SiSW\ServiceWrapper($uri);

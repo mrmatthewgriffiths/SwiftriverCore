@@ -27,7 +27,7 @@ class ContentToJSONParser {
             $difs = array();
 
             //Exctract the difs from the content
-            $itemDifs = $item->GetDifs();
+            $itemDifs = $item->difs;
 
             //If none, skip this content Item
             if(!isset($itemDifs))
@@ -37,8 +37,8 @@ class ContentToJSONParser {
             foreach($itemDifs as $dif) {
                 //JSON'ise the Dif
                 $jsonDif = array(
-                    'type' => $dif->GetType(),
-                    'value' => $dif->GetValue()
+                    'type' => $dif->type,
+                    'value' => $dif->value
                 );
 
                 //Add the JSON'ed diff to the array
@@ -47,7 +47,7 @@ class ContentToJSONParser {
 
             //Add the content ID and the JSON'ed Diffs to the array
             $dataToSend[] = array(
-                'id' => $item->GetId(),
+                'id' => $item->id,
                 'difs' => $difs);
         }
 

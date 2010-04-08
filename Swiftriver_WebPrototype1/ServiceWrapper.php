@@ -1,5 +1,4 @@
 <?php
-namespace Swiftriver\IntegrationTests;
 class ServiceWrapper {
 
     /**

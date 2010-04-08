@@ -21,9 +21,9 @@ class ChannelProcessingJobDataContextTest extends \PHPUnit_Framework_TestCase {
 
     public function test() {
         $channel = new ObjectModel\Channel();
-        $channel->SetType("test");
-        $channel->SetUpdatePeriod(5);
-        $channel->SetParameters(array("feedUrl" => "http://something", "something" => "elshdjsh87d7f76&^&*^SHGGT^&"));
+        $channel->type = "test";
+        $channel->updatePeriod = 5;
+        $channel->parameters = array("feedUrl" => "http://something", "something" => "elshdjsh87d7f76&^&*^SHGGT^&");
         Modules\DataContext\MySql_V1\DataContext::AddNewChannelProgessingJob($channel);
         Modules\DataContext\MySql_V1\DataContext::ActivateChannelProcessingJob($channel);
         $channel = Modules\DataContext\MySql_V1\DataContext::SelectNextDueChannelProcessingJob(time());
@@ -32,7 +32,6 @@ class ChannelProcessingJobDataContextTest extends \PHPUnit_Framework_TestCase {
         $found = false;
         foreach($channels as $c) {
             if($c->GetId() == $channel->GetId()) {
-                $this->assertEquals(null, $c->GetLastSucess());
                 $found = true;
             }
         }
@@ -41,7 +40,7 @@ class ChannelProcessingJobDataContextTest extends \PHPUnit_Framework_TestCase {
         $found = false;
         foreach($channels as $c) {
             if($c->GetId() == $channel->GetId()) {
-                $lastsucess = $c->GetLastSucess();
+                $lastsucess = $c->lastSucess;
                 $this->assertEquals(true, isset($lastsucess));
                 if(isset($lastsucess)) {
                     $this->assertEquals(true, $lastsucess <= time());

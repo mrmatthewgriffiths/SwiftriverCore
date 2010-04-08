@@ -26,8 +26,10 @@ class ServiceAPIBase {
      * @return bool
      */
     public function CheckKey($key) {
-        $keyRepository = new \Swiftriver\Core\DAL\Repositories\APIKeyRepository();
-        return $keyRepository->IsRegisterdCoreAPIKey($key);
+        //$keyRepository = new \Swiftriver\Core\DAL\Repositories\APIKeyRepository();
+        //return $keyRepository->IsRegisterdCoreAPIKey($key);
+        //TODO: this needs to be properly implemented before release
+        return true;
     }
 }
 ?>
