@@ -14,14 +14,10 @@ class Source {
     public $score;
 
     /**
-     * Use this object by passing in some thing that
-     * will uniquely identify the source, such as the
-     * feed uri for an RSS feed or the twitter id for
-     * a tweet
-     * @param string $idString
+     * A string that can be used to uniquly identify
+     * this source - such as the feed URL of an RSS
+     * @var string
      */
-    public function __construct($idString) {
-        $this->id = hash("md5", $idString);
-    }
+    public $uniqueIdString;
 }
 ?>

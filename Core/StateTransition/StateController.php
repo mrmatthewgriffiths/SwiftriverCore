@@ -21,7 +21,7 @@ class StateController {
     public function __construct($content) {
         $this->content = $content;
         $this->States = array(
-            0 => "new",
+            10 => "new",
         );
     }
 
@@ -34,6 +34,15 @@ class StateController {
         if(!isset($state) || !is_numeric($state) || $state >= count($this->States))
             $state = 0;
         return $this->States[$state];
+    }
+
+    public function SetState($state) {
+        foreach($this->States as $key => $value) {
+            if($value == $state) {
+                $this->content->state = $key;
+            }
+        }
+        return $this->content;
     }
 }
 ?>

@@ -32,6 +32,12 @@ class Content {
     public $link;
 
     /**
+     * the publish date of the content
+     * @var timestamp
+     */
+    public $date;
+
+    /**
      * An array of tags for the content
      * @var \Swiftriver\Core\ObjectModel\Tag[]
      */
@@ -48,14 +54,5 @@ class Content {
      * @var \Swiftriver\Core\ObjectModel\DuplicationIdentificationFieldCollection[]
      */
     public $difs = array();
-
-
-    /**
-     * Static function to generate new unique IDs from content
-     * @return string
-     */
-    public static function GenerateUniqueId() {
-        return md5(uniqid(rand(), true));
-    }
 }
 ?>

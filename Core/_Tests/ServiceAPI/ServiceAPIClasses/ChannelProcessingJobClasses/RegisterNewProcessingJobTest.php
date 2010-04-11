@@ -18,7 +18,7 @@ class RegisterNewProcessingJobTest extends \PHPUnit_Framework_TestCase  {
     }
 
     public function testRunServiceWithGoodJSON() {
-        $json = '{"type":"Test","updatePeriod":5,"parameters":{"feedUrl":"test"}}';
+        $json = '{"type":"RSS","updatePeriod":1,"parameters":{"feedUrl":"http://feeds.feedburner.com/white_african"}}';
         $message = $this->object->RunService($json);
         $this->assertEquals(true, strpos($message, "OK") != 0);
     }

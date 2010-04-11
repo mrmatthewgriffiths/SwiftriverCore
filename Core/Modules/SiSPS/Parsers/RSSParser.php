@@ -32,7 +32,7 @@ class RSSParser implements IParser {
         //Create the source that will be used by all the content items
         //Passing in the feed uri which can be used to uniquly
         //identify the source of the content
-        $source = new \Swiftriver\Core\ObjectModel\Source($feedUrl);
+        $source = \Swiftriver\Core\ObjectModel\ObjectFactories\SourceFactory::CreateSourceFromID($feedUrl);
 
         $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [END: Constructing source object]", \PEAR_LOG_DEBUG);
 
@@ -71,13 +71,19 @@ class RSSParser implements IParser {
 
         $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [START: Parsing feed items]", \PEAR_LOG_DEBUG);
 
+        $feeditems = $feed->get_items();
+
+        if(!$feeditems || $feeditems == null || !is_array($feeditems) || count($feeditems) < 1) {
+            $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [No feeditems recovered from the feed]", \PEAR_LOG_DEBUG);
+        }
+
         //Loop throught the Feed Items
-        foreach($feed->get_items() as $feedItem) {
+        foreach($feeditems as $feedItem) {
             //Extract the date of the content
-            $contentdate =  strtotime($feedItem->get_local_date());
+            $contentdate =  strtotime($feedItem->get_date());
             if(isset($lastsucess) && is_numeric($lastsucess) && isset($contentdate) && is_numeric($contentdate)) {
                 if($contentdate < $lastsucess) {
-                    $textContentDate = date("c", $timestamp);
+                    $textContentDate = date("c", $contentdate);
                     $textLastSucess = date("c", $lastsucess);
                     $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [Skipped feed item as date $textContentDate less than last sucessful run ($textLastSucess)]", \PEAR_LOG_DEBUG);
                     continue;
@@ -87,20 +93,17 @@ class RSSParser implements IParser {
             $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [Adding feed item]", \PEAR_LOG_DEBUG);
 
             //Extract all the relevant feedItem info
-            $id = \Swiftriver\Core\ObjectModel\Content::GenerateUniqueId();
             $title = $feedItem->get_title();
             $description = $feedItem->get_description();
             $contentLink = $feedItem->get_permalink();
 
             //Create a new Content item
-            $item = new \Swiftriver\Core\ObjectModel\Content();
+            $item = \Swiftriver\Core\ObjectModel\ObjectFactories\ContentFactory::CreateContent($source);
 
             //Fill the COntenty Item
-            $item->id = $id;
             $item->title = $title;
             $item->link = $contentLink;
             $item->text = array($description);
-            $item->source = $source;
 
             //Add the item to the Content array
             $contentItems[] = $item;

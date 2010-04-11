@@ -255,14 +255,65 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
      * @param \Swiftriver\Core\ObjectModel\Content[] $content
      */
     public static function SaveContent($content){
-        //First remove all the existing content 
-        self::DeleteContent($content);
+        $logger = \Swiftriver\Core\Setup::GetLogger();
+        $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [Method invoked]", \PEAR_LOG_DEBUG);
 
         //initiate the redbean dal contoller
         $rb = RedBeanController::RedBean();
 
         //loop throught each item of content
         foreach($content as $item) {
+            $i = reset(RedBeanController::Finder()->where("content", "textId = :id", array(":id" => $item->id)));
+
+            if(!$i || $i == null) {
+                //Create a new data store object
+                $i = $rb->dispense("content");
+            }
+
+            //Add any properties we wish to be un encoded to the data store object
+            $i = DataContext::AddPropertiesToDataSoreItem(
+                    $i,
+                    $item,
+                    array(
+                        "textId" => "id",
+                        "state" => "state",
+                    ));
+
+            //Add the encoded content item to the data store object
+            $i->json = json_encode($item);
+
+            //Save the data store object
+            $rb->store($i);
+
+            //get the source from the content
+            $source = $item->source;
+
+            //get the source from the db
+            $s = reset(RedBeanController::Finder()->where("source", "textId = :id", array(":id" => $source->id)));
+
+            //If the source does not exists, create it.
+            if(!$s || $s == null) {
+                //create the new data store object for the source
+                $s = $rb->dispense("source");
+            }
+
+            $s = DataContext::AddPropertiesToDataSoreItem(
+                    $s,
+                    $source,
+                    array(
+                        "textId" => "id",
+                    ));
+
+            //add the encoded source object to the data sotre object
+            $s->json = json_encode($source);
+
+            //save the source
+            $rb->store($s);
+
+            //create the association between content and source
+            RedBeanController::Associate($i, $s);
+
+            /*
             $i = $rb->dispense("contentitems");
 
             //copy over the properties
@@ -273,6 +324,7 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
             $i->state = $item->state + 10;
             $i->title = $item->title;
             $i->link = $item->link;
+            $i->date = $item->date;
 
             //comit the content to the DB
             $rb->store($i);
@@ -363,6 +415,7 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
 
             //Associate the source and content
             RedBeanController::Associate($i, $s);
+            */
         }
     }
 
@@ -382,9 +435,55 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
             return $content;
         }
 
-        //Get the redbean controller
+        //set up the array to hold the ids
+        $queryIds = array();
+
+        //start to build the sql
+        $query = "textId in (";
+
+        //for each content item, add to the query and the ids array
+        for($i=0; $i<count($ids); $i++) {
+            $query .= ":id$i,";
+            $queryIds[":id$i"] = $ids[$i];
+        }
+
+        //tidy up the query
+        $query = rtrim($query, ",").")";
+
+        //Get the finder
+        $finder = RedBeanController::Finder();
+
+        //Find the content
+        $dbContent = $finder->where("content", $query, $queryIds);
+
+        //set up the return array
+        $content = array();
+
+        //set up the red bean
         $rb = RedBeanController::RedBean();
 
+        //loop through the db content
+        foreach($dbContent as $dbItem) {
+            //get the associated source
+            $s = reset($rb->batch("source", RedBeanController::GetRelatedBeans($dbItem, "source")));
+
+            //Create the source from the db json
+            $source = \Swiftriver\Core\ObjectModel\ObjectFactories\SourceFactory::CreateSourceFromJSON($s->json);
+
+            //get the json for the content
+            $json = $dbItem->json;
+
+            //create the content
+            $item = \Swiftriver\Core\ObjectModel\ObjectFactories\ContentFactory::CreateContent($source, $json);
+
+            //add it to the array
+            $content[] = $item;
+        }
+
+        //return the content
+        return $content;
+
+        /*
         //Loop through the ID's supplied
         foreach($ids as $id) {
             //Find the ID of the bean
@@ -405,6 +504,7 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
             $item->title = $c->title;
             $item->link = $c->link;
             $item->state = $c->state - 10;
+            $item->date = $c->date;
 
             //get the source
             $sources = ($rb->batch("source", RedBeanController::GetRelatedBeans($c, "source")));
@@ -493,6 +593,7 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
 
         //return the content array
         return $content;
+        */
     }
 
     /**
@@ -501,12 +602,37 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
      * @param \Swiftriver\Core\ObjectModel\Content[] $content
      */
     public static function DeleteContent($content) {
+        //Get the database name
+
+
         //initiate the redbean dal contoller
         $rb = RedBeanController::RedBean();
 
-        //loop throught each oitem of content
+        //set up the array to hold the ids
+        $ids = array();
+        
+        //start to build the sql
+        $query = "delete from content where textId in (";
+        
+        //for each content item, add to the query and the ids array
+        for($i=0; $i<count($content); $i++) {
+            $query .= ":id$i,";
+            $ids[":id$i"] = $content[$i]->id;
+        }
+        
+        //tidy up the query
+        $query = rtrim($query, ",").")";
+        
+        //Get the RB database adapter
+        $db = RedBeanController::DataBaseAdapter();
+        
+        //execute the sql
+        $db->exec($query, $ids);
+        
+        /*
+        //loop throught each item of content
         foreach($content as $item) {
-            $potentials = RedBeanController::Finder()->where("contentitems", "textid = :id limit 1", array(":id" => $item->id));
+            $potentials = RedBeanController::Finder()->where("content", "textid = :id limit 1", array(":id" => $item->id));
             if(!isset($potentials) || !is_array($potentials) || count($potentials) == 0) {
                 continue;
             }
@@ -546,7 +672,9 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
 
             //Remove the content
             $rb->trash($i);
+         
         }
+        */
     }
 
     /**
@@ -568,7 +696,7 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
 
         //get the total count to return
         $totalCount = RedBeanController::DataBaseAdapter()->getCell(
-                "select count(id) from contentitems where state = :state",
+                "select count(id) from content where state = :state",
                 array(":state" => $state));
 
         //set the return as an int
@@ -576,7 +704,7 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
 
         //Get the page of IDs
         $ids = RedBeanController::DataBaseAdapter()->getCol(
-                "select textId from contentitems where state = $state limit $pagestart , $pagesize");
+                "select textId from content where state = $state limit $pagestart , $pagesize");
 
         //Get the content items
         $content = self::GetContent($ids);
@@ -605,6 +733,13 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
         mysql_close($mysql);
 
         return $return;
+    }
+
+    private static function AddPropertiesToDataSoreItem($dataStoreItem, $sourceItem, $propertiesArray) {
+        foreach($propertiesArray as $key => $value) {
+            $dataStoreItem->$key = $sourceItem->$value;
+        }
+        return $dataStoreItem;
     }
 }
 ?>

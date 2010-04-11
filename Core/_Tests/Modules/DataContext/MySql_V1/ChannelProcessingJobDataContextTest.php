@@ -21,6 +21,7 @@ class ChannelProcessingJobDataContextTest extends \PHPUnit_Framework_TestCase {
 
     public function test() {
         $channel = new ObjectModel\Channel();
+        $channel->id = "testId";
         $channel->type = "test";
         $channel->updatePeriod = 5;
         $channel->parameters = array("feedUrl" => "http://something", "something" => "elshdjsh87d7f76&^&*^SHGGT^&");
