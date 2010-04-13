@@ -24,7 +24,7 @@ $service->MakeAsyncPostRequest(array("key" => "test"));
             body div#page div#channeljobs table#channellist thead { background-color: #222; color: #fff; font-weight: bold; }
             body div#page div#content { width: 95%; margin-right: auto; margin-left: auto; }
             body div#page div#content div.item { border: 1px solid black;}
-            body div#page div#content div.item p.id { display: none; }
+            /* body div#page div#content div.item p.id { display: none; }*/
             body div#page div#content div.item p.title { font-weight: bold; font-size: 1.3em; }
             body div#page div#content div.item ul.tags li { display: inline-block; padding:5px; background-color: #BCC4FF; margin:0;}
             body div#page div#content div.item div.source { background-color: #BCC4FF; border: 1px solid black;  width: 95%; margin-right: auto; margin-left: auto; margin-top:5px; }

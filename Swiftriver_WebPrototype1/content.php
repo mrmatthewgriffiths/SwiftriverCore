@@ -3,12 +3,11 @@
 <div id="content">
     <?php
         $service = new ServiceWrapper("http://local.swiftcore.com/ServiceAPI/ContentServices/GetPagedContentByState.php");
-        $params = json_encode(array("state" => 0, "pagestart" => 0, "pagesize" => 20));
+        $params = json_encode(array("state" => 10, "pagestart" => 0, "pagesize" => 20));
         $json = $service->MakePOSTRequest(array("key" => "test", "data" => $params), 5);
         $return = json_decode($json);
     ?>
     <?php foreach($return->contentitems as $content) : ?>
-
         <div class="item">
             <div class="source">
                 <h5>The Source</h5>
@@ -17,6 +16,7 @@
             </div>
             <p class="id">ID: <?php echo $content->id ?></p>
             <p class="state">State: <?php echo $content->state ?></p>
+            <p class="date">Date: <?php echo date("c", $content->date); ?></p>
             <p class="title">Title: <?php echo $content->title ?></p>
             <p class="link">Link: <a href="<?php echo $content->link ?>" target="_blank"><?php echo $content->link ?></a></p>
             <div class="text">
@@ -31,7 +31,6 @@
                 <?php endforeach; ?>
             </ul>
         </div>
-
     <?php endforeach; ?>
 </div>
 
