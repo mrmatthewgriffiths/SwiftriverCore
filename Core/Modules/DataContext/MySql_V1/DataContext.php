@@ -277,6 +277,7 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
                     array(
                         "textId" => "id",
                         "state" => "state",
+                        "date" => "date",
                     ));
 
             //Add the encoded content item to the data store object
@@ -426,14 +427,28 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
      * @param string[] $ids
      * @return \Swiftriver\Core\ObjectModel\Content[]
      */
-    public static function GetContent($ids) {
+    public static function GetContent($ids, $orderby = null) {
+        $logger = \Swiftriver\Core\Setup::GetLogger();
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::GetContent [Method invoked]", \PEAR_LOG_DEBUG);
+
+        //if no $orderby is sent
+        if(!$orderby || $orderby == null) {
+            $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::GetContent [No Order By clause set, setting to 'date desc']", \PEAR_LOG_DEBUG);
+            //Set it to the default - date DESC
+            $orderby = "date desc";
+        }
+
         //set up the return array
         $content = array();
 
         //If the $ids array is blank or empty, return the empty array
         if(!isset($ids) || !is_array($ids) || count($ids) < 1) {
+            $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::GetContent [No IDs sent to method]", \PEAR_LOG_DEBUG);
+            $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::GetContent [Method finsiehd]", \PEAR_LOG_DEBUG);
             return $content;
         }
+
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::GetContent [START: Building the RedBean Query]", \PEAR_LOG_DEBUG);
 
         //set up the array to hold the ids
         $queryIds = array();
@@ -441,14 +456,25 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
         //start to build the sql
         $query = "textId in (";
 
-        //for each content item, add to the query and the ids array
+        /*//for each content item, add to the query and the ids array
         for($i=0; $i<count($ids); $i++) {
             $query .= ":id$i,";
             $queryIds[":id$i"] = $ids[$i];
+        }*/
+
+        $counter = 0;
+        foreach($ids as $id) {
+            $query .= ":id$counter,";
+            $queryIds[":id$counter"] = $id;
+            $counter++;
         }
 
         //tidy up the query
-        $query = rtrim($query, ",").")";
+        $query = rtrim($query, ",").") order by ".$orderby;
+
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::GetContent [END: Building the RedBean Query]", \PEAR_LOG_DEBUG);
+
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::GetContent [START: Running RedBean Query]", \PEAR_LOG_DEBUG);
 
         //Get the finder
         $finder = RedBeanController::Finder();
@@ -456,14 +482,18 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
         //Find the content
         $dbContent = $finder->where("content", $query, $queryIds);
 
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::GetContent [FINISHED: Running RedBean Query]", \PEAR_LOG_DEBUG);
+
         //set up the return array
         $content = array();
 
         //set up the red bean
         $rb = RedBeanController::RedBean();
 
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::GetContent [START: Constructing Content and Source items]", \PEAR_LOG_DEBUG);
+
         //loop through the db content
-        foreach($dbContent as $dbItem) {
+        foreach($dbContent as $key => $dbItem) {
             //get the associated source
             $s = reset($rb->batch("source", RedBeanController::GetRelatedBeans($dbItem, "source")));
 
@@ -480,120 +510,12 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
             $content[] = $item;
         }
 
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::GetContent [END: Constructing Content and Source items]", \PEAR_LOG_DEBUG);
+
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::GetContent [Method finished]", \PEAR_LOG_DEBUG);
+
         //return the content
         return $content;
-
-        /*
-        //Loop through the ID's supplied
-        foreach($ids as $id) {
-            //Find the ID of the bean
-            $potential = RedBeanController::Finder()->where("contentitems", "textid = :id limit 1", array(":id" => $id));
-
-            //if the content does not exists then continue
-            if(!isset($potential) || !is_array($potential) || count($potential) != 1)
-                continue;
-
-            //load the content
-            $c = reset($potential);
-
-            //create a content item
-            $item = new \Swiftriver\Core\ObjectModel\Content();
-
-            //set the base properties
-            $item->id = $id;
-            $item->title = $c->title;
-            $item->link = $c->link;
-            $item->state = $c->state - 10;
-            $item->date = $c->date;
-
-            //get the source
-            $sources = ($rb->batch("source", RedBeanController::GetRelatedBeans($c, "source")));
-
-            //Set the source
-            if(isset($sources) && is_array($sources) && count($sources) > 0) {
-                $source = reset($sources);
-                $s = new \Swiftriver\Core\ObjectModel\Source($source->textId);
-                $s->score = $source->score;
-                $item->source = $s;
-            }
-
-
-            //get the associated text
-            $text = ($rb->batch("content_text", RedBeanController::GetRelatedBeans($c, "content_text")));
-
-            //set up the text array
-            $textArray = array();
-
-            //loop throught the text and add it to the content
-            if(isset($text) && is_array($text) && count($text) > 0) {
-                foreach($text as $t) {
-                    $textArray[] = $t->text;
-                }
-            }
-
-            //set the text to the content
-            $item->text = $textArray;
-
-            //get the associated tags
-            $tags = ($rb->batch("content_tags", RedBeanController::GetRelatedBeans($c, "content_tags")));
-
-            //setup the tags array
-            $tagArray = array();
-
-            //loop through the tags and add them to the array
-            if(isset($tags) && is_array($tags) && count($tags) > 0) {
-                foreach($tags as $tag) {
-                    $tagType = $tag->type;
-                    $tagText = $tag->text;
-                    $tagArray[] = new \Swiftriver\Core\ObjectModel\Tag($tagText, $tagType);
-                }
-            }
-
-            //add the tags to the content
-            $item->tags = $tagArray;
-
-            //Get and add all the dif collections
-            $difCollections = ($rb->batch("dif_collections", RedBeanController::GetRelatedBeans($c, "dif_collections")));
-
-            //set up the dif colection array
-            $dca = array();
-
-            //loop through the dif collectios
-            if(isset($difCollections) && is_array($difCollections) && count($difCollections) > 0) {
-                foreach($difCollections as $difCollection) {
-                    //get the properties
-                    $name = $difCollection->name;
-
-                    //get all the associated difs
-                    $difs = ($rb->batch("difs", RedBeanController::GetRelatedBeans($difCollection, "difs")));
-
-                    //set up the dif array
-                    $da = array();
-
-                    //loop through all the difs
-                    if(isset($difs) && is_array($difs) && count($difs) > 0) {
-                        foreach($difs as $dif) {
-                            $type = $dif->type;
-                            $value = $dif->value;
-                            $da[] = new \Swiftriver\Core\ObjectModel\DuplicationIdentificationField($type, $value);
-                        }
-                    }
-
-                    //add the collection the array
-                    $dca[] = new \Swiftriver\Core\ObjectModel\DuplicationIdentificationFieldCollection($name, $da);
-                }
-            }
-
-            //add the difcollections to the content
-            $item->difs = $dca;
-
-            //add the content to the content array
-            $content[] = $item;
-        }
-
-        //return the content array
-        return $content;
-        */
     }
 
     /**
@@ -688,11 +610,20 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
      * @return array("totalCount" => int, "contentItems" => Content[])
      */
     public static function GetPagedContentByState($state, $pagesize, $pagestart, $orderby = null) {
+        $logger = \Swiftriver\Core\Setup::GetLogger();
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::GetPagedContentByState [Method invoked]", \PEAR_LOG_DEBUG);
+
+        //if no $orderby is sent
+        if(!$orderby || $orderby == null) {
+            $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::GetPagedContentByState [No Order By clause set, setting to 'date desc']", \PEAR_LOG_DEBUG);
+            //Set it to the default - date DESC
+            $orderby = "date desc";
+        }
+
         //initilise the red bean controller
         $rb = RedBeanController::RedBean();
 
-        //apply the +10 hack to the state
-        $state += 10;
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::GetPagedContentByState [START: Get total record count for state: $state]", \PEAR_LOG_DEBUG);
 
         //get the total count to return
         $totalCount = RedBeanController::DataBaseAdapter()->getCell(
@@ -702,12 +633,30 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
         //set the return as an int
         $totalCount = (int) $totalCount;
 
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::GetPagedContentByState [Total record count = $totalCount]", \PEAR_LOG_DEBUG);
+
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::GetPagedContentByState [END: Get total record count for state: $state]", \PEAR_LOG_DEBUG);
+
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::GetPagedContentByState [START: Get the id's of the content that should be returned]", \PEAR_LOG_DEBUG);
+
+        //set the SQL
+        $sql = "select textId from content where state = $state order by $orderby limit $pagestart , $pagesize";
+
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::GetPagedContentByState [Getting ID's with query: $sql]", \PEAR_LOG_DEBUG);
+
         //Get the page of IDs
-        $ids = RedBeanController::DataBaseAdapter()->getCol(
-                "select textId from content where state = $state limit $pagestart , $pagesize");
+        $ids = RedBeanController::DataBaseAdapter()->getCol($sql);
+
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::GetPagedContentByState [END: Get the id's of the content that should be returned]", \PEAR_LOG_DEBUG);
+
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::GetPagedContentByState [START: Getting the content for the ids]", \PEAR_LOG_DEBUG);
 
         //Get the content items
-        $content = self::GetContent($ids);
+        $content = self::GetContent($ids, $orderby);
+
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::GetPagedContentByState [END: Getting the content for the ids]", \PEAR_LOG_DEBUG);
+
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::GetPagedContentByState [Method finished]", \PEAR_LOG_DEBUG);
 
         return array ("totalCount" => $totalCount, "contentItems" => $content);
     }

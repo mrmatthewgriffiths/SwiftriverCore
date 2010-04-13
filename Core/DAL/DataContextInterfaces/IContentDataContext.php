@@ -17,7 +17,7 @@ interface IContentDataContext {
      * @param string[] $ids
      * @return \Swiftriver\Core\ObjectModel\Content[]
      */
-    public static function GetContent($ids);
+    public static function GetContent($ids, $orderby = null);
     
     /**
      * Given a status, pagesize, page start index and possibly

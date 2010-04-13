@@ -53,6 +53,7 @@ include_once(dirname(__FILE__)."/ServiceAPI/ServiceAPIClasses/ChannelProcessingJ
 $directories = array(
     dirname(__FILE__)."/ObjectModel/",
     dirname(__FILE__)."/DAL/",
+    dirname(__FILE__)."/StateTransition/",
     dirname(__FILE__)."/PreProcessing/",
     dirname(__FILE__)."/ServiceAPI/ServiceAPIClasses/",
     Setup::Configuration()->ModulesDirectory."/SiSW/",

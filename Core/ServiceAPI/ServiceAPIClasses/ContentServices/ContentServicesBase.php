@@ -46,5 +46,4 @@ class ContentServicesBase extends \Swiftriver\Core\ServiceAPI\ServiceAPIClasses\
         return $json;
     }
 }
-
 ?>

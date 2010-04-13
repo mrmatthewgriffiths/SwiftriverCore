@@ -7,9 +7,10 @@ namespace Swiftriver\Core\Modules\SiSPS\Parsers;
 class RSSParser implements IParser {
     /**
      * Implementation of IParser::GetAndParse
-     * @param string[][] $parameters
+     * @param string[] $parameters
      * Required Parameter Values =
      *  'feedUrl' = The url to the RSS feed
+     * @param datetime $lassucess
      */
     public function GetAndParse($parameters, $lastsucess) {
         $logger = \Swiftriver\Core\Setup::GetLogger();
@@ -29,9 +30,8 @@ class RSSParser implements IParser {
 
         $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [START: Constructing source object]", \PEAR_LOG_DEBUG);
 
-        //Create the source that will be used by all the content items
-        //Passing in the feed uri which can be used to uniquly
-        //identify the source of the content
+        //Create the source that will be used by all the content items Passing in the feed uri which can
+        //be used to uniquly identify the source of the content
         $source = \Swiftriver\Core\ObjectModel\ObjectFactories\SourceFactory::CreateSourceFromID($feedUrl);
 
         $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [END: Constructing source object]", \PEAR_LOG_DEBUG);
@@ -39,7 +39,6 @@ class RSSParser implements IParser {
         $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [START: Including the SimplePie module]", \PEAR_LOG_DEBUG);
 
         //Include the Simple Pie Framework to get and parse feeds
-        
         $config = \Swiftriver\Core\Setup::Configuration();
         include_once $config->ModulesDirectory."/SimplePie/simplepie.inc";
 
@@ -96,6 +95,7 @@ class RSSParser implements IParser {
             $title = $feedItem->get_title();
             $description = $feedItem->get_description();
             $contentLink = $feedItem->get_permalink();
+            $date = $feedItem->get_date();
 
             //Create a new Content item
             $item = \Swiftriver\Core\ObjectModel\ObjectFactories\ContentFactory::CreateContent($source);
@@ -104,6 +104,7 @@ class RSSParser implements IParser {
             $item->title = $title;
             $item->link = $contentLink;
             $item->text = array($description);
+            $item->date = strtotime($date);
 
             //Add the item to the Content array
             $contentItems[] = $item;
