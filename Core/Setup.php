@@ -3,6 +3,7 @@ namespace Swiftriver\Core;
 class Setup {
     private static $configuration;
     private static $dalConfiguration;
+    private static $preProcessingStepsConfiguration;
 
     public static function GetLogger() {
         $logger = &\Log::singleton('file', Setup::Configuration()->CachingDirectory."/log.log" , '   ');
@@ -27,6 +28,16 @@ class Setup {
             return self::$dalConfiguration;
         self::$dalConfiguration = new Configuration\ConfigurationHandlers\DALConfigurationHandler(dirname(__FILE__)."/Configuration/ConfigurationFiles/DALConfiguration.xml");
         return self::$dalConfiguration;
+    }
+
+    /**
+     * @return Configuration\ConfigurationHandlers\PreProcessingStepsConfigurationHandler
+     */
+    public static function PreProcessingStepsConfiguration() {
+        if(isset(self::$preProcessingStepsConfiguration))
+            return self::$preProcessingStepsConfiguration;
+        self::$preProcessingStepsConfiguration = new Configuration\ConfigurationHandlers\PreProcessingStepsConfigurationHandler(dirname(__FILE__)."/Configuration/ConfigurationFiles/PreProcessingStepsConfiguration.xml");
+        return self::$preProcessingStepsConfiguration;
     }
 }
 //include the Loging Framework
