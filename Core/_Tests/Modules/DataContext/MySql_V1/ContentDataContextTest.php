@@ -83,7 +83,7 @@ class ContentDataContextTest extends \PHPUnit_Framework_TestCase {
         $sId = $source->id;
         $this->assertEquals(true, isset($sId));
 
-        $array = Modules\DataContext\MySql_V1\DataContext::GetPagedContentByState(0, 10, 0);
+        $array = Modules\DataContext\MySql_V1\DataContext::GetPagedContentByState(10, 10, 0);
         $this->assertEquals(true, is_array($array));
         $totalCout = $array["totalCount"];
         $this->assertEquals(true, $totalCout > 0);

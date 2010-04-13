@@ -12,7 +12,7 @@ class ChannelFactory {
         $logger->log("Core::ObjectModel::ObjectFactories::ChannelFactory::CreateChannel [Extracting data from the JSON objects]", \PEAR_LOG_DEBUG);
 
         if(!isset($data) || !$data) {
-            throw new \Exception("There was an error in the JSON. No Channel can be constructed.");
+            throw new \InvalidArgumentException("There was an error in the JSON. No Channel can be constructed.");
         }
 
         $logger->log("Core::ObjectModel::ObjectFactories::ChannelFactory::CreateChannel [Extracting values from the data]", \PEAR_LOG_DEBUG);

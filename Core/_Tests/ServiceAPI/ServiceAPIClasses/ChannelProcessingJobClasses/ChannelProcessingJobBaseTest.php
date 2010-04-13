@@ -22,10 +22,12 @@ class ChannelProcessingJobBaseTest extends \PHPUnit_Framework_TestCase  {
         $this->assertEquals("test", $params["test"]);
     }
 
+    /**
+     * @expectedException InvalidArgumentException
+     */
     public function testParseJSONToChannelWithBadJSON() {
         $json = 'this is bad json and will not pass the parser';
         $channel = $this->object->ParseJSONToChannel($json);
-        $this->assertEquals(false, isset($channel));
     }
 
     public function testParseChannelsToJSON() {

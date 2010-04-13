@@ -4,18 +4,17 @@ class Channel {
     
     /**
      * The type of the Channel
-     * 
-     * For example, parameters may be:
-     *  array (
-     *      "type" -> "email",
-     *      "connectionString" -> "someConnectionString"
-     *  );
      * @var string 
      */
     public $type;
 
     /**
      * Parameters used to update the channel with new content;
+     * For example, parameters may be:
+     *  array (
+     *      "type" -> "email",
+     *      "connectionString" -> "someConnectionString"
+     *  );
      * @var array(string)
      */
     public $parameters = array();
