@@ -313,110 +313,6 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
 
             //create the association between content and source
             RedBeanController::Associate($i, $s);
-
-            /*
-            $i = $rb->dispense("contentitems");
-
-            //copy over the properties
-            $i->textId = $item->id;
-            //this is a bit silly but if the value is 0 then the redbean
-            //initilises the column as something other than int, this way
-            //i can ensure int type and just knock off 10 on the way out !?!?
-            $i->state = $item->state + 10;
-            $i->title = $item->title;
-            $i->link = $item->link;
-            $i->date = $item->date;
-
-            //comit the content to the DB
-            $rb->store($i);
-
-            //Then add the new text
-            foreach($item->text as $text) {
-                //initiare the db table
-                $t = $rb->dispense("content_text");
-
-                //extratc the text
-                $t->text = $text;
-
-                //store the text
-                $rb->store($t);
-
-                //Assocate the text with the content
-                RedBeanController::Associate($t, $i);
-            }
-
-            //then add all new tags
-            foreach($item->tags as $tag) {
-                //initiate the tags db table
-                $t = $rb->dispense("content_tags");
-
-                //get the tag properties
-                $t->type = $tag->type;
-                $t->text = $tag->text;
-
-                //store the tag
-                $rb->store($t);
-
-                //Associate the tag with the content
-                RedBeanController::Associate($t, $i);
-            }
-
-            //loop through the DFICollections
-            foreach($item->difs as $collection) {
-                //initiate the dif collection db table
-                $c = $rb->dispense("dif_collections");
-
-                //Get the properties
-                $c->name = $collection->name;
-                
-                //store the collection
-                $rb->store($c);
-
-                //Associate the collection with the contet
-                RedBeanController::Associate($c, $i);
-
-                //Loop through the difs
-                foreach($collection->difs as $dif) {
-                    //initiate the dif db table
-                    $d = $rb->dispense("difs");
-
-                    //Get the properties
-                    $d->type = $dif->type;
-                    $d->value = $dif->value;
-
-                    //store the dif
-                    $rb->store($d);
-
-                    //associate the dif with the collection
-                    RedBeanController::Associate($d, $c);
-                }
-            }
-
-            //Finally create and associate the source content
-            //Get the source
-            $source = $item->source;
-
-            //load the potential from the db
-            $potentialSources = RedBeanController::Finder()->where("source", "textId = :id limit 1", array(":id" => $source->id));
-
-            //if the source exists use it or create it
-            if(isset($potentialSources) && is_array($potentialSources) && count($potentialSources) == 1) {
-                $sourceId = reset($potentialSources);
-                $s = $rb->load("source", $sourceId);
-            } else {
-                $s = $rb->dispense("source");
-            }
-
-            //set the source properties
-            $s->textId = $source->id;
-            $s->score = $source->score;
-
-            //Save the source
-            $rb->store($s);
-
-            //Associate the source and content
-            RedBeanController::Associate($i, $s);
-            */
         }
     }
 
@@ -640,7 +536,7 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
         $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::GetPagedContentByState [START: Get the id's of the content that should be returned]", \PEAR_LOG_DEBUG);
 
         //set the SQL
-        $sql = "select textId from content where state = $state order by $orderby limit $pagestart , $pagesize";
+        $sql = "select textId from content where state = '$state' order by $orderby limit $pagestart , $pagesize";
 
         $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::GetPagedContentByState [Getting ID's with query: $sql]", \PEAR_LOG_DEBUG);
 

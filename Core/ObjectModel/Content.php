@@ -9,7 +9,7 @@ class Content {
 
     /**
      * The current state of the content
-     * @var int
+     * @var string
      */
     public $state;
 

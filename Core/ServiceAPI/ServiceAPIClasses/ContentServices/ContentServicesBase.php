@@ -17,7 +17,7 @@ class ContentServicesBase extends \Swiftriver\Core\ServiceAPI\ServiceAPIClasses\
             return null;
         }
 
-        $state = (int) $object->state;
+        $state = (string) $object->state;
         $pagestart = (int) $object->pagestart;
         $pagesize = (int) $object->pagesize;
 

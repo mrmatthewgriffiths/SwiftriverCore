@@ -26,11 +26,8 @@ class ContentFactory {
             //set the source
             $content->source = $source;
 
-            //Create a state controller around the content
-            $stateController = new \Swiftriver\Core\StateTransition\StateController($content);
-
             //Set the state of the content
-            $content = $stateController->SetState("new");
+            $content->state = \Swiftriver\Core\StateTransition\StateController::$defaultState;
 
             //return the content
             return $content;

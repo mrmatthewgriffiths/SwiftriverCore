@@ -25,7 +25,7 @@ class ContentDataContextTest extends \PHPUnit_Framework_TestCase {
         $c1->id = "testid1";
         $c1->title = "testtitle1";
         $c1->link = "testlink";
-        $c1->state = 10;
+        $c1->state = StateTransition\StateController::$defaultState;
         $c1->date = $time;
         $c1->text = array("id1text1", "id1text2");
         $c1->tags = array(new ObjectModel\Tag("id1tag1", "who"), new ObjectModel\Tag("id1tag2", "what"));
@@ -83,7 +83,8 @@ class ContentDataContextTest extends \PHPUnit_Framework_TestCase {
         $sId = $source->id;
         $this->assertEquals(true, isset($sId));
 
-        $array = Modules\DataContext\MySql_V1\DataContext::GetPagedContentByState(10, 10, 0);
+        $state = StateTransition\StateController::$defaultState;
+        $array = Modules\DataContext\MySql_V1\DataContext::GetPagedContentByState($state, 10, 0);
         $this->assertEquals(true, is_array($array));
         $totalCout = $array["totalCount"];
         $this->assertEquals(true, $totalCout > 0);

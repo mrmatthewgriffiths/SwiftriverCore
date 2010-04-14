@@ -16,7 +16,7 @@ class ContentServicesBaseTest extends \PHPUnit_Framework_TestCase  {
         $c1->id = "testid1";
         $c1->title = "testtitle1";
         $c1->link = "testlink";
-        $c1->state = 0;
+        $c1->state = StateTransition\StateController::$defaultState;
         $c1->text = array("id1text1", "id1text2");
         $c1->tags = array(new ObjectModel\Tag("id1tag1", "who"), new ObjectModel\Tag("id1tag2", "what"));
         $dif1 = new ObjectModel\DuplicationIdentificationField("unique_tweet_id", "d87f8d7fdsg7dfgdfgfd89g7as");
@@ -34,7 +34,7 @@ class ContentServicesBaseTest extends \PHPUnit_Framework_TestCase  {
         $c1->id = "testid1";
         $c1->title = "testtitle1";
         $c1->link = "testlink";
-        $c1->state = 0;
+        $c1->state = StateTransition\StateController::$defaultState;
         $c1->text = array("id1text1", "id1text2");
         $c1->tags = array(new ObjectModel\Tag("id1tag1", "who"), new ObjectModel\Tag("id1tag2", "what"));
         $dif1 = new ObjectModel\DuplicationIdentificationField("unique_tweet_id", "d87f8d7fdsg7dfgdfgfd89g7as");
@@ -47,7 +47,7 @@ class ContentServicesBaseTest extends \PHPUnit_Framework_TestCase  {
         $c2->id = "testid2";
         $c2->title = "testtitle2";
         $c2->link = "testlink";
-        $c2->state = 0;
+        $c2->state = StateTransition\StateController::$defaultState;
         $c2->text = array("id2text2", "id2text2");
         $c2->tags = array(new ObjectModel\Tag("id2tag2", "who"), new ObjectModel\Tag("id2tag2", "what"));
         $dif2 = new ObjectModel\DuplicationIdentificationField("unique_tweet_id", "d87f8d7fdsg7dfgdfgfd89g7as");
