@@ -14,31 +14,16 @@ if(isset($_POST)) {
             $service->MakePOSTRequest(array("key" => "test", "data" => $json), 5);
             break;
         case "remove" :
-            $service = new ServiceWrapper("http://local.swiftcore.com/ServiceAPI/ChannelProcessingJobServices/ListAllChannelProcessingJobs.php");
-            $json = $service->MakePOSTRequest(array("key" => "test"), 5);
-            $channels = json_decode($json);
-            $channels = $channels->channels;
             $service = new ServiceWrapper("http://local.swiftcore.com/ServiceAPI/ChannelProcessingJobServices/RemoveChannelProcessingJob.php");
-            $channel = json_encode($channels[$_POST["channelNumber"]]);
-            $json = $service->MakePOSTRequest(array("key" => "test", "data" => $channel), 5);
+            $json = $service->MakePOSTRequest(array("key" => "test", "data" => '{"id":"'.$_POST["channelId"].'"}'), 5);
             break;
         case "activate" :
-            $service = new ServiceWrapper("http://local.swiftcore.com/ServiceAPI/ChannelProcessingJobServices/ListAllChannelProcessingJobs.php");
-            $json = $service->MakePOSTRequest(array("key" => "test"), 5);
-            $channels = json_decode($json);
-            $channels = $channels->channels;
             $service = new ServiceWrapper("http://local.swiftcore.com/ServiceAPI/ChannelProcessingJobServices/ActivateChannelProcessingJob.php");
-            $channel = json_encode($channels[$_POST["channelNumber"]]);
-            $json = $service->MakePOSTRequest(array("key" => "test", "data" => $channel), 5);
+            $json = $service->MakePOSTRequest(array("key" => "test", "data" => '{"id":"'.$_POST["channelId"].'"}'), 5);
             break;
         case "deactivate" :
-            $service = new ServiceWrapper("http://local.swiftcore.com/ServiceAPI/ChannelProcessingJobServices/ListAllChannelProcessingJobs.php");
-            $json = $service->MakePOSTRequest(array("key" => "test"), 5);
-            $channels = json_decode($json);
-            $channels = $channels->channels;
             $service = new ServiceWrapper("http://local.swiftcore.com/ServiceAPI/ChannelProcessingJobServices/DeactivateChannelProcessingJob.php");
-            $channel = json_encode($channels[$_POST["channelNumber"]]);
-            $json = $service->MakePOSTRequest(array("key" => "test", "data" => $channel), 5);
+            $json = $service->MakePOSTRequest(array("key" => "test", "data" => '{"id":"'.$_POST["channelId"].'"}'), 5);
             break;
     }
 }
@@ -56,6 +41,7 @@ if(isset($_POST)) {
             $json = $service->MakePOSTRequest(array("key" => "test"), 5);
             $return = json_decode($json);
             $channels = $return->channels;
+            var_dump($channels);
         ?>
         <table id="channellist">
             <thead>
@@ -76,13 +62,13 @@ if(isset($_POST)) {
                             <?php if($channels[$i]->active != 1) : ?>
                                 <form action="<?php echo($_SERVER["PHP_SELF"]); ?>" method="POST">
                                     <input type="hidden" name="inneraction" value="activate" />
-                                    <input type="hidden" name="channelNumber" value="<?php echo($i); ?>" />
+                                    <input type="hidden" name="channelId" value="<?php echo($channels[$i]->id); ?>" />
                                     <input type="submit" value="activate" />
                                 </form>
                             <?php else: ?>
                                 <form action="<?php echo($_SERVER["PHP_SELF"]); ?>" method="POST">
                                     <input type="hidden" name="inneraction" value="deactivate" />
-                                    <input type="hidden" name="channelNumber" value="<?php echo($i); ?>" />
+                                    <input type="hidden" name="channelId" value="<?php echo($channels[$i]->id); ?>" />
                                     <input type="submit" value="deactivate" />
                                 </form>
                             <?php endif; ?>
@@ -90,7 +76,7 @@ if(isset($_POST)) {
                         <td>
                             <form action="<?php echo($_SERVER["PHP_SELF"]); ?>" method="POST">
                                 <input type="hidden" name="inneraction" value="remove" />
-                                <input type="hidden" name="channelNumber" value="<?php echo($i); ?>" />
+                                <input type="hidden" name="channelId" value="<?php echo($channels[$i]->id); ?>" />
                                 <input type="submit" value="remove" />
                             </form>
                         </td>

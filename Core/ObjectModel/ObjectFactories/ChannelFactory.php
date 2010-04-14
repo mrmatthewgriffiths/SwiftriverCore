@@ -38,7 +38,7 @@ class ChannelFactory {
         $logger->log("Core::ObjectModel::ObjectFactories::ChannelFactory::CreateChannel [Constructing Channel object]", \PEAR_LOG_DEBUG);
 
         $channel = new \Swiftriver\Core\ObjectModel\Channel();
-        $channel->id = $data->id;
+        $channel->id = ($data->id == null) ? md5(uniqid(rand(), true)) : $data->id;
         $channel->type = $data->type;
         $channel->updatePeriod = $data->updatePeriod;
         $channel->active = $data->active;

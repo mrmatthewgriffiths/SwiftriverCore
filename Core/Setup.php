@@ -95,4 +95,10 @@ if(isset($relativeDir) && $relativeDir != "") {
         }
     }
 }
+
+function HandleException($exception) {
+    $logger = \Swiftriver\Core\Setup::GetLogger();
+    $logger->log("Core::HandleException ".$exception->getMessage(), \PEAR_LOG_ERR);
+}
+set_exception_handler("HandleException");
 ?>
