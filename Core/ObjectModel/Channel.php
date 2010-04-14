@@ -3,6 +3,12 @@ namespace Swiftriver\Core\ObjectModel;
 class Channel {
     
     /**
+     * The unique ID of this channel processing job
+     * @var string
+     */
+    public $id;
+
+    /**
      * The type of the Channel
      * @var string 
      */
@@ -25,11 +31,18 @@ class Channel {
      */
     public $updatePeriod;
 
+
+    public $nextrun;
+
+    public $lastrun;
+
+    public $timesrun = 0;
+
     /**
      * If this job is currently active or not
      * @var bool
      */
-    public $active;
+    public $active = true;
 
     /**
      * The last time this processing job was sucessfully run

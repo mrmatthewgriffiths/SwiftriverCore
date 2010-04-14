@@ -55,12 +55,85 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
         return $result;
     }
 
+
+    /**
+     * Given the ID of a channel processing job, this method
+     * gets it from the underlying data store
+     *
+     * @param string $id
+     * @return \Swiftriver\Core\ObjectModel\Channel
+     */
+    public static function GetChannelProcessingJobById($id) {
+        //check the $id is not null
+        if(!isset($id) || $id == null) {
+            throw new \InvalidArgumentException("The id supplied was null");
+        }
+
+        //Get the redbean
+        $rb = RedBeanController::RedBean();
+
+        //see if the channel already exists
+        $c = reset(RedBeanController::Finder()->where(
+                "channelprocessingjobs",
+                "textId = :id",
+                array(":id1" => $id)
+                ));
+
+        //if the channel could not be found then return null
+        if(!$c || $c == null) {
+            return null;
+        }
+
+        //use the channel factory to build a new channel
+        $channel = \Swiftriver\Core\ObjectModel\ObjectFactories\ChannelFactory::CreateChannel($c->json);
+
+        //return the channel
+        return $channel;
+    }
+
     /**
      * Adds a new channel processing job to the data store
      *
      * @param \Swiftriver\Core\ObjectModel\Channel $channel
      */
-    public static function AddNewChannelProgessingJob($channel) {
+    public static function SaveChannelProgessingJob($channel) {
+        //Check that the channel is not null
+        if(!isset($channel) || $channel == null) {
+            return;
+        }
+
+        //Get the redbean
+        $rb = RedBeanController::RedBean();
+
+        //see if the channel already exists
+        $c = reset(RedBeanController::Finder()->where(
+                "channelprocessingjobs",
+                "textId = :id",
+                array(":id" => $channel->id)
+                ));
+
+        //if the content is not found then create one
+        if(!$c || !isset($c)) {
+            //create the record
+            $c = $rb->dispense("channelprocessingjobs");
+        }
+
+        //add any properties that we want to be searchable in the db
+        $c = DataContext::AddPropertiesToDataSoreItem(
+                    $c,
+                    $channel,
+                    array(
+                        "textId" => "id",
+                        "active" => "active",
+                        "nextrun" => "nextrun",
+                    ));
+
+        //add the json encoded channel
+        $c->json = json_encode($channel);
+
+        $rb->store($c);
+
+        /*
         if(!isset($channel))
             return;
         $id = ereg_replace("[^A-Za-z0-9 _]", "", $channel->GetId());
@@ -93,6 +166,7 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
                  "0,".
                  "1);";
         $result = self::RunQuery($query);
+        */
     }
 
     /**
@@ -103,6 +177,43 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
      * @return \Swiftriver\Core\ObjectModel\Channel
      */
     public static function SelectNextDueChannelProcessingJob($time){
+        //if the time is not set, set it to now
+        if(!isset($time) || $time == null || !is_numeric($time)) {
+            $time = time();
+        }
+
+        //Get the redbean
+        $rb = RedBeanController::RedBean();
+
+        //select the next due processing job
+        $c = reset(RedBeanController::Finder()->where(
+                "channelprocessingjobs",
+                "active = 1 order by nextrun desc limit 1"
+                ));
+
+        //check if there is anythign to return
+        if(!isset($c) || $c == null) {
+            return null;
+        }
+
+        //Create a channel obejct from the json
+        $channel = \Swiftriver\Core\ObjectModel\ObjectFactories\ChannelFactory::CreateChannel($c->json);
+
+        //set the nextrun
+        $nextrun = time() + ($channel->updatePeriod * 60);
+        
+        //update the proerties that show the channel has been run 
+        $channel->nextrun = $nextrun;
+        $channel->timesrun = $channel->timesrun + 1;
+        $channel->lastrun = time();
+        
+        //Save the channel back to the DB
+        DataContext::SaveChannelProgessingJob($channel);
+        
+        //return the channel
+        return $channel;
+
+        /*
         if(!isset($time))
             $time = time();
         $query = "SELECT * FROM channelprocessingjobs WHERE active = 1 ORDER BY nextrun limit 1;";
@@ -150,6 +261,7 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
         $result = self::RunQuery($query);
 
         return $channel;
+        */
     }
 
     /**
@@ -159,6 +271,37 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
      * @param \Swiftriver\Core\ObjectModel\Channel $channel
      */
     public static function MarkChannelProcessingJobAsComplete($channel) {
+        //Check that the channel is not null
+        if(!isset($channel) || $channel == null) {
+            return;
+        }
+
+        //Get the redbean
+        $rb = RedBeanController::RedBean();
+
+        //see if the channel already exists
+        $c = reset(RedBeanController::Finder()->where(
+                "channelprocessingjobs",
+                "textId = :id",
+                array(":id" => $channel->id)
+                ));
+
+        //if the content is not found then return null
+        if(!$c || !isset($c)) {
+            return null;
+        }
+
+        //Create a channel obejct from the json
+        $channel = \Swiftriver\Core\ObjectModel\ObjectFactories\ChannelFactory::CreateChannel($c->json);
+
+        //save the time of this sucess
+        $channel->lastSucess = time();
+
+        //Save the channel back to the DB
+        DataContext::SaveChannelProgessingJob($channel);
+
+
+        /*
         if(!isset($channel))
             return;
 
@@ -166,34 +309,7 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
                  "lastsucess = '".date("Y-m-d H:i:s", time())."' ".
                  "WHERE id = '".ereg_replace("[^A-Za-z0-9 _]", "", $channel->GetId())."';";
         $result = self::RunQuery($query);
-    }
-
-    /**
-     * Given a Channel processing job, this method marks it as active
-     * @param \Swiftriver\Core\ObjectModel\Channel $channel
-     */
-    public static function ActivateChannelProcessingJob($channel) {
-        if(!isset($channel))
-            return;
-
-        $query = "UPDATE channelprocessingjobs SET ".
-                 "active = 1 ".
-                 "WHERE id = '".ereg_replace("[^A-Za-z0-9 _]", "", $channel->GetId())."';";
-        $result = self::RunQuery($query);
-    }
-
-    /**
-     * Given a Channel processing job, this method marks it as deactive
-     * @param \Swiftriver\Core\ObjectModel\Channel $channel
-     */
-    public static function DeactivateChannelProcessingJob($channel) {
-        if(!isset($channel))
-            return;
-
-        $query = "UPDATE channelprocessingjobs SET ".
-                 "active = 0 ".
-                 "WHERE id = '".ereg_replace("[^A-Za-z0-9 _]", "", $channel->GetId())."';";
-        $result = self::RunQuery($query);
+        */
     }
 
     /**
@@ -201,12 +317,37 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
      * @param \Swiftriver\Core\ObjectModel\Channel $channel
      */
     public static function RemoveChannelProcessingJob($channel) {
+        //Check that the channel is not null
+        if(!isset($channel) || $channel == null) {
+            return;
+        }
+
+        //Get the redbean
+        $rb = RedBeanController::RedBean();
+
+        //see if the channel already exists
+        $c = reset(RedBeanController::Finder()->where(
+                "channelprocessingjobs",
+                "textId = :id",
+                array(":id" => $channel->id)
+                ));
+
+        //if the channel was not found then return
+        if(!isset($c) || $c == null) {
+            return;
+        }
+
+        //trash the record
+        $rb->trash($c);
+
+        /*
         if(!isset($channel))
             return;
 
         $query = "DELETE FROM channelprocessingjobs ".
                  "WHERE id = '".ereg_replace("[^A-Za-z0-9 _]", "", $channel->GetId())."';";
         $result = self::RunQuery($query);
+        */
     }
 
     /**
@@ -214,6 +355,23 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
      * @return \Swiftriver\Core\ObjectModel\Channel[]
      */
     public static function ListAllChannelProcessingJobs() {
+        //get the db objects
+        $cs = RedBeanController::Finder()->where("channelprocessingjobs");
+
+        //create the array to return
+        $channels = array();
+
+        //loop through the DB objects
+        if(isset($cs) && is_array($cs)) {
+            foreach($cs as $c) {
+                $channels[] = \Swiftriver\Core\ObjectModel\ObjectFactories\ChannelFactory::CreateChannel($c->json);
+            }
+        }
+
+        //return the channels
+        return $channels;
+
+        /*
         $query = "SELECT * FROM channelprocessingjobs ORDER BY nextrun;";
         $result = self::RunQuery($query);
         if(!$result) {
@@ -245,6 +403,7 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
             $channels[] = $channel;
         }
         return $channels;
+        */
     }
 
     /**

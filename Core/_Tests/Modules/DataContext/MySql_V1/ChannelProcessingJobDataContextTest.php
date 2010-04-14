@@ -25,8 +25,7 @@ class ChannelProcessingJobDataContextTest extends \PHPUnit_Framework_TestCase {
         $channel->type = "test";
         $channel->updatePeriod = 5;
         $channel->parameters = array("feedUrl" => "http://something", "something" => "elshdjsh87d7f76&^&*^SHGGT^&");
-        Modules\DataContext\MySql_V1\DataContext::AddNewChannelProgessingJob($channel);
-        Modules\DataContext\MySql_V1\DataContext::ActivateChannelProcessingJob($channel);
+        Modules\DataContext\MySql_V1\DataContext::SaveChannelProgessingJob($channel);
         $channel = Modules\DataContext\MySql_V1\DataContext::SelectNextDueChannelProcessingJob(time());
         $this->assertEquals(true, isset($channel));
         $channels = Modules\DataContext\MySql_V1\DataContext::ListAllChannelProcessingJobs();
@@ -50,7 +49,6 @@ class ChannelProcessingJobDataContextTest extends \PHPUnit_Framework_TestCase {
             }
         }
         $this->assertEquals(true, $found);
-        Modules\DataContext\MySql_V1\DataContext::DeactivateChannelProcessingJob($channel);
         Modules\DataContext\MySql_V1\DataContext::RemoveChannelProcessingJob($channel);
         $channels = Modules\DataContext\MySql_V1\DataContext::ListAllChannelProcessingJobs();
         $found = false;

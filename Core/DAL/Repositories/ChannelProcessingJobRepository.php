@@ -24,15 +24,31 @@ class ChannelProcessingJobRepository {
     }
 
     /**
+     * Given the ID of a channel processing job, this method
+     * gets it from the underlying data store
+     *
+     * @param string $id
+     * @return \Swiftriver\Core\ObjectModel\Channel
+     */
+    public function GetChannelProcessingJobById($id) {
+        $logger = \Swiftriver\Core\Setup::GetLogger();
+        $logger->log("Core::DAL::Repositories::ChannelProcessingJobRepository::GetChannelProcessingJobById [Method invoked]", \PEAR_LOG_DEBUG);
+        $dc = $this->dataContext;
+        $channel = $dc::GetChannelProcessingJobById($id);
+        $logger->log("Core::DAL::Repositories::ChannelProcessingJobRepository::GetChannelProcessingJobById [Method Finished]", \PEAR_LOG_DEBUG);
+        return $channel;
+    }
+
+    /**
      * Adds a new channel processing job to the data store
      *
      * @param \Swiftriver\Core\ObjectModel\Channel $channel
      */
-    public function AddNewChannelProgessingJob($channel) {
+    public function SaveChannelProgessingJob($channel) {
         $logger = \Swiftriver\Core\Setup::GetLogger();
         $logger->log("Core::DAL::Repositories::ChannelProcessingJobRepository::AddNewChannelProgessingJob [Method invoked]", \PEAR_LOG_DEBUG);
         $dc = $this->dataContext;
-        $dc::AddNewChannelProgessingJob($channel);
+        $dc::SaveChannelProgessingJob($channel);
         $logger->log("Core::DAL::Repositories::ChannelProcessingJobRepository::AddNewChannelProgessingJob [Method Finished]", \PEAR_LOG_DEBUG);
     }
 
@@ -46,30 +62,6 @@ class ChannelProcessingJobRepository {
         $dc = $this->dataContext;
         $dc::RemoveChannelProcessingJob($channel);
         $logger->log("Core::DAL::Repositories::ChannelProcessingJobRepository::RemoveChannelProcessingJob [Method finished]", \PEAR_LOG_DEBUG);
-    }
-
-    /**
-     * Given a Channel processing job, this method marks it as active
-     * @param \Swiftriver\Core\ObjectModel\Channel $channel
-     */
-    public function ActivateChannelProcessingJob($channel) {
-        $logger = \Swiftriver\Core\Setup::GetLogger();
-        $logger->log("Core::DAL::Repositories::ChannelProcessingJobRepository::ActivateChannelProcessingJob [Method invoked]", \PEAR_LOG_DEBUG);
-        $dc = $this->dataContext;
-        $dc::ActivateChannelProcessingJob($channel);
-        $logger->log("Core::DAL::Repositories::ChannelProcessingJobRepository::ActivateChannelProcessingJob [Method finished]", \PEAR_LOG_DEBUG);
-    }
-
-    /**
-     * Given a Channel processing job, this method marks it as deactive
-     * @param \Swiftriver\Core\ObjectModel\Channel $channel
-     */
-    public function DeactivateChannelProcessingJob($channel) {
-        $logger = \Swiftriver\Core\Setup::GetLogger();
-        $logger->log("Core::DAL::Repositories::ChannelProcessingJobRepository::DeactivateChannelProcessingJob [Method invoked]", \PEAR_LOG_DEBUG);
-        $dc = $this->dataContext;
-        $dc::DeactivateChannelProcessingJob($channel);
-        $logger->log("Core::DAL::Repositories::ChannelProcessingJobRepository::DeactivateChannelProcessingJob [Method finished]", \PEAR_LOG_DEBUG);
     }
 
     /**

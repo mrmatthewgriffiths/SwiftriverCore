@@ -9,7 +9,7 @@ class ChannelProcessingJobBase extends \Swiftriver\Core\ServiceAPI\ServiceAPICla
      */
     public function ParseJSONToChannel($json) {
         $logger = \Swiftriver\Core\Setup::GetLogger();
-        $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::ChannelProcessingJobBase::ParseJSONToChannel [Method invoked]", \PEAR_LOG_INFO);
+        $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::ChannelProcessingJobBase::ParseJSONToChannel [Method invoked]", \PEAR_LOG_DEBUG);
 
         $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::ChannelProcessingJobBase::ParseJSONToChannel [START: Creating new Channel from the ChannelFactory]", \PEAR_LOG_DEBUG);
 
@@ -30,9 +30,38 @@ class ChannelProcessingJobBase extends \Swiftriver\Core\ServiceAPI\ServiceAPICla
 
         $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::ChannelProcessingJobBase::ParseJSONToChannel [END: Creating new Channel from the ChannelFactory]", \PEAR_LOG_DEBUG);
 
-        $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::ChannelProcessingJobBase::ParseJSONToChannel [Method finished]", \PEAR_LOG_INFO);
+        $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::ChannelProcessingJobBase::ParseJSONToChannel [Method finished]", \PEAR_LOG_DEBUG);
 
         return $channel;
+    }
+
+    public function ParseJSONToChannelId($json) {
+        $logger = \Swiftriver\Core\Setup::GetLogger();
+        $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::ChannelProcessingJobBase::ParseJSONToChannelId [Method invoked]", \PEAR_LOG_DEBUG);
+
+        $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::ChannelProcessingJobBase::ParseJSONToChannelId [START: Decodeing JSON]", \PEAR_LOG_DEBUG);
+
+        //Call json decode on the json
+        $object = json_decode($json);
+
+        //check to see if the object decoded
+        if(!$object || $object == null) {
+            $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::ChannelProcessingJobBase::ParseJSONToChannelId [Failed to parse the JSON]", \PEAR_LOG_ERR);
+            throw new \InvalidArgumentException("The json passed to the method did not decode");
+        }
+
+        //get the id from the object
+        $id = $object->id;
+
+        //Check that the ID is there
+        if(!$id || $id == null || !is_string($id)) {
+            $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::ChannelProcessingJobBase::ParseJSONToChannelId [Failed to extract the ID from the JSON]", \PEAR_LOG_ERR);
+            throw new \InvalidArgumentException("The JSON did not contain a valid ID string");
+        }
+
+        $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::ChannelProcessingJobBase::ParseJSONToChannelId [END: Decoding JSON]", \PEAR_LOG_DEBUG);
+
+        return $id;
     }
 
     /**

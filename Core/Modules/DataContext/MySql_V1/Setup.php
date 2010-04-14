@@ -27,6 +27,7 @@ class Setup {
         $bool = mysql_query($query, $mysql);
         $error = mysql_error($mysql);
 
+        /*
         //Create the channelprocessingjobs table
         $query = "CREATE TABLE IF NOT EXISTS channelprocessingjobs (
                     id LONGTEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
@@ -42,6 +43,8 @@ class Setup {
         $bool = mysql_query($query, $mysql);
         $error = mysql_error($mysql);
         mysql_close($mysql);
+         * 
+         */
     }
 }
 

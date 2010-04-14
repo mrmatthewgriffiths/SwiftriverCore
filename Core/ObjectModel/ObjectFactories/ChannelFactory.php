@@ -1,9 +1,27 @@
 <?php
 namespace Swiftriver\Core\ObjectModel\ObjectFactories;
 class ChannelFactory {
-    public static function CreateChannel($json) {
+    public static function CreateChannel($json = null) {
         $logger = \Swiftriver\Core\Setup::GetLogger();
-        $logger->log("Core::ObjectModel::ObjectFactories::ChannelFactory::CreateChannel [Method invoked]", \PEAR_LOG_INFO);
+        $logger->log("Core::ObjectModel::ObjectFactories::ChannelFactory::CreateChannel [Method invoked]", \PEAR_LOG_DEBUG);
+
+        //If JOSN is null, build a new channel object
+        if($json == null) {
+            $logger->log("Core::ObjectModel::ObjectFactories::ChannelFactory::CreateChannel [JSON was null so new channel being created]", \PEAR_LOG_DEBUG);
+
+            //Get a new ID
+            $id = md5(uniqid(rand(), true));
+
+            //Create a new channel object
+            $channel = new \Swiftriver\Core\ObjectModel\Channel();
+
+            //Set the ID
+            $channel->id = $id;
+
+            $logger->log("Core::ObjectModel::ObjectFactories::ChannelFactory::CreateChannel [Method finished]", \PEAR_LOG_DEBUG);
+
+            return $channel;
+        }
 
         $logger->log("Core::ObjectModel::ObjectFactories::ChannelFactory::CreateChannel [Calling json_decode]", \PEAR_LOG_DEBUG);
 
@@ -17,29 +35,23 @@ class ChannelFactory {
 
         $logger->log("Core::ObjectModel::ObjectFactories::ChannelFactory::CreateChannel [Extracting values from the data]", \PEAR_LOG_DEBUG);
 
-        $type = $data->type;
-        $updatePeriod = $data->updatePeriod;
-        $active = $data->active;
-        $parameters = $data->parameters;
-        if(!isset($type) || !isset($updatePeriod) || !isset($parameters)) {
-            throw new \Exception("One for the required fields was not present in the JSON. No Channel can be constructed.");
-        }
-
         $logger->log("Core::ObjectModel::ObjectFactories::ChannelFactory::CreateChannel [Constructing Channel object]", \PEAR_LOG_DEBUG);
 
         $channel = new \Swiftriver\Core\ObjectModel\Channel();
-        $channel->type = $type;
-        $channel->updatePeriod = $updatePeriod;
-        $channel->active = $active;
+        $channel->id = $data->id;
+        $channel->type = $data->type;
+        $channel->updatePeriod = $data->updatePeriod;
+        $channel->active = $data->active;
+        $channel->lastSucess = $data->lastSucess;
 
         $params = array();
-        foreach($parameters as $key => $value) {
+        foreach($data->parameters as $key => $value) {
             $params[$key] = $value;
         }
 
         $channel->parameters = $params;
 
-        $logger->log("Core::ObjectModel::ObjectFactories::ChannelFactory::CreateChannel [Method finished]", \PEAR_LOG_INFO);
+        $logger->log("Core::ObjectModel::ObjectFactories::ChannelFactory::CreateChannel [Method finished]", \PEAR_LOG_DEBUG);
 
         return $channel;
     }

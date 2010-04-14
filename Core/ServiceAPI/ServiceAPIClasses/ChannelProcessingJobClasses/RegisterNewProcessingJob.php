@@ -35,7 +35,7 @@ class RegisterNewProcessingJob extends ChannelProcessingJobBase {
         $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::RegisterNewProcessingJob::RunService [START: Saving Processing Job]", \PEAR_LOG_DEBUG);
 
         //Add the channel processign job to the repository
-        $repository->AddNewChannelProgessingJob($channel);
+        $repository->SaveChannelProgessingJob($channel);
 
         $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::RegisterNewProcessingJob::RunService [END: Saving Processing Job]", \PEAR_LOG_DEBUG);
 

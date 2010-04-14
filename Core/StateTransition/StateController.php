@@ -13,7 +13,7 @@ class StateController {
      * @var array
      */
     private static $states = array(
-        "new"
+        "new_content"
     );
 }
 ?>
