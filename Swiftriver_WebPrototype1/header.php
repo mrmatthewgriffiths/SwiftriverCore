@@ -4,7 +4,7 @@ include_once("ServiceWrapper.php");
 
 //Use the service wrapper to make an async call to get an parser any new content
 $service = new ServiceWrapper("http://local.swiftcore.com/ServiceAPI/ChannelProcessingJobServices/RunNextProcessingJob.php");
-$service->MakeAsyncPostRequest(array("key" => "test"));
+//$service->MakeAsyncPostRequest(array("key" => "test"));
 
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">

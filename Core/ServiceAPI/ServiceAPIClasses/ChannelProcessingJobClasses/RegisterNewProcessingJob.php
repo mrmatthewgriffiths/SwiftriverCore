@@ -14,8 +14,18 @@ class RegisterNewProcessingJob extends ChannelProcessingJobBase {
 
         $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::RegisterNewProcessingJob::RunService [START: Parsing the JSON input]", \PEAR_LOG_DEBUG);
 
-        //Parse the JSON input
-        $channel = parent::ParseJSONToChannel($json);
+        try {
+            //Parse the JSON input
+            $channel = parent::ParseJSONToChannel($json);
+        }
+        catch (Exception $e) {
+            //get the exception message
+            $message = $e->getMessage();
+            $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::RegisterNewProcessingJob::RunService [An exception was thrown]", \PEAR_LOG_DEBUG);
+            $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::RegisterNewProcessingJob::RunService [$message]", \PEAR_LOG_ERR);
+            $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::RegisterNewProcessingJob::RunService [Method finished]", \PEAR_LOG_INFO);
+            return parent::FormatErrorMessage("An exception was thrown: $message");
+        }
 
         if(!isset($channel)) {
             $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::RegisterNewProcessingJob::RunService [ERROR: Method ParseIncommingJSON returned null]", \PEAR_LOG_DEBUG);
@@ -27,15 +37,35 @@ class RegisterNewProcessingJob extends ChannelProcessingJobBase {
 
         $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::RegisterNewProcessingJob::RunService [START: Constructing Repository]", \PEAR_LOG_DEBUG);
 
-        //Construct a new repository
-        $repository = new \Swiftriver\Core\DAL\Repositories\ChannelProcessingJobRepository();
+        try {
+            //Construct a new repository
+            $repository = new \Swiftriver\Core\DAL\Repositories\ChannelProcessingJobRepository();
+        }
+        catch (Exception $e) {
+            //get the exception message
+            $message = $e->getMessage();
+            $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::RegisterNewProcessingJob::RunService [An exception was thrown]", \PEAR_LOG_DEBUG);
+            $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::RegisterNewProcessingJob::RunService [$message]", \PEAR_LOG_ERR);
+            $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::RegisterNewProcessingJob::RunService [Method finished]", \PEAR_LOG_INFO);
+            return parent::FormatErrorMessage("An exception was thrown: $message");
+        }
 
         $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::RegisterNewProcessingJob::RunService [END: Constructing Repository]", \PEAR_LOG_DEBUG);
 
         $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::RegisterNewProcessingJob::RunService [START: Saving Processing Job]", \PEAR_LOG_DEBUG);
 
-        //Add the channel processign job to the repository
-        $repository->SaveChannelProgessingJob($channel);
+        try {
+            //Add the channel processign job to the repository
+            $repository->SaveChannelProgessingJob($channel);
+        }
+        catch (Exception $e) {
+            //get the exception message
+            $message = $e->getMessage();
+            $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::RegisterNewProcessingJob::RunService [An exception was thrown]", \PEAR_LOG_DEBUG);
+            $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::RegisterNewProcessingJob::RunService [$message]", \PEAR_LOG_ERR);
+            $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::RegisterNewProcessingJob::RunService [Method finished]", \PEAR_LOG_INFO);
+            return parent::FormatErrorMessage("An exception was thrown: $message");
+        }
 
         $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::RegisterNewProcessingJob::RunService [END: Saving Processing Job]", \PEAR_LOG_DEBUG);
 

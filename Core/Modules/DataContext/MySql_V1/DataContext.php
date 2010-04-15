@@ -55,7 +55,6 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
         return $result;
     }
 
-
     /**
      * Given the ID of a channel processing job, this method
      * gets it from the underlying data store
@@ -355,9 +354,17 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
      * @return \Swiftriver\Core\ObjectModel\Channel[]
      */
     public static function ListAllChannelProcessingJobs() {
+        $logger = \Swiftriver\Core\Setup::GetLogger();
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::ListAllChannelProcessingJobs [Method invoked]", \PEAR_LOG_DEBUG);
+        
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::ListAllChannelProcessingJobs [START: Get all channel processing jobs fro the data store.]", \PEAR_LOG_DEBUG);
+
         //get the db objects
         $cs = RedBeanController::Finder()->where("channelprocessingjobs");
 
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::ListAllChannelProcessingJobs [END: Get all channel processing jobs fro the data store.]", \PEAR_LOG_DEBUG);
+        
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::ListAllChannelProcessingJobs [START: Create Channel object from data store objects.]", \PEAR_LOG_DEBUG);
         //create the array to return
         $channels = array();
 
@@ -367,6 +374,10 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
                 $channels[] = \Swiftriver\Core\ObjectModel\ObjectFactories\ChannelFactory::CreateChannel($c->json);
             }
         }
+
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::ListAllChannelProcessingJobs [START: Create Channel object from data store objects.]", \PEAR_LOG_DEBUG);
+
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::ListAllChannelProcessingJobs [Method finished]", \PEAR_LOG_DEBUG);
 
         //return the channels
         return $channels;

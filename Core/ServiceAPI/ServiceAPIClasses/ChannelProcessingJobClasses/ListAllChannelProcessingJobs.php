@@ -14,22 +14,52 @@ class ListAllChannelProcessingJobs extends ChannelProcessingJobBase {
 
         $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::ListAllChannelProcessingJobs::RunService [START: Constructing Repository]", \PEAR_LOG_DEBUG);
 
-        //Construct a new repository
-        $repository = new \Swiftriver\Core\DAL\Repositories\ChannelProcessingJobRepository();
+        try {
+            //Construct a new repository
+            $repository = new \Swiftriver\Core\DAL\Repositories\ChannelProcessingJobRepository();
+        }
+        catch (Exception $e) {
+            //get the exception message
+            $message = $e->getMessage();
+            $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::ListAllChannelProcessingJobs::RunService [An exception was thrown]", \PEAR_LOG_DEBUG);
+            $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::ListAllChannelProcessingJobs::RunService [$message]", \PEAR_LOG_ERR);
+            $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::ListAllChannelProcessingJobs::RunService [Method finished]", \PEAR_LOG_INFO);
+            return parent::FormatErrorMessage("An exception was thrown: $message");
+        }
 
         $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::ListAllChannelProcessingJobs::RunService [END: Constructing Repository]", \PEAR_LOG_DEBUG);
 
         $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::ListAllChannelProcessingJobs::RunService [START: Listing all processing jobs]", \PEAR_LOG_DEBUG);
 
-        //Get all the channel processing jobs
-        $channels = $repository->ListAllChannelProcessingJobs();
+        try {
+            //Get all the channel processing jobs
+            $channels = $repository->ListAllChannelProcessingJobs();
+        }
+        catch (Exception $e) {
+            //get the exception message 
+            $message = $e->getMessage();
+            $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::ListAllChannelProcessingJobs::RunService [An exception was thrown]", \PEAR_LOG_DEBUG);
+            $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::ListAllChannelProcessingJobs::RunService [$message]", \PEAR_LOG_ERR);
+            $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::ListAllChannelProcessingJobs::RunService [Method finished]", \PEAR_LOG_INFO);
+            return parent::FormatErrorMessage("An exception was thrown: $message");
+        }
 
         $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::ListAllChannelProcessingJobs::RunService [END: Listing all processing jobs]", \PEAR_LOG_DEBUG);
 
         $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::ListAllChannelProcessingJobs::RunService [START: Parsing channel processing jobs to JSON]", \PEAR_LOG_DEBUG);
 
-        //Parse the JSON input
-        $json = parent::ParseChannelsToJSON($channels);
+        try {
+            //Parse the JSON input
+            $json = parent::ParseChannelsToJSON($channels);
+        }
+        catch (Exception $e) {
+            //get the exception message
+            $message = $e->getMessage();
+            $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::ListAllChannelProcessingJobs::RunService [An exception was thrown]", \PEAR_LOG_DEBUG);
+            $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::ListAllChannelProcessingJobs::RunService [$message]", \PEAR_LOG_ERR);
+            $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::ListAllChannelProcessingJobs::RunService [Method finished]", \PEAR_LOG_INFO);
+            return parent::FormatErrorMessage("An exception was thrown: $message");
+        }
 
         $logger->log("Core::ServiceAPI::ChannelProcessingJobClasses::ListAllChannelProcessingJobs::RunService [END: Parsing channel processing jobs to JSON]", \PEAR_LOG_DEBUG);
 

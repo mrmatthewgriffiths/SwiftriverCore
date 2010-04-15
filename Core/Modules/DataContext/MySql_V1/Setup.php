@@ -45,6 +45,9 @@ class Setup {
         mysql_close($mysql);
          * 
          */
+
+        //initiate the redbean framework
+        RedBeanController::RedBean();
     }
 }
 
