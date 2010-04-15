@@ -1,27 +1,9 @@
 <?php
 namespace Swiftriver\Core\ObjectModel\ObjectFactories;
 class ChannelFactory {
-    public static function CreateChannel($json = null) {
+    public static function CreateChannel($json) {
         $logger = \Swiftriver\Core\Setup::GetLogger();
         $logger->log("Core::ObjectModel::ObjectFactories::ChannelFactory::CreateChannel [Method invoked]", \PEAR_LOG_DEBUG);
-
-        //If JOSN is null, build a new channel object
-        if($json == null) {
-            $logger->log("Core::ObjectModel::ObjectFactories::ChannelFactory::CreateChannel [JSON was null so new channel being created]", \PEAR_LOG_DEBUG);
-
-            //Get a new ID
-            $id = md5(uniqid(rand(), true));
-
-            //Create a new channel object
-            $channel = new \Swiftriver\Core\ObjectModel\Channel();
-
-            //Set the ID
-            $channel->id = $id;
-
-            $logger->log("Core::ObjectModel::ObjectFactories::ChannelFactory::CreateChannel [Method finished]", \PEAR_LOG_DEBUG);
-
-            return $channel;
-        }
 
         $logger->log("Core::ObjectModel::ObjectFactories::ChannelFactory::CreateChannel [Calling json_decode]", \PEAR_LOG_DEBUG);
 
@@ -38,7 +20,7 @@ class ChannelFactory {
         $logger->log("Core::ObjectModel::ObjectFactories::ChannelFactory::CreateChannel [Constructing Channel object]", \PEAR_LOG_DEBUG);
 
         $channel = new \Swiftriver\Core\ObjectModel\Channel();
-        $channel->id = ($data->id == null) ? md5(uniqid(rand(), true)) : $data->id;
+        $channel->id = $data->id;
         $channel->type = $data->type;
         $channel->updatePeriod = $data->updatePeriod;
         $channel->active = $data->active;
@@ -51,8 +33,27 @@ class ChannelFactory {
 
         $channel->parameters = $params;
 
+        //set key values if they have not been set
+        $channel = ChannelFactory::SetValuesIfNotSet(
+                $channel, 
+                array(
+                    "id" => md5(uniqid(rand(), true)),
+                    "active" => true,
+                    "nextrun" => time() + ($channel->updatePeriod * 60)
+                ));
+
         $logger->log("Core::ObjectModel::ObjectFactories::ChannelFactory::CreateChannel [Method finished]", \PEAR_LOG_DEBUG);
 
+        return $channel;
+    }
+
+    public static function SetValuesIfNotSet($channel, $propertiesAndValues) {
+        foreach($propertiesAndValues as $key => $value) {
+            $property = $channel->$key;
+            if(!isset($property) || $property == null) {
+                $channel->$key = $value;
+            }
+        }
         return $channel;
     }
 }

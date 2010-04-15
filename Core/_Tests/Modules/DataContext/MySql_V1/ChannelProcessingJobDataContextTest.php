@@ -59,5 +59,4 @@ class ChannelProcessingJobDataContextTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals(false, $found);
     }
 }
-
 ?>
