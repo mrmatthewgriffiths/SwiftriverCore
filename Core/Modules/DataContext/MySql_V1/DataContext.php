@@ -736,7 +736,7 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
      * @param string $markerId
      * @param int $change
      */
-    public static function RecordSourceScoreChange($sourceId, $markerId, $change) {
+    public static function RecordSourceScoreChange($sourceId, $markerId, $change, $reason = null) {
         $logger = \Swiftriver\Core\Setup::GetLogger();
         $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::RecordSourceScoreChange [Method invoked]", \PEAR_LOG_DEBUG);
 
@@ -750,6 +750,9 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
         $entry->sourceId = $sourceId;
         $entry->markerId = $markerId;
         $entry->change = $change;
+        if($reason != null) {
+            $entry->reason = $reason;
+        }
 
         //save the entry
         $rb->store($entry);

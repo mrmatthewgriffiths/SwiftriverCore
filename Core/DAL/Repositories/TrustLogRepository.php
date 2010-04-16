@@ -31,11 +31,11 @@ class TrustLogRepository {
      * @param string $markerId
      * @param int $change
      */
-    public function RecordSourceScoreChange($sourceId, $markerId, $change) {
+    public function RecordSourceScoreChange($sourceId, $markerId, $change, $reason = null) {
         $logger = \Swiftriver\Core\Setup::GetLogger();
         $logger->log("Core::DAL::Repositories::TrustLogRepository::RecordSourceScoreChange [Method invoked]", \PEAR_LOG_DEBUG);
         $dc = new $this->dataContext();
-        $dc::RecordSourceScoreChange($sourceId, $markerId, $change);
+        $dc::RecordSourceScoreChange($sourceId, $markerId, $change, $reason);
         $logger->log("Core::DAL::Repositories::TrustLogRepository::RecordSourceScoreChange [Method Finished]", \PEAR_LOG_DEBUG);
     }
 }

@@ -8,8 +8,9 @@ interface ITrustLogDataContext {
      *
      * @param string $sourceId
      * @param string $markerId
+     * @param string|null $reason
      * @param int $change
      */
-    public static function RecordSourceScoreChange($sourceId, $markerId, $change);
+    public static function RecordSourceScoreChange($sourceId, $markerId, $change, $reason = null);
 }
 ?>

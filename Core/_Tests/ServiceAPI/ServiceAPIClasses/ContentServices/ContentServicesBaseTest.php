@@ -100,5 +100,31 @@ class ContentServicesBaseTest extends \PHPUnit_Framework_TestCase  {
        $id = $this->object->ParseJSONToMarkerID('{"markerId":"'.$idString.'"}');
        $this->assertEquals($idString, $id);
    }
+
+   /**
+    * @expectedException InvalidArgumentException
+    */
+   public function testParseJSONToInacurateReasonWithBadJSON() {
+        $this->object->ParseJSONToInacurateReason("some bad json");
+   }
+
+   /**
+    * @expectedException InvalidArgumentException
+    */
+   public function testParseJSONToInacurateReasonWithMissingReason() {
+       $this->object->ParseJSONToInacurateReason('{"good":"json","this":"is"}');
+   }
+
+   /**
+    * @expectedException InvalidArgumentException
+    */
+   public function testParseJSONToInacurateReasonWithBadReason() {
+       $this->object->ParseJSONToInacurateReason('{"reason":"youSmell"}');
+   }
+
+   public function testParseJSONToInacurateReasonWithGoodJSON() {
+       $reason = $this->object->ParseJSONToInacurateReason('{"reason":"falsehood"}');
+       $this->assertEquals("falsehood", $reason);
+   }
 }
 ?>

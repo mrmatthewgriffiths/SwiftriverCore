@@ -117,5 +117,47 @@ class ContentServicesBase extends \Swiftriver\Core\ServiceAPI\ServiceAPIClasses\
         //return the id
         return $id;
     }
+
+    public function ParseJSONToInacurateReason($json) {
+        $logger = \Swiftriver\Core\Setup::GetLogger();
+        $logger->log("Core::ServiceAPI::ContentServices::ContentServicesBase::ParseJSONToInacurateReason [Method invoked]", \PEAR_LOG_DEBUG);
+
+        $logger->log("Core::ServiceAPI::ContentServices::ContentServicesBase::ParseJSONToInacurateReason [START: Decoding the JSON]", \PEAR_LOG_DEBUG);
+
+        //call json decode on the json
+        $object = json_decode($json);
+
+        //check that the decode worked ok
+        if(!$object || $object == null) {
+            $logger->log("Core::ServiceAPI::ContentServices::ContentServicesBase::ParseJSONToInacurateReason [The JSON did not decode correctly]", \PEAR_LOG_ERR);
+            throw new \InvalidArgumentException("The JSON supplied did not descode.");
+        }
+
+        $logger->log("Core::ServiceAPI::ContentServices::ContentServicesBase::ParseJSONToInacurateReason [END: Decoding the JSON]", \PEAR_LOG_DEBUG);
+
+        $logger->log("Core::ServiceAPI::ContentServices::ContentServicesBase::ParseJSONToInacurateReason [START: Extracting required data]", \PEAR_LOG_DEBUG);
+
+        //Extract the required field ID
+        $reason = $object->reason;
+
+        //Check that the id is set and is a string
+        if(!$reason || !isset($reason) || $reason == null || !is_string($reason)) {
+            $logger->log("Core::ServiceAPI::ContentServices::ContentServicesBase::ParseJSONToInacurateReason [The JSON did not conatin the required field 'id']", \PEAR_LOG_ERR);
+            throw new \InvalidArgumentException("The JSON supplied did not containt the required string field 'reason'.");
+        }
+
+        //check that this is a recognised reason
+        if(!\Swiftriver\Core\StateTransition\StateController::IsValidInacurateReason($reason)) {
+            $logger->log("Core::ServiceAPI::ContentServices::ContentServicesBase::ParseJSONToInacurateReason [The JSON did not conatin a valid reason]", \PEAR_LOG_ERR);
+            throw new \InvalidArgumentException("The JSON supplied did not containt a valid 'reason'.");
+        }
+
+        $logger->log("Core::ServiceAPI::ContentServices::ContentServicesBase::ParseJSONToInacurateReason [END: Extracting required data]", \PEAR_LOG_DEBUG);
+
+        $logger->log("Core::ServiceAPI::ContentServices::ContentServicesBase::ParseJSONToInacurateReason [Method finished]", \PEAR_LOG_DEBUG);
+
+        //return the id
+        return $reason;
+    }
 }
 ?>

@@ -14,7 +14,8 @@ class StateController {
      */
     private static $states = array(
         "new_content",
-        "acurate"
+        "acurate",
+        "chatter"
     );
 
     /**
@@ -25,5 +26,23 @@ class StateController {
         $content->state = "acurate";
         return $content;
     }
+
+    /**
+     *
+     * @param \Swiftriver\Core\ObjectModel\Content $content
+     */
+    public static function MarkContentChatter($content) {
+        $content->state = "chatter";
+        return $content;
+    }
+
+
+    public static function IsValidInacurateReason($reason) {
+        if($reason != "falsehood" && $reason != "inaccuracy" && $reason != "biased") {
+            return false;
+        }
+        return true;
+    }
+
 }
 ?>

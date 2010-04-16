@@ -19,11 +19,20 @@ class TrustLogDataContextTest extends \PHPUnit_Framework_TestCase {
         }
     }
 
-    public function test() {
+    public function testWithOutReason() {
+        $markerId = "f78ds9f79sd87f9sd";
+        $sourceId = "df9dsf80sdf8ds0fd";
+        $change = 1;
+        Modules\DataContext\MySql_V1\DataContext::RecordSourceScoreChange($sourceId, $markerId, $change);
+    }
+
+    public function testWithReason() {
         $markerId = "f78ds9f79sd87f9sd";
         $sourceId = "df9dsf80sdf8ds0fd";
         $change = -1;
-        Modules\DataContext\MySql_V1\DataContext::RecordSourceScoreChange($sourceId, $markerId, $change);
+        $reason = "falsehood";
+        Modules\DataContext\MySql_V1\DataContext::RecordSourceScoreChange($sourceId, $markerId, $change, $reason);
     }
+
 }
 ?>
