@@ -13,7 +13,17 @@ class StateController {
      * @var array
      */
     private static $states = array(
-        "new_content"
+        "new_content",
+        "acurate"
     );
+
+    /**
+     *
+     * @param \Swiftriver\Core\ObjectModel\Content $content
+     */
+    public static function MarkContentAcurate($content) {
+        $content->state = "acurate";
+        return $content;
+    }
 }
 ?>

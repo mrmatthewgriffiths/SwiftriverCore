@@ -4,7 +4,7 @@ class ContentServicesBase extends \Swiftriver\Core\ServiceAPI\ServiceAPIClasses\
 
     public function ParseJSONToPagedContentByStateParameters($json) {
         $logger = \Swiftriver\Core\Setup::GetLogger();
-        $logger->log("Core::ServiceAPI::ContentServices::ContentServicesBase::ParseJSONToPagedContentByStateParameters [Method invoked]", \PEAR_LOG_INFO);
+        $logger->log("Core::ServiceAPI::ContentServices::ContentServicesBase::ParseJSONToPagedContentByStateParameters [Method invoked]", \PEAR_LOG_DEBUG);
 
         $logger->log("Core::ServiceAPI::ContentServices::ContentServicesBase::ParseJSONToPagedContentByStateParameters [Calling Json_decode]", \PEAR_LOG_DEBUG);
 
@@ -28,7 +28,7 @@ class ContentServicesBase extends \Swiftriver\Core\ServiceAPI\ServiceAPIClasses\
 
         //TODO: Extract optional properties such as order by
 
-        $logger->log("Core::ServiceAPI::ContentServices::ContentServicesBase::ParseJSONToPagedContentByStateParameters [Method finished]", \PEAR_LOG_INFO);
+        $logger->log("Core::ServiceAPI::ContentServices::ContentServicesBase::ParseJSONToPagedContentByStateParameters [Method finished]", \PEAR_LOG_DEBUG);
 
         return array("state" => $state, "pagesize" => $pagesize, "pagestart" => $pagestart);
     }
@@ -44,6 +44,78 @@ class ContentServicesBase extends \Swiftriver\Core\ServiceAPI\ServiceAPIClasses\
         }
         $json = rtrim($json, ",")."]";
         return $json;
+    }
+
+    public function ParseJSONToContentID($json) {
+        $logger = \Swiftriver\Core\Setup::GetLogger();
+        $logger->log("Core::ServiceAPI::ContentServices::ContentServicesBase::ParseJSONToContentID [Method invoked]", \PEAR_LOG_DEBUG);
+
+        $logger->log("Core::ServiceAPI::ContentServices::ContentServicesBase::ParseJSONToContentID [START: Decoding the JSON]", \PEAR_LOG_DEBUG);
+
+        //call json decode on the json
+        $object = json_decode($json);
+
+        //check that the decode worked ok
+        if(!$object || $object == null) {
+            $logger->log("Core::ServiceAPI::ContentServices::ContentServicesBase::ParseJSONToContentID [The JSON did not decode correctly]", \PEAR_LOG_ERR);
+            throw new \InvalidArgumentException("The JSON supplied did not descode.");
+        }
+
+        $logger->log("Core::ServiceAPI::ContentServices::ContentServicesBase::ParseJSONToContentID [END: Decoding the JSON]", \PEAR_LOG_DEBUG);
+
+        $logger->log("Core::ServiceAPI::ContentServices::ContentServicesBase::ParseJSONToContentID [START: Extracting required data]", \PEAR_LOG_DEBUG);
+
+        //Extract the required field ID
+        $id = $object->id;
+
+        //Check that the id is set and is a string
+        if(!$id || !isset($id) || $id == null || !is_string($id)) {
+            $logger->log("Core::ServiceAPI::ContentServices::ContentServicesBase::ParseJSONToContentID [The JSON did not conatin the required field 'id']", \PEAR_LOG_ERR);
+            throw new \InvalidArgumentException("The JSON supplied did not containt the required string field 'id'.");
+        }
+
+        $logger->log("Core::ServiceAPI::ContentServices::ContentServicesBase::ParseJSONToContentID [END: Extracting required data]", \PEAR_LOG_DEBUG);
+
+        $logger->log("Core::ServiceAPI::ContentServices::ContentServicesBase::ParseJSONToContentID [Method finished]", \PEAR_LOG_DEBUG);
+        
+        //return the id
+        return $id;
+    }
+
+    public function ParseJSONToMarkerID($json) {
+        $logger = \Swiftriver\Core\Setup::GetLogger();
+        $logger->log("Core::ServiceAPI::ContentServices::ContentServicesBase::ParseJSONToMarkerID [Method invoked]", \PEAR_LOG_DEBUG);
+
+        $logger->log("Core::ServiceAPI::ContentServices::ContentServicesBase::ParseJSONToMarkerID [START: Decoding the JSON]", \PEAR_LOG_DEBUG);
+
+        //call json decode on the json
+        $object = json_decode($json);
+
+        //check that the decode worked ok
+        if(!$object || $object == null) {
+            $logger->log("Core::ServiceAPI::ContentServices::ContentServicesBase::ParseJSONToMarkerID [The JSON did not decode correctly]", \PEAR_LOG_ERR);
+            throw new \InvalidArgumentException("The JSON supplied did not descode.");
+        }
+
+        $logger->log("Core::ServiceAPI::ContentServices::ContentServicesBase::ParseJSONToMarkerID [END: Decoding the JSON]", \PEAR_LOG_DEBUG);
+
+        $logger->log("Core::ServiceAPI::ContentServices::ContentServicesBase::ParseJSONToMarkerID [START: Extracting required data]", \PEAR_LOG_DEBUG);
+
+        //Extract the required field ID
+        $id = $object->markerId;
+
+        //Check that the id is set and is a string
+        if(!$id || !isset($id) || $id == null || !is_string($id)) {
+            $logger->log("Core::ServiceAPI::ContentServices::ContentServicesBase::ParseJSONToMarkerID [The JSON did not conatin the required field 'id']", \PEAR_LOG_ERR);
+            throw new \InvalidArgumentException("The JSON supplied did not containt the required string field 'markerId'.");
+        }
+
+        $logger->log("Core::ServiceAPI::ContentServices::ContentServicesBase::ParseJSONToMarkerID [END: Extracting required data]", \PEAR_LOG_DEBUG);
+
+        $logger->log("Core::ServiceAPI::ContentServices::ContentServicesBase::ParseJSONToMarkerID [Method finished]", \PEAR_LOG_DEBUG);
+
+        //return the id
+        return $id;
     }
 }
 ?>

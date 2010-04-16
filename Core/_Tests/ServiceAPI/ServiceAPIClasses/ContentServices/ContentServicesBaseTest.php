@@ -29,7 +29,7 @@ class ContentServicesBaseTest extends \PHPUnit_Framework_TestCase  {
         $this->assertEquals("[".json_encode($c1)."]", $json);
    }
 
-  public function testParseContentToJSONWithTwoContentItems() {
+   public function testParseContentToJSONWithTwoContentItems() {
         $c1 = new ObjectModel\Content();
         $c1->id = "testid1";
         $c1->title = "testtitle1";
@@ -58,6 +58,47 @@ class ContentServicesBaseTest extends \PHPUnit_Framework_TestCase  {
         $c2->source = $s;
         $json = $this->object->ParseContentToJSON(array($c1, $c2));
         $this->assertEquals("[".json_encode($c1).",".json_encode($c2)."]", $json);
+   }
+
+   /**
+    * @expectedException InvalidArgumentException
+    */
+   public function testParseJSONToContentIDWithBadJSON() {
+        $this->object->ParseJSONToContentID("some bad json");
+   }
+
+   /**
+    * @expectedException InvalidArgumentException
+    */
+   public function testParseJSONToContentIDWithMissingID() {
+       $this->object->ParseJSONToContentID('{"good":"json","this":"is"}');
+   }
+
+   public function testParseJSONToContentIdWithGoodJSON() {
+       $idString = "fdf67gv6df7g86df8g6dfg";
+       $id = $this->object->ParseJSONToContentID('{"id":"'.$idString.'"}');
+       $this->assertEquals($idString, $id);
+   }
+
+
+      /**
+    * @expectedException InvalidArgumentException
+    */
+   public function testParseJSONToMarkerIDWithBadJSON() {
+        $this->object->ParseJSONToContentID("some bad json");
+   }
+
+   /**
+    * @expectedException InvalidArgumentException
+    */
+   public function testParseJSONToMarkerIDDWithMissingID() {
+       $this->object->ParseJSONToContentID('{"good":"json","this":"is"}');
+   }
+
+   public function testParseJSONToMarkerIDWithGoodJSON() {
+       $idString = "fdf67gv6df7g86df8g6dfg";
+       $id = $this->object->ParseJSONToMarkerID('{"markerId":"'.$idString.'"}');
+       $this->assertEquals($idString, $id);
    }
 }
 ?>

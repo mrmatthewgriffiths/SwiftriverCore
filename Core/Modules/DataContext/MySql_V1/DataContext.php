@@ -727,6 +727,37 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
         return array ("totalCount" => $totalCount, "contentItems" => $content);
     }
 
+    /**
+     * This method redords the fact that a marker (sweeper) has changed the score
+     * of a source by marking a content items as either 'acurate', 'chatter' or
+     * 'inacurate'
+     *
+     * @param string $sourceId
+     * @param string $markerId
+     * @param int $change
+     */
+    public static function RecordSourceScoreChange($sourceId, $markerId, $change) {
+        $logger = \Swiftriver\Core\Setup::GetLogger();
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::RecordSourceScoreChange [Method invoked]", \PEAR_LOG_DEBUG);
+
+        //get the red bean
+        $rb = RedBeanController::RedBean();
+
+        //create a new entry
+        $entry = $rb->dispense("trustlog_sourcescorechange");
+
+        //add the properties
+        $entry->sourceId = $sourceId;
+        $entry->markerId = $markerId;
+        $entry->change = $change;
+
+        //save the entry
+        $rb->store($entry);
+
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::RecordSourceScoreChange [Method finished]", \PEAR_LOG_DEBUG);
+    }
+
+
     public static function RunQuery($query) {
         //TODO: Logging
         $url = (string)Setup::$Configuration->DataBaseUrl;
