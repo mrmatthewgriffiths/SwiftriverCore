@@ -75,7 +75,7 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
         $c = reset(RedBeanController::Finder()->where(
                 "channelprocessingjobs",
                 "textId = :id",
-                array(":id1" => $id)
+                array(":id" => $id)
                 ));
 
         //if the channel could not be found then return null
