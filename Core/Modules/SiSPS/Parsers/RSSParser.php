@@ -100,10 +100,12 @@ class RSSParser implements IParser {
             //Create a new Content item
             $item = \Swiftriver\Core\ObjectModel\ObjectFactories\ContentFactory::CreateContent($source);
 
-            //Fill the COntenty Item
-            $item->title = $title;
+            //Fill the Content Item
+            $item->text[] = new \Swiftriver\Core\ObjectModel\LanguageSpecificText(
+                    null, //here we set null as we dont know the language yet 
+                    $title, 
+                    array($description));
             $item->link = $contentLink;
-            $item->text = array($description);
             $item->date = strtotime($date);
 
             //Add the item to the Content array

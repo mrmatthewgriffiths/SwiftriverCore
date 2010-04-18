@@ -23,11 +23,14 @@ class ContentDataContextTest extends \PHPUnit_Framework_TestCase {
         $time = time();
         $c1 = new ObjectModel\Content();
         $c1->id = "testid1";
-        $c1->title = "testtitle1";
         $c1->link = "testlink";
         $c1->state = StateTransition\StateController::$defaultState;
         $c1->date = $time;
-        $c1->text = array("id1text1", "id1text2");
+        $c1->text = array(
+            new ObjectModel\LanguageSpecificText(
+                "en",
+                "testtitle1",
+                array("id1text1", "id1text2")));
         $c1->tags = array(new ObjectModel\Tag("id1tag1", "who"), new ObjectModel\Tag("id1tag2", "what"));
         $dif1 = new ObjectModel\DuplicationIdentificationField("unique_tweet_id", "d87f8d7fdsg7dfgdfgfd89g7as");
         $dif2 = new ObjectModel\DuplicationIdentificationField("tweet_text", "jdhjsdfy jhfjdsf ksjhf kdjf ksdjfhsd ");
@@ -44,12 +47,13 @@ class ContentDataContextTest extends \PHPUnit_Framework_TestCase {
 
         $content = $cOutArray[0];
         $this->assertEquals("testid1", $content->id);
-        $this->assertEquals("testtitle1", $content->title);
         $this->assertEquals("testlink", $content->link);
         $this->assertEquals($time, $content->date);
-        $text = $content->text;
-        $this->assertEquals("id1text1", $text[0]);
-        $this->assertEquals("id1text2", $text[1]);
+        $text = reset($content->text); //get the first element
+        $this->assertEquals("testtitle1", $text->title);
+        $this->assertEquals("en", $text->languageCode);
+        $this->assertEquals("id1text1", $text->text[0]);
+        $this->assertEquals("id1text2", $text->text[1]);
         $tags = $content->tags;
         $this->assertEquals(true, isset($tags));
         $this->assertEquals(true, is_array($tags));
@@ -97,11 +101,12 @@ class ContentDataContextTest extends \PHPUnit_Framework_TestCase {
             }
         }
         $this->assertEquals("testid1", $content->id);
-        $this->assertEquals("testtitle1", $content->title);
         $this->assertEquals("testlink", $content->link);
-        $text = $content->text;
-        $this->assertEquals("id1text1", $text[0]);
-        $this->assertEquals("id1text2", $text[1]);
+        $text = reset($content->text); //get the first element
+        $this->assertEquals("testtitle1", $text->title);
+        $this->assertEquals("en", $text->languageCode);
+        $this->assertEquals("id1text1", $text->text[0]);
+        $this->assertEquals("id1text2", $text->text[1]);
         $tags = $content->tags;
         $this->assertEquals(true, isset($tags));
         $this->assertEquals(true, is_array($tags));

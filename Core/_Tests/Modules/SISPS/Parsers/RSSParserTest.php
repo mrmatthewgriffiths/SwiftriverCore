@@ -38,11 +38,11 @@ class RSSParserTest extends \PHPUnit_Framework_TestCase {
             $this->assertEquals(true, isset($item));
             $title = $item->title;
             $link = $item->link;
-            $text = $item->text;
-            $this->assertEquals(true, isset($title));
+            $text = reset($item->text);
+            $this->assertEquals(true, isset($text->title));
             $this->assertEquals(true, isset($link));
-            $this->assertEquals(true, isset($text));
-            $this->assertEquals(true, is_array($text));
+            $this->assertEquals(true, isset($text->text));
+            $this->assertEquals(true, is_array($text->text));
         }
     }
 }

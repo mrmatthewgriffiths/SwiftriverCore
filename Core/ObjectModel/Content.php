@@ -14,14 +14,11 @@ class Content {
     public $state;
 
     /**
-     * The title of the content
-     * @var string
-     */
-    public $title;
-
-    /**
-     * An array of all text associated with the content
-     * @var string[]
+     * A none-assisative array of language specific
+     * text associated with the content. Each element
+     * of the array is an instance of the
+     * Core\ObjectModel\LanguageSpecificText class
+     * @var LanguageSpecificText[]
      */
     public $text = array();
 

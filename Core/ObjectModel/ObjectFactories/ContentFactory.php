@@ -48,10 +48,19 @@ class ContentFactory {
         //Set the basic properties
         $content->id = $object->id;
         $content->state = $object->state;
-        $content->title = $object->title;
-        $content->text = $object->text;
         $content->link = $object->link;
         $content->date = $object->date;
+
+        //Sort out the language specific text
+        $languages = $object->text;
+        if(isset($languages) && is_array($languages)) {
+            foreach($languages as $lang) {
+                $content->text[] = new \Swiftriver\Core\ObjectModel\LanguageSpecificText(
+                        $lang->languageCode, 
+                        $lang->title, 
+                        $lang->text);
+            }
+        }
 
         //Set the source
         $content->source = $source;
