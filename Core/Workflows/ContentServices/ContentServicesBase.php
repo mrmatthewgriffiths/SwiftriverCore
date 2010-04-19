@@ -1,6 +1,6 @@
 <?php
 namespace Swiftriver\Core\Workflows\ContentServices;
-class ContentServicesBase extends \Swiftriver\Core\Workflows\ServiceAPIBase {
+class ContentServicesBase extends \Swiftriver\Core\Workflows\WorkflowBase {
 
     public function ParseJSONToPagedContentByStateParameters($json) {
         $logger = \Swiftriver\Core\Setup::GetLogger();

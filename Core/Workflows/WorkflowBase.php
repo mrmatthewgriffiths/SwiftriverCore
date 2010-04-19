@@ -1,6 +1,6 @@
 <?php
 namespace Swiftriver\Core\Workflows;
-class ServiceAPIBase {
+class WorkflowBase {
     /**
      * Returns the given error in standard JSON format
      * @param string $error

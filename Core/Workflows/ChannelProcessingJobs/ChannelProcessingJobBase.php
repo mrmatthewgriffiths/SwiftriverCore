@@ -1,6 +1,6 @@
 <?php
 namespace Swiftriver\Core\Workflows\ChannelProcessingJobs;
-class ChannelProcessingJobBase extends \Swiftriver\Core\Workflows\ServiceAPIBase {
+class ChannelProcessingJobBase extends \Swiftriver\Core\Workflows\WorkflowBase {
     /**
      * Parses the json in to a channel object
      *

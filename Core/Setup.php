@@ -57,7 +57,7 @@ foreach($iterator as $file) {
 
 
 //Include some specific files
-include_once(dirname(__FILE__)."/Workflows/ServiceAPIBase.php");
+include_once(dirname(__FILE__)."/Workflows/WorkflowBase.php");
 include_once(dirname(__FILE__)."/Workflows/ChannelProcessingJobs/ChannelProcessingJobBase.php");
 
 //include everything else
