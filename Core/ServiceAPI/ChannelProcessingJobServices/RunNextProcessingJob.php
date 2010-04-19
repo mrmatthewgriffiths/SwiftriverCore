@@ -12,18 +12,18 @@ else {
     //include the setup file
     include_once(dirname(__FILE__)."/../../Setup.php");
 
-    //create a new service instance
-    $service = new \Swiftriver\Core\ServiceAPI\ServiceAPIClasses\ChannelProcessingJobClasses\RunNextProcessingJob();
+    //create a new workflow instance
+    $workflow = new \Swiftriver\Core\Workflows\ChannelProcessingJobs\RunNextProcessingJob();
 
     //Check that the key supplied works with this core instance
-    if(!$service->CheckKey($_POST["key"])) {
+    if(!$workflow->CheckKey($_POST["key"])) {
         //If not then return an error in JSON
         echo '{"error":"The key you supplied is not registered with this instance of the Swiftriver Core"}';
         die();
     }
 
-    //If all the key is ok, then run the service
-    $json = $service->RunService();
+    //If all the key is ok, then run the workflow
+    $json = $workflow->RunWorkflow();
 
     //Return the JSON result
     echo $json;

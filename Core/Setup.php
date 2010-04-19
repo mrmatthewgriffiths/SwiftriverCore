@@ -57,8 +57,8 @@ foreach($iterator as $file) {
 
 
 //Include some specific files
-include_once(dirname(__FILE__)."/ServiceAPI/ServiceAPIClasses/ServiceAPIBase.php");
-include_once(dirname(__FILE__)."/ServiceAPI/ServiceAPIClasses/ChannelProcessingJobClasses/ChannelProcessingJobBase.php");
+include_once(dirname(__FILE__)."/Workflows/ServiceAPIBase.php");
+include_once(dirname(__FILE__)."/Workflows/ChannelProcessingJobs/ChannelProcessingJobBase.php");
 
 //include everything else
 $directories = array(
@@ -66,7 +66,7 @@ $directories = array(
     dirname(__FILE__)."/DAL/",
     dirname(__FILE__)."/StateTransition/",
     dirname(__FILE__)."/PreProcessing/",
-    dirname(__FILE__)."/ServiceAPI/ServiceAPIClasses/",
+    dirname(__FILE__)."/Workflows/",
     Setup::Configuration()->ModulesDirectory."/SiSW/",
     Setup::Configuration()->ModulesDirectory."/SISPS/",
 );

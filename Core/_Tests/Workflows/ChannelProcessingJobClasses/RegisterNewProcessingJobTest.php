@@ -7,21 +7,21 @@ class RegisterNewProcessingJobTest extends \PHPUnit_Framework_TestCase  {
     private $object;
 
     protected function setUp() {
-        include_once(dirname(__FILE__)."/../../../../Setup.php");
-        $this->object = new ServiceAPI\ServiceAPIClasses\ChannelProcessingJobClasses\RegisterNewProcessingJob();
+        include_once(dirname(__FILE__)."/../../../Setup.php");
+        $this->object = new Workflows\ChannelProcessingJobs\RegisterNewProcessingJob();
     }
 
     /**
      * @expectedException InvalidArgumentException
      */
-    public function testRunServiceWithBadJSON() {
+    public function testRunWorkflowWithBadJSON() {
         $json = 'this is bad json and will not pass the parser';
-        $message = $this->object->RunService($json);
+        $message = $this->object->RunWorkflow($json);
     }
 
-    public function testRunServiceWithGoodJSON() {
+    public function testRunWorkflowWithGoodJSON() {
         $json = '{"type":"RSS","updatePeriod":1,"parameters":{"feedUrl":"http://feeds.feedburner.com/Appfrica?format=xml"}}';
-        $message = $this->object->RunService($json);
+        $message = $this->object->RunWorkflow($json);
         $this->assertEquals(true, strpos($message, "OK") != 0);
     }
 }

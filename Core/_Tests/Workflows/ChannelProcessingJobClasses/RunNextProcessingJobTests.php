@@ -8,11 +8,11 @@ class RunNextProcessingJobTests extends \PHPUnit_Framework_TestCase  {
 
     protected function setUp() {
         include_once(dirname(__FILE__)."/../../../../Setup.php");
-        $this->object = new ServiceAPI\ServiceAPIClasses\ChannelProcessingJobClasses\RunNextProcessingJob();
+        $this->object = new Workflows\ChannelProcessingJobs\RunNextProcessingJob();
     }
 
     public function test() {
-        $this->object->RunService();
+        $this->object->RunWorkflow();
     }
 }
 ?>

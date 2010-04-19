@@ -7,12 +7,12 @@ class GetPagedContentByStateTest extends \PHPUnit_Framework_TestCase  {
     private $object;
 
     protected function setUp() {
-        include_once(dirname(__FILE__)."/../../../../Setup.php");
-        $this->object = new ServiceAPI\ServiceAPIClasses\ContentServices\GetPagedContentByState();
+        include_once(dirname(__FILE__)."/../../../Setup.php");
+        $this->object = new Workflows\ContentServices\GetPagedContentByState();
     }
 
     public function test() {
-        $this->object->RunService('{"state":10,"pagesize":20,"pagestart":0}');
+        $this->object->RunWorkflow('{"state":10,"pagesize":20,"pagestart":0}');
     }
 }
 ?>
