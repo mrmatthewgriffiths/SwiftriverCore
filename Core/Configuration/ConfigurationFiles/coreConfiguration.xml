@@ -13,5 +13,11 @@
          type="string"
          value="/Cache"
         />
+        <property
+         name="BaseLanguageCode"
+         displayName="Enter the two letter ISO 639-1 language code used as the base reference for all other languages"
+         type="string"
+         value="en"
+        />
     </properties>
 </configuration>

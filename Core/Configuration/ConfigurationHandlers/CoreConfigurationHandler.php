@@ -6,6 +6,8 @@ class CoreConfigurationHandler extends BaseConfigurationHandler {
 
     public $CachingDirectory;
 
+    public $BaseLanguageCode;
+
     public function __construct($configurationFilePath) {
         $xml = simplexml_load_file($configurationFilePath);
         foreach($xml->properties->property as $property) {
@@ -15,6 +17,9 @@ class CoreConfigurationHandler extends BaseConfigurationHandler {
                     break;
                 case "CachingDirectory" :
                     $this->CachingDirectory = dirname(__FILE__)."/../..".$property["value"];
+                    break;
+                case "BaseLanguageCode" :
+                    $this->BaseLanguageCode = $property["value"];
                     break;
             }
         }
