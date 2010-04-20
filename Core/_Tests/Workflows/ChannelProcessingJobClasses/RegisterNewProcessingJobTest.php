@@ -16,12 +16,12 @@ class RegisterNewProcessingJobTest extends \PHPUnit_Framework_TestCase  {
      */
     public function testRunWorkflowWithBadJSON() {
         $json = 'this is bad json and will not pass the parser';
-        $message = $this->object->RunWorkflow($json);
+        $message = $this->object->RunWorkflow($json, $key);
     }
 
     public function testRunWorkflowWithGoodJSON() {
         $json = '{"type":"RSS","updatePeriod":1,"parameters":{"feedUrl":"http://feeds.feedburner.com/Appfrica?format=xml"}}';
-        $message = $this->object->RunWorkflow($json);
+        $message = $this->object->RunWorkflow($json, $key);
         $this->assertEquals(true, strpos($message, "OK") != 0);
     }
 }

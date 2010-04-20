@@ -7,7 +7,7 @@ class RegisterNewProcessingJob extends ChannelProcessingJobBase {
      * @param string $json
      * @return string $json
      */
-    public function RunWorkflow($json) {
+    public function RunWorkflow($json, $key) {
         //Setup the logger
         $logger = \Swiftriver\Core\Setup::GetLogger();
         $logger->log("Core::ServiceAPI::ChannelProcessingJobs::RegisterNewProcessingJob::RunWorkflow [Method invoked]", \PEAR_LOG_INFO);

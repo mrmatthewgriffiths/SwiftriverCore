@@ -12,7 +12,7 @@ class RunNextProcessingJobTests extends \PHPUnit_Framework_TestCase  {
     }
 
     public function test() {
-        $this->object->RunWorkflow();
+        $this->object->RunWorkflow($key);
     }
 }
 ?>

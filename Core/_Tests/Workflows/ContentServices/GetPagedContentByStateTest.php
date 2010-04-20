@@ -12,7 +12,7 @@ class GetPagedContentByStateTest extends \PHPUnit_Framework_TestCase  {
     }
 
     public function test() {
-        $this->object->RunWorkflow('{"state":10,"pagesize":20,"pagestart":0}');
+        $this->object->RunWorkflow('{"state":10,"pagesize":20,"pagestart":0}', null);
     }
 }
 ?>
