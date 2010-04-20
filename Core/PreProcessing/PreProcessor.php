@@ -21,6 +21,7 @@ class PreProcessor {
         $logger->log("Core::PreProcessing::PreProcessor::PreProcessContent [Method invoked]", \PEAR_LOG_DEBUG);
 
         $modulesDirectory = \Swiftriver\Core\Setup::Configuration()->ModulesDirectory;
+        $configuration = \Swiftriver\Core\Setup::Configuration();
 
         if(isset($this->preProcessingSteps) && count($this->preProcessingSteps) > 0) {
             foreach($this->preProcessingSteps as $preProcessingStep) {
@@ -47,7 +48,7 @@ class PreProcessor {
                 $logger->log("Core::PreProcessing::PreProcessor::PreProcessContent [START: Run PreProcessing for $className]", \PEAR_LOG_DEBUG);
 
                 //Run the preocess method on the pre processor
-                $content = $preProcessor->Process($content);
+                $content = $preProcessor->Process($content, $configuration);
 
                 $logger->log("Core::PreProcessing::PreProcessor::PreProcessContent [END: Run PreProcessing for $className]", \PEAR_LOG_DEBUG);
             }

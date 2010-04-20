@@ -15,9 +15,10 @@ class TagTheNetPreProcessingStep implements \Swiftriver\Core\PreProcessing\IPreP
      * using the return JSON, adds tags to the content.
      *
      * @param \Swiftriver\Core\ObjectModel\Content[] $contentItems
+     * @param \Swiftriver\Core\Configuration\ConfigurationHandlers\CoreConfigurationHandler $configuration
      * @return \Swiftriver\Core\ObjectModel\Content[]
      */
-    public function Process($contentItems) {
+    public function Process($contentItems, $configuration) {
         $taggedContentItems = array();
         foreach($contentItems as $item) {
             $urlParser = new \Swiftriver\TagTheNetInterface\TextForUrlParser($item);

@@ -9,8 +9,9 @@ interface IPreProcessingStep {
      * Interface method that all PrePorcessing Steps must implement
      * 
      * @param \Swiftriver\Core\ObjectModel\Content[] $contentItems
+     * @param \Swiftriver\Core\Configuration\ConfigurationHandlers\CoreConfigurationHandler $configuration
      * @return \Swiftriver\Core\ObjectModel\Content[]
      */
-    public function Process($contentItems);
+    public function Process($contentItems, $configuration);
 }
 ?>
