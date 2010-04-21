@@ -46,7 +46,7 @@ class DetectionAndTranslationWorkflow {
      */
     public function RunWorkflow() {
         //Get the first and only entry in the language specific text array
-        $languageSpecificText = reset($content->text);
+        $languageSpecificText = reset($this->content->text);
 
         //Try to detect and if required translate the text
         try {
