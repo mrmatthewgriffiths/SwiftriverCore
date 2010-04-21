@@ -18,13 +18,13 @@ class TagTheNetPreProcessingStep implements \Swiftriver\Core\PreProcessing\IPreP
      * @param \Swiftriver\Core\Configuration\ConfigurationHandlers\CoreConfigurationHandler $configuration
      * @return \Swiftriver\Core\ObjectModel\Content[]
      */
-    public function Process($contentItems, $configuration) {
+    public function Process($contentItems, $configuration, $logger) {
         $taggedContentItems = array();
         foreach($contentItems as $item) {
             $urlParser = new \Swiftriver\TagTheNetInterface\TextForUrlParser($item);
             $text = $urlParser->GetUrlText();
             $service = new \Swiftriver\TagTheNetInterface\ServiceInterface();
-            $json = $service->InterafceWithService("http://tagthe.net/api/", $text);
+            $json = $service->InterafceWithService("http://tagthe.net/api/", $text, $configuration);
             $jsonParser = new \Swiftriver\TagTheNetInterface\ContentFromJSONParser($item, $json);
             $taggedContent = $jsonParser->GetTaggedContent();
             $taggedContentItems[] = $taggedContent;

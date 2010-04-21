@@ -18,7 +18,9 @@ class LanguageDetectionInterface {
         $uri = "http://ajax.googleapis.com/ajax/services/language/detect?v=1.0&q=".urlencode($this->text);
         $returnData = file_get_contents($uri, false, $context);
         $object = json_decode($returnData);
-        $languageCode = $object->responseData->isReliable ? $object->responseData->language : null;
+        $languageCode = $object->responseData->isReliable 
+                ? $object->responseData->language
+                : null;
         return $languageCode;
     }
 }

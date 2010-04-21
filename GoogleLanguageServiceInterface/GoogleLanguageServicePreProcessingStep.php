@@ -15,9 +15,10 @@ class TagTheNetPreProcessingStep implements \Swiftriver\Core\PreProcessing\IPreP
      *
      * @param \Swiftriver\Core\ObjectModel\Content[] $contentItems
      * @param \Swiftriver\Core\Configuration\ConfigurationHandlers\CoreConfigurationHandler $configuration
+     * @param \Log $logger
      * @return \Swiftriver\Core\ObjectModel\Content[]
      */
-    public function Process($contentItems, $configuration) {
+    public function Process($contentItems, $configuration, $logger) {
         $translatedContent = array();
         $baseLanguageCode = $configuration->BaseLanguageCode;
         foreach($contentItems as $content) {
