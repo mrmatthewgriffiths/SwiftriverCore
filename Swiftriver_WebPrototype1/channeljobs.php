@@ -41,7 +41,6 @@ if(isset($_POST)) {
             $json = $service->MakePOSTRequest(array("key" => "test"), 5);
             $return = json_decode($json);
             $channels = $return->channels;
-            var_dump($channels);
         ?>
         <table id="channellist">
             <thead>

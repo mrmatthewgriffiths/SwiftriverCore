@@ -2,9 +2,11 @@
 //Include the service wrapper
 include_once("ServiceWrapper.php");
 
-//Use the service wrapper to make an async call to get an parser any new content
-$service = new ServiceWrapper("http://local.swiftcore.com/ServiceAPI/ChannelProcessingJobServices/RunNextProcessingJob.php");
-//$service->MakeAsyncPostRequest(array("key" => "test"));
+if(isset($_POST["runnext"])) {
+    //Use the service wrapper to make an async call to get an parser any new content
+    $service = new ServiceWrapper("http://local.swiftcore.com/ServiceAPI/ChannelProcessingJobServices/RunNextProcessingJob.php");
+    $service->MakeAsyncPostRequest(array("key" => "test"));
+}
 
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -38,5 +40,11 @@ $service = new ServiceWrapper("http://local.swiftcore.com/ServiceAPI/ChannelProc
                     <li><a href="/index.php">Home</a></li>
                     <li><a href="/channeljobs.php">Channel Processing Jobs</a></li>
                     <li><a href="/content.php">Content</a></li>
+                    <li>
+                        <form action="<?php echo($_SERVER["PHP_SELF"]); ?>" method="POST">
+                            <input type="hidden" name="runnext" value="true"/>
+                            <input type="submit" value="Run next job" />
+                        </form>
+                    </li>
                 </ul>
             </div>

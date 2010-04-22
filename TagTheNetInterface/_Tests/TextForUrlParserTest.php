@@ -8,6 +8,7 @@ class TextForUrlParserTest extends \PHPUnit_Framework_TestCase {
         include_once(dirname(__FILE__)."/../Setup.php");
         $config = Setup::Configuration();
         include_once($config["SwiftriverCoreDirectory"]."/ObjectModel/Content.php");
+        include_once($config["SwiftriverCoreDirectory"]."/ObjectModel/LanguageSpecificText.php");
         include_once(dirname(__FILE__)."/../TextForUrlParser.php");
     }
 
@@ -19,7 +20,7 @@ class TextForUrlParserTest extends \PHPUnit_Framework_TestCase {
     public function testWithNoTextButTitle() {
         $item = new \Swiftriver\Core\ObjectModel\Content();
         $title = "this is a test title";
-        $item->title = $title;
+        $item->text = array(new \Swiftriver\Core\ObjectModel\LanguageSpecificText(null, $title, array()));
         $parser = new TextForUrlParser($item);
         $this->assertEquals(urlencode($title), $parser->GetUrlText());
     }
@@ -27,14 +28,14 @@ class TextForUrlParserTest extends \PHPUnit_Framework_TestCase {
     public function testWithTextAndTitle() {
         $item = new \Swiftriver\Core\ObjectModel\Content();
         $title = "this is a test title";
-        $item->title = $title;
-        $text = array("one line of text", "a second line of text");
-        $item->text = $text;
+        $item->text = array(
+            new \Swiftriver\Core\ObjectModel\LanguageSpecificText(
+                    null, 
+                    $title, 
+                    array("one line of text", "a second line of text")
+            ));
         $parser = new TextForUrlParser($item);
-        $formattedText = $title;
-        foreach($text as $t) {
-            $formattedText .= " ".$t;
-        }
+        $formattedText = $title . " one line of text" . " a second line of text";
         $this->assertEquals(urlencode($formattedText), $parser->GetUrlText());
     }
 
@@ -44,7 +45,7 @@ class TextForUrlParserTest extends \PHPUnit_Framework_TestCase {
         for($i = 0; $i<2500; $i++) {
             $title .= " x";
         }
-        $item->title = $title;
+        $item->text = array(new \Swiftriver\Core\ObjectModel\LanguageSpecificText(null, $title, array()));
         $parser = new TextForUrlParser($item);
         $this->assertEquals(2000, strlen($parser->GetUrlText()));
     }

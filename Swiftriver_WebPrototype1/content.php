@@ -17,11 +17,16 @@
             <p class="id">ID: <?php echo $content->id ?></p>
             <p class="state">State: <?php echo $content->state ?></p>
             <p class="date">Date: <?php echo date("c", $content->date); ?></p>
-            <p class="title">Title: <?php echo $content->title ?></p>
             <p class="link">Link: <a href="<?php echo $content->link ?>" target="_blank"><?php echo $content->link ?></a></p>
             <div class="text">
-                <?php foreach($content->text as $text): ?>
-                    <p><?php echo $text; ?></p>
+                <?php foreach($content->text as $lang) : ?>
+                    <div class="languagetext">
+                        <h5>Text in <?php var_dump($lang->languageCode); ?></h5>
+                        <p class="title">Title: <?php echo($lang->title); ?></p>
+                        <?php foreach($lang->text as $text) : ?>
+                            <p class="text"><?php echo($text); ?></p>
+                        <?php endforeach; ?>
+                    </div>
                 <?php endforeach; ?>
             </div>
             <ul class="tags">
