@@ -69,48 +69,48 @@ class RunNextProcessingJob extends ChannelProcessingJobBase {
         }
 
 
-        if(!isset($rawContent) || !is_array($rawContent) || count($rawContent) < 1) {
+        if(isset($rawContent) && is_array($rawContent) && count($rawContent) > 0) {
+
+            $logger->log("Core::ServiceAPI::ChannelProcessingJobs::RunNextProcessingJob::RunWorkflow [END: Get and parse content]", \PEAR_LOG_DEBUG);
+
+            $logger->log("Core::ServiceAPI::ChannelProcessingJobs::RunNextProcessingJob::RunWorkflow [START: Running core processing]", \PEAR_LOG_DEBUG);
+
+            try {
+                $preProcessor = new \Swiftriver\Core\PreProcessing\PreProcessor();
+                $processedContent = $preProcessor->PreProcessContent($rawContent);
+            }
+            catch (Exception $e) {
+                //get the exception message
+                $message = $e->getMessage();
+                $logger->log("Core::ServiceAPI::ChannelProcessingJobs::RunNextProcessingJob::RunWorkflow [An exception was thrown]", \PEAR_LOG_DEBUG);
+                $logger->log("Core::ServiceAPI::ChannelProcessingJobs::RunNextProcessingJob::RunWorkflow [$message]", \PEAR_LOG_ERR);
+                $logger->log("Core::ServiceAPI::ChannelProcessingJobs::RunNextProcessingJob::RunWorkflow [Method finished]", \PEAR_LOG_INFO);
+                return parent::FormatErrorMessage("An exception was thrown: $message");
+            }
+
+            $logger->log("Core::ServiceAPI::ChannelProcessingJobs::RunNextProcessingJob::RunWorkflow [END: Running core processing]", \PEAR_LOG_DEBUG);
+
+            $logger->log("Core::ServiceAPI::ChannelProcessingJobs::RunNextProcessingJob::RunWorkflow [START: Save content to the data store]", \PEAR_LOG_DEBUG);
+
+            try {
+                $contentRepository = new \Swiftriver\Core\DAL\Repositories\ContentRepository();
+                $contentRepository->SaveContent($processedContent);
+            }
+            catch (Exception $e) {
+                //get the exception message
+                $message = $e->getMessage();
+                $logger->log("Core::ServiceAPI::ChannelProcessingJobs::RunNextProcessingJob::RunWorkflow [An exception was thrown]", \PEAR_LOG_DEBUG);
+                $logger->log("Core::ServiceAPI::ChannelProcessingJobs::RunNextProcessingJob::RunWorkflow [$message]", \PEAR_LOG_ERR);
+                $logger->log("Core::ServiceAPI::ChannelProcessingJobs::RunNextProcessingJob::RunWorkflow [Method finished]", \PEAR_LOG_INFO);
+                return parent::FormatErrorMessage("An exception was thrown: $message");
+            }
+
+            $logger->log("Core::ServiceAPI::ChannelProcessingJobs::RunNextProcessingJob::RunWorkflow [END: Save content to the data store]", \PEAR_LOG_DEBUG);
+        }
+        else {
             $logger->log("Core::ServiceAPI::ChannelProcessingJobs::RunNextProcessingJob::RunWorkflow [END: Get and parse content]", \PEAR_LOG_DEBUG);
             $logger->log("Core::ServiceAPI::ChannelProcessingJobs::RunNextProcessingJob::RunWorkflow [No content found.]", \PEAR_LOG_DEBUG);
-            $logger->log("Core::ServiceAPI::ChannelProcessingJobs::RunNextProcessingJob::RunWorkflow [Method finished]", \PEAR_LOG_INFO);
-            return parent::FormatMessage("OK");
         }
-
-        $logger->log("Core::ServiceAPI::ChannelProcessingJobs::RunNextProcessingJob::RunWorkflow [END: Get and parse content]", \PEAR_LOG_DEBUG);
-
-        $logger->log("Core::ServiceAPI::ChannelProcessingJobs::RunNextProcessingJob::RunWorkflow [START: Running core processing]", \PEAR_LOG_DEBUG);
-
-        try {
-            $preProcessor = new \Swiftriver\Core\PreProcessing\PreProcessor();
-            $processedContent = $preProcessor->PreProcessContent($rawContent);
-        }
-        catch (Exception $e) {
-            //get the exception message
-            $message = $e->getMessage();
-            $logger->log("Core::ServiceAPI::ChannelProcessingJobs::RunNextProcessingJob::RunWorkflow [An exception was thrown]", \PEAR_LOG_DEBUG);
-            $logger->log("Core::ServiceAPI::ChannelProcessingJobs::RunNextProcessingJob::RunWorkflow [$message]", \PEAR_LOG_ERR);
-            $logger->log("Core::ServiceAPI::ChannelProcessingJobs::RunNextProcessingJob::RunWorkflow [Method finished]", \PEAR_LOG_INFO);
-            return parent::FormatErrorMessage("An exception was thrown: $message");
-        }
-
-        $logger->log("Core::ServiceAPI::ChannelProcessingJobs::RunNextProcessingJob::RunWorkflow [END: Running core processing]", \PEAR_LOG_DEBUG);
-
-        $logger->log("Core::ServiceAPI::ChannelProcessingJobs::RunNextProcessingJob::RunWorkflow [START: Save content to the data store]", \PEAR_LOG_DEBUG);
-
-        try {
-            $contentRepository = new \Swiftriver\Core\DAL\Repositories\ContentRepository();
-            $contentRepository->SaveContent($processedContent);
-        }
-        catch (Exception $e) {
-            //get the exception message
-            $message = $e->getMessage();
-            $logger->log("Core::ServiceAPI::ChannelProcessingJobs::RunNextProcessingJob::RunWorkflow [An exception was thrown]", \PEAR_LOG_DEBUG);
-            $logger->log("Core::ServiceAPI::ChannelProcessingJobs::RunNextProcessingJob::RunWorkflow [$message]", \PEAR_LOG_ERR);
-            $logger->log("Core::ServiceAPI::ChannelProcessingJobs::RunNextProcessingJob::RunWorkflow [Method finished]", \PEAR_LOG_INFO);
-            return parent::FormatErrorMessage("An exception was thrown: $message");
-        }
-
-        $logger->log("Core::ServiceAPI::ChannelProcessingJobs::RunNextProcessingJob::RunWorkflow [END: Save content to the data store]", \PEAR_LOG_DEBUG);
 
         $logger->log("Core::ServiceAPI::ChannelProcessingJobs::RunNextProcessingJob::RunWorkflow [START: Mark channel processing job as complete]", \PEAR_LOG_DEBUG);
 

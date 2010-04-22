@@ -11,14 +11,11 @@ class PreProcessingStepsConfigurationHandler extends BaseConfigurationHandler {
     public function __construct($configurationFilePath) {
         $xml = simplexml_load_file($configurationFilePath);
         $this->PreProcessingSteps = array();
-        $steps = $xml->preProcessingSteps;
-        if(isset($steps) && $steps != null && is_array($steps)) {
-            foreach($steps->step as $step) {
-                $this->PreProcessingSteps[] =
-                        new \Swiftriver\Core\ObjectModel\PreProcessingStepEntry(
-                            $step->className,
-                            $step->filePath);
-            }
+        foreach($xml->preProcessingSteps->step as $step) {
+            $this->PreProcessingSteps[] =
+                    new \Swiftriver\Core\ObjectModel\PreProcessingStepEntry(
+                        (string) $step["className"],
+                        (string) $step["filePath"]);
         }
     }
 }

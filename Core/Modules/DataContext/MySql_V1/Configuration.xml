@@ -11,19 +11,19 @@
          name="UserName"
          displayName="The user name for the data base"
          type="string"
-         value="swiftrivercore"
+         value="swiftcore_dev"
         />
         <property
          name="Password"
          displayName="The password for the data base"
          type="string"
-         value="swiftrivercore"
+         value="swiftcore_dev"
         />
         <property
          name="Database"
          displayName="The database to use"
          type="string"
-         value="swiftrivercore"
+         value="swiftcore_dev"
         />
     </properties>
 </configuration>

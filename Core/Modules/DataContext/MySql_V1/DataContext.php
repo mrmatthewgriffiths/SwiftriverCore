@@ -187,7 +187,7 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
         //select the next due processing job
         $c = reset(RedBeanController::Finder()->where(
                 "channelprocessingjobs",
-                "active = 1 order by nextrun desc limit 1"
+                "active = 1 order by nextrun asc limit 1"
                 ));
 
         //check if there is anythign to return
@@ -426,7 +426,7 @@ class DataContext implements \Swiftriver\Core\DAL\DataContextInterfaces\IDataCon
      */
     public static function SaveContent($content){
         $logger = \Swiftriver\Core\Setup::GetLogger();
-        $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [Method invoked]", \PEAR_LOG_DEBUG);
+        $logger->log("Core::Modules::DataContext::MySQL_V1::DataContext::SaveContent [Method invoked]", \PEAR_LOG_DEBUG);
 
         //initiate the redbean dal contoller
         $rb = RedBeanController::RedBean();

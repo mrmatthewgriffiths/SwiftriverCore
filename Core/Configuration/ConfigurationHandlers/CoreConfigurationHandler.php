@@ -19,7 +19,7 @@ class CoreConfigurationHandler extends BaseConfigurationHandler {
                     $this->CachingDirectory = dirname(__FILE__)."/../..".$property["value"];
                     break;
                 case "BaseLanguageCode" :
-                    $this->BaseLanguageCode = $property["value"];
+                    $this->BaseLanguageCode = (string) $property["value"];
                     break;
             }
         }

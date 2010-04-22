@@ -114,7 +114,7 @@ class RSSParser implements IParser {
 
         $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [END: Parsing feed items]", \PEAR_LOG_DEBUG);
 
-        $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [Method invoked]", \PEAR_LOG_DEBUG);
+        $logger->log("Core::Modules::SiSPS::Parsers::RSSParser::GetAndParse [Method finished]", \PEAR_LOG_DEBUG);
 
         //return the content array
         return $contentItems;

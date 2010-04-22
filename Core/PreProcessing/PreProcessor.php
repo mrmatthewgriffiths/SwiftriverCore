@@ -40,15 +40,29 @@ class PreProcessor {
 
                 $logger->log("Core::PreProcessing::PreProcessor::PreProcessContent [START: Instanciating pre processor: $className]", \PEAR_LOG_DEBUG);
 
-                //Instanciate the pre processor
-                $preProcessor = new $className();
+                try {
+                    //Instanciate the pre processor
+                    $preProcessor = new $className();
+                }
+                catch (\Exception $e) {
+                    $message = $e->getMessage();
+                    $logger->log("Core::PreProcessing::PreProcessor::PreProcessContent [$message]", \PEAR_LOG_ERR);
+                    $logger->log("Core::PreProcessing::PreProcessor::PreProcessContent [Unable to run PreProcessing for preprocessor $className]", \PEAR_LOG_ERR);
+                }
 
                 $logger->log("Core::PreProcessing::PreProcessor::PreProcessContent [END: Instanciating pre processor: $className]", \PEAR_LOG_DEBUG);
 
                 $logger->log("Core::PreProcessing::PreProcessor::PreProcessContent [START: Run PreProcessing for $className]", \PEAR_LOG_DEBUG);
 
-                //Run the preocess method on the pre processor
-                $content = $preProcessor->Process($content, $configuration);
+                try {
+                    //Run the preocess method on the pre processor
+                    $content = $preProcessor->Process($content, $configuration, $logger);
+                }
+                catch (\Exception $e) {
+                    $message = $e->getMessage();
+                    $logger->log("Core::PreProcessing::PreProcessor::PreProcessContent [$message]", \PEAR_LOG_ERR);
+                    $logger->log("Core::PreProcessing::PreProcessor::PreProcessContent [Unable to run PreProcessing for preprocessor $className]", \PEAR_LOG_ERR);
+                }
 
                 $logger->log("Core::PreProcessing::PreProcessor::PreProcessContent [END: Run PreProcessing for $className]", \PEAR_LOG_DEBUG);
             }
