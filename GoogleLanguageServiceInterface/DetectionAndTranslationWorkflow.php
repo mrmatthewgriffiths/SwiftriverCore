@@ -128,24 +128,37 @@ class DetectionAndTranslationWorkflow {
     }
 
     private function ExtractTextForLanguageDetection($languageSpecificText) {
-        //if the title is set then return it
+        //set the return value
+        $return = "";
+
+        //if the title is set add it to the return text
         if(isset($languageSpecificText->title) &&
            $languageSpecificText->title != null &&
            $languageSpecificText->title > "") {
-            return $languageSpecificText->title;
+            $return .= $languageSpecificText->title;
         }
 
-        //Else look for text that can be returned
+        //look for text that can be added to the return text
         if(isset($languageSpecificText->text) && is_array($languageSpecificText->text)) {
             foreach($languageSpecificText->text as $text) {
                 if(isset($text) && $text != null && $text > "") {
-                    return $text;
+                    $return .= $text;
                 }
             }
         }
 
-        //finally return null
-        return null;
+        //if the return text is null or empty then return null
+        if($return == "") {
+            return null;
+        }
+
+        //if the string is over 500 chars then chop it
+        if(strlen($return) > 500) {
+            $return = substr($return, 0, 500);
+        }
+
+        //finally return the string
+        return $return;
     }
 }
 ?>
