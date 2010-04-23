@@ -17,7 +17,7 @@ class MarkContentAsInacurate extends ContentServicesBase {
             $markerId = parent::ParseJSONToMarkerID($json);
             $reason = parent::ParseJSONToInacurateReason($json);
         }
-        catch (Exception $e) {
+        catch (\Exception $e) {
             //get the exception message
             $message = $e->getMessage();
             $logger->log("Core::ServiceAPI::ChannelProcessingJobs::MarkContentAsInacurate::RunWorkflow [An exception was thrown]", \PEAR_LOG_DEBUG);
@@ -35,7 +35,7 @@ class MarkContentAsInacurate extends ContentServicesBase {
             //Get the content repository
             $repository = new \Swiftriver\Core\DAL\Repositories\ContentRepository();
         }
-        catch (Exception $e) {
+        catch (\Exception $e) {
             //get the exception message
             $message = $e->getMessage();
             $logger->log("Core::ServiceAPI::ChannelProcessingJobs::MarkContentAsInacurate::RunWorkflow [An exception was thrown]", \PEAR_LOG_DEBUG);
@@ -60,7 +60,7 @@ class MarkContentAsInacurate extends ContentServicesBase {
                 throw new Exception("No content was returned for the ID: $id");
             }
         }
-        catch (Exception $e) {
+        catch (\Exception $e) {
             //get the exception message
             $message = $e->getMessage();
             $logger->log("Core::ServiceAPI::ChannelProcessingJobs::MarkContentAsInacurate::RunWorkflow [An exception was thrown]", \PEAR_LOG_DEBUG);
@@ -97,7 +97,7 @@ class MarkContentAsInacurate extends ContentServicesBase {
             //save the content to the repo
             $repository->SaveContent($content);
         }
-        catch (Exception $e) {
+        catch (\Exception $e) {
             //get the exception message
             $message = $e->getMessage();
             $logger->log("Core::ServiceAPI::ChannelProcessingJobs::MarkContentAsInacurate::RunWorkflow [An exception was thrown]", \PEAR_LOG_DEBUG);
@@ -120,7 +120,7 @@ class MarkContentAsInacurate extends ContentServicesBase {
             //record the new entry
             $trustLogRepo->RecordSourceScoreChange($sourceId, $markerId, -1);
         }
-        catch (Exception $e) {
+        catch (\Exception $e) {
             //get the exception message
             $message = $e->getMessage();
             $logger->log("Core::ServiceAPI::ChannelProcessingJobs::MarkContentAsInacurate::RunWorkflow [An exception was thrown]", \PEAR_LOG_DEBUG);

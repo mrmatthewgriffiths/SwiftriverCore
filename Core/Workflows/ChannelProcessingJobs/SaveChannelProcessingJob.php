@@ -18,7 +18,7 @@ class SaveChannelProcessingJob extends ChannelProcessingJobBase {
             //Parse the JSON input
             $channel = parent::ParseJSONToChannel($json);
         }
-        catch (Exception $e) {
+        catch (\Exception $e) {
             //get the exception message
             $message = $e->getMessage();
             $logger->log("Core::ServiceAPI::ChannelProcessingJobs::SaveChannelProcessingJob::RunWorkflow [An exception was thrown]", \PEAR_LOG_DEBUG);
@@ -41,7 +41,7 @@ class SaveChannelProcessingJob extends ChannelProcessingJobBase {
             //Construct a new repository
             $repository = new \Swiftriver\Core\DAL\Repositories\ChannelProcessingJobRepository();
         }
-        catch (Exception $e) {
+        catch (\Exception $e) {
             //get the exception message
             $message = $e->getMessage();
             $logger->log("Core::ServiceAPI::ChannelProcessingJobs::SaveChannelProcessingJob::RunWorkflow [An exception was thrown]", \PEAR_LOG_DEBUG);
@@ -58,7 +58,7 @@ class SaveChannelProcessingJob extends ChannelProcessingJobBase {
             //Add the channel processign job to the repository
             $repository->SaveChannelProgessingJob($channel);
         }
-        catch (Exception $e) {
+        catch (\Exception $e) {
             //get the exception message
             $message = $e->getMessage();
             $logger->log("Core::ServiceAPI::ChannelProcessingJobs::SaveChannelProcessingJob::RunWorkflow [An exception was thrown]", \PEAR_LOG_DEBUG);

@@ -11,19 +11,19 @@ if(isset($_POST)) {
                     '"updatePeriod":"'.$_POST["updatePeriod"].'",'.
                     '"parameters":{"feedUrl":"'.$_POST["feedUrl"].'"}}';
             $service = new ServiceWrapper("http://local.swiftcore.com/ServiceAPI/ChannelProcessingJobServices/RegisterNewProcessingJob.php");
-            $service->MakePOSTRequest(array("key" => "test", "data" => $json), 5);
+            $service->MakePOSTRequest(array("key" => "aaabbbcccddd", "data" => $json), 5);
             break;
         case "remove" :
             $service = new ServiceWrapper("http://local.swiftcore.com/ServiceAPI/ChannelProcessingJobServices/RemoveChannelProcessingJob.php");
-            $json = $service->MakePOSTRequest(array("key" => "test", "data" => '{"id":"'.$_POST["channelId"].'"}'), 5);
+            $json = $service->MakePOSTRequest(array("key" => "aaabbbcccddd", "data" => '{"id":"'.$_POST["channelId"].'"}'), 5);
             break;
         case "activate" :
             $service = new ServiceWrapper("http://local.swiftcore.com/ServiceAPI/ChannelProcessingJobServices/ActivateChannelProcessingJob.php");
-            $json = $service->MakePOSTRequest(array("key" => "test", "data" => '{"id":"'.$_POST["channelId"].'"}'), 5);
+            $json = $service->MakePOSTRequest(array("key" => "aaabbbcccddd", "data" => '{"id":"'.$_POST["channelId"].'"}'), 5);
             break;
         case "deactivate" :
             $service = new ServiceWrapper("http://local.swiftcore.com/ServiceAPI/ChannelProcessingJobServices/DeactivateChannelProcessingJob.php");
-            $json = $service->MakePOSTRequest(array("key" => "test", "data" => '{"id":"'.$_POST["channelId"].'"}'), 5);
+            $json = $service->MakePOSTRequest(array("key" => "aaabbbcccddd", "data" => '{"id":"'.$_POST["channelId"].'"}'), 5);
             break;
     }
 }

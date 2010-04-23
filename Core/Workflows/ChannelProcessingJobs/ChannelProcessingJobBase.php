@@ -16,7 +16,7 @@ class ChannelProcessingJobBase extends \Swiftriver\Core\Workflows\WorkflowBase {
         try {
             //Try and get a channel from the factory
             $channel = \Swiftriver\Core\ObjectModel\ObjectFactories\ChannelFactory::CreateChannel($json);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             //If exception, get the mesasge
             $message = $e->getMessage();
 

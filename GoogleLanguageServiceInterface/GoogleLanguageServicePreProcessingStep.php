@@ -60,8 +60,16 @@ class GoogleLanguageServicePreProcessingStep implements \Swiftriver\Core\PreProc
 
             $logger->log("PreProcessingSteps::GoogleLanguageServicePreProcessingStep::Process [START: Running Workflow for content]", \PEAR_LOG_DEBUG);
 
-            //run the workflow
-            $translatedContent[] = $workflow->RunWorkflow();
+            try {
+                //run the workflow
+                $translatedContent[] = $workflow->RunWorkflow($logger);
+            }
+            catch (\Exception $e) {
+                $logger->log("PreProcessingSteps::GoogleLanguageServicePreProcessingStep::Process [$e]", \PEAR_LOG_ERR);
+                $logger->log("PreProcessingSteps::GoogleLanguageServicePreProcessingStep::Process [An exception was throw, moving to the next content item]", \PEAR_LOG_DEBUG);
+                $logger->log("PreProcessingSteps::GoogleLanguageServicePreProcessingStep::Process [END: Running Workflow for content]", \PEAR_LOG_DEBUG);
+                continue;
+            }
 
             $logger->log("PreProcessingSteps::GoogleLanguageServicePreProcessingStep::Process [END: Running Workflow for content]", \PEAR_LOG_DEBUG);
         }

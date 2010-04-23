@@ -42,19 +42,33 @@ class DetectionAndTranslationWorkflow {
      * and the translated text in the base language is added at position 0 to the
      * content text collection while the original text is stored at position 1
      *
+     * @param \Log $logger
      * @return \Swiftriver\Core\ObjectModel\Content
      */
-    public function RunWorkflow() {
+    public function RunWorkflow($logger) {
+        $logger->log("Swiftriver::GoogleLanguageServiceInterface::DetectionAndTranslationWorkflow::RunWorkflow [Method invoked]", \PEAR_LOG_DEBUG);
+
+        $logger->log("Swiftriver::GoogleLanguageServiceInterface::DetectionAndTranslationWorkflow::RunWorkflow [START: Selecting the primary text collection]", \PEAR_LOG_DEBUG);
+
         //Get the first and only entry in the language specific text array
         $languageSpecificText = reset($this->content->text);
 
+        $logger->log("Swiftriver::GoogleLanguageServiceInterface::DetectionAndTranslationWorkflow::RunWorkflow [END: Selecting the primary text collection]", \PEAR_LOG_DEBUG);
+
         //Try to detect and if required translate the text
         try {
+
+            $logger->log("Swiftriver::GoogleLanguageServiceInterface::DetectionAndTranslationWorkflow::RunWorkflow [START: Selecting the text for language detection]", \PEAR_LOG_DEBUG);
+
             //extract the text to use for language detection
             $textForDetection = $this->ExtractTextForLanguageDetection($languageSpecificText);
 
+            $logger->log("Swiftriver::GoogleLanguageServiceInterface::DetectionAndTranslationWorkflow::RunWorkflow [END: Selecting the text for language detection]", \PEAR_LOG_DEBUG);
+
+
             //If no text then throw and exception
             if($textForDetection == null) {
+                $logger->log("Swiftriver::GoogleLanguageServiceInterface::DetectionAndTranslationWorkflow::RunWorkflow [No text could be selected for language detection]", \PEAR_LOG_DEBUG);
                 throw new \Exception("No text could be extracted for language detection");
             }
 
@@ -63,16 +77,24 @@ class DetectionAndTranslationWorkflow {
                     $textForDetection,
                     $this->referer);
 
+            $logger->log("Swiftriver::GoogleLanguageServiceInterface::DetectionAndTranslationWorkflow::RunWorkflow [START: Calling the language detection service]", \PEAR_LOG_DEBUG);
+
             //get the detected language code from the interafce
             $languageCode = $interface->GetLanguageCode();
+
+            $logger->log("Swiftriver::GoogleLanguageServiceInterface::DetectionAndTranslationWorkflow::RunWorkflow [END: Calling the language detection service]", \PEAR_LOG_DEBUG);
 
             //set the language code
             $languageSpecificText->languageCode = $languageCode;
 
             //If the language IS the base language
             if(strtolower($languageCode) == strtolower($this->baseLanguageCode)) {
+                $logger->log("Swiftriver::GoogleLanguageServiceInterface::DetectionAndTranslationWorkflow::RunWorkflow [No translation required]", \PEAR_LOG_DEBUG);
+
                 //set the language specific text as the first in the collection
                 $this->content->text[0] = $languageSpecificText;
+
+                $logger->log("Swiftriver::GoogleLanguageServiceInterface::DetectionAndTranslationWorkflow::RunWorkflow [Method finished]", \PEAR_LOG_DEBUG);
 
                 //return the content - no translation required
                 return $this->content;
@@ -88,10 +110,17 @@ class DetectionAndTranslationWorkflow {
             $interface = new TranslationInterface(
                     $languageSpecificText->languageCode,
                     $this->baseLanguageCode,
-                    $this->referer);
+                    $this->referer,
+                    $logger);
+
+            $logger->log("Swiftriver::GoogleLanguageServiceInterface::DetectionAndTranslationWorkflow::RunWorkflow [START: Calling the Translation interface]", \PEAR_LOG_DEBUG);
 
             //first translate the title
             $title = $interface->Translate($languageSpecificText->title);
+
+            $logger->log("Swiftriver::GoogleLanguageServiceInterface::DetectionAndTranslationWorkflow::RunWorkflow [END: Calling the Translation interface]", \PEAR_LOG_DEBUG);
+
+            $logger->log("Swiftriver::GoogleLanguageServiceInterface::DetectionAndTranslationWorkflow::RunWorkflow [START: Applying translation to content item]", \PEAR_LOG_DEBUG);
 
             //then loop through the text, translating it
             if(isset($languageSpecificText->text) && is_array($languageSpecificText->text)) {
@@ -112,15 +141,24 @@ class DetectionAndTranslationWorkflow {
             //reset the source language text to the second position
             $this->content->text[1] = $languageSpecificText;
 
+            $logger->log("Swiftriver::GoogleLanguageServiceInterface::DetectionAndTranslationWorkflow::RunWorkflow [END: Applying translation to content item]", \PEAR_LOG_DEBUG);
+
+            $logger->log("Swiftriver::GoogleLanguageServiceInterface::DetectionAndTranslationWorkflow::RunWorkflow [Method finished]", \PEAR_LOG_DEBUG);
+
             //return the content
             return $this->content;
         }
-        catch (Exception $e) {
+        catch (\Exception $e) {
+            $logger->log("Swiftriver::GoogleLanguageServiceInterface::DetectionAndTranslationWorkflow::RunWorkflow [$e]", \PEAR_LOG_ERR);
+
             //if there was an exception throw then mark the text as uknown
             $languageSpecificText->languageCode = "unknown";
 
             //set it back to the content
             $this->content->text[0] = $languageSpecificText;
+
+            $logger->log("Swiftriver::GoogleLanguageServiceInterface::DetectionAndTranslationWorkflow::RunWorkflow [An exception was throw, setting the language type to 'unknown']", \PEAR_LOG_DEBUG);
+            $logger->log("Swiftriver::GoogleLanguageServiceInterface::DetectionAndTranslationWorkflow::RunWorkflow [Method finished]", \PEAR_LOG_DEBUG);
 
             //return the content without translation
             return $this->content;

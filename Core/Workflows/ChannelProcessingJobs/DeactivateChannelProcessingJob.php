@@ -19,7 +19,7 @@ class DeactivateChannelProcessingJob extends ChannelProcessingJobBase {
             //get the ID from the JSON
             $id = parent::ParseJSONToChannelId($json);
         }
-        catch (Exception $e) {
+        catch (\Exception $e) {
             //get the exception message
             $message = $e->getMessage();
             $logger->log("Core::ServiceAPI::ChannelProcessingJobs::DeactivateChannelProcessingJob::RunWorkflow [An exception was thrown]", \PEAR_LOG_DEBUG);
@@ -36,7 +36,7 @@ class DeactivateChannelProcessingJob extends ChannelProcessingJobBase {
             //Construct a new repository
             $repository = new \Swiftriver\Core\DAL\Repositories\ChannelProcessingJobRepository();
         }
-        catch (Exception $e) {
+        catch (\Exception $e) {
             //get the exception message
             $message = $e->getMessage();
             $logger->log("Core::ServiceAPI::ChannelProcessingJobs::DeactivateChannelProcessingJob::RunWorkflow [An exception was thrown]", \PEAR_LOG_DEBUG);
@@ -53,7 +53,7 @@ class DeactivateChannelProcessingJob extends ChannelProcessingJobBase {
             //Get the channel from the repo
             $channel = $repository->GetChannelProcessingJobById($id);
         }
-        catch (Exception $e) {
+        catch (\Exception $e) {
             //get the exception message
             $message = $e->getMessage();
             $logger->log("Core::ServiceAPI::ChannelProcessingJobs::DeactivateChannelProcessingJob::RunWorkflow [An exception was thrown]", \PEAR_LOG_DEBUG);
@@ -73,7 +73,7 @@ class DeactivateChannelProcessingJob extends ChannelProcessingJobBase {
             //save the channel back to the repo
             $repository->SaveChannelProgessingJob($channel);
         }
-        catch (Exception $e) {
+        catch (\Exception $e) {
             //get the exception message
             $message = $e->getMessage();
             $logger->log("Core::ServiceAPI::ChannelProcessingJobs::DeactivateChannelProcessingJob::RunWorkflow [An exception was thrown]", \PEAR_LOG_DEBUG);

@@ -24,7 +24,7 @@ class RunNextProcessingJob extends ChannelProcessingJobBase {
             //Construct a new repository
             $channelRepository = new \Swiftriver\Core\DAL\Repositories\ChannelProcessingJobRepository();
         }
-        catch (Exception $e) {
+        catch (\Exception $e) {
             //get the exception message
             $message = $e->getMessage();
             $logger->log("Core::ServiceAPI::ChannelProcessingJobs::RunNextProcessingJob::RunWorkflow [An exception was thrown]", \PEAR_LOG_DEBUG);
@@ -41,7 +41,7 @@ class RunNextProcessingJob extends ChannelProcessingJobBase {
             //Get the next due channel processign job
             $channel = $channelRepository->SelectNextDueChannelProcessingJob(time());
         }
-        catch (Exception $e) {
+        catch (\Exception $e) {
             //get the exception message
             $message = $e->getMessage();
             $logger->log("Core::ServiceAPI::ChannelProcessingJobs::RunNextProcessingJob::RunWorkflow [An exception was thrown]", \PEAR_LOG_DEBUG);
@@ -66,7 +66,7 @@ class RunNextProcessingJob extends ChannelProcessingJobBase {
             $SiSPS = new \Swiftriver\Core\Modules\SiSPS\SwiftriverSourceParsingService();
             $rawContent = $SiSPS->FetchContentFromChannel($channel);
         }
-        catch (Exception $e) {
+        catch (\Exception $e) {
             //get the exception message
             $message = $e->getMessage();
             $logger->log("Core::ServiceAPI::ChannelProcessingJobs::RunNextProcessingJob::RunWorkflow [An exception was thrown]", \PEAR_LOG_DEBUG);
@@ -86,7 +86,7 @@ class RunNextProcessingJob extends ChannelProcessingJobBase {
                 $preProcessor = new \Swiftriver\Core\PreProcessing\PreProcessor();
                 $processedContent = $preProcessor->PreProcessContent($rawContent);
             }
-            catch (Exception $e) {
+            catch (\Exception $e) {
                 //get the exception message
                 $message = $e->getMessage();
                 $logger->log("Core::ServiceAPI::ChannelProcessingJobs::RunNextProcessingJob::RunWorkflow [An exception was thrown]", \PEAR_LOG_DEBUG);
@@ -103,7 +103,7 @@ class RunNextProcessingJob extends ChannelProcessingJobBase {
                 $contentRepository = new \Swiftriver\Core\DAL\Repositories\ContentRepository();
                 $contentRepository->SaveContent($processedContent);
             }
-            catch (Exception $e) {
+            catch (\Exception $e) {
                 //get the exception message
                 $message = $e->getMessage();
                 $logger->log("Core::ServiceAPI::ChannelProcessingJobs::RunNextProcessingJob::RunWorkflow [An exception was thrown]", \PEAR_LOG_DEBUG);
@@ -124,7 +124,7 @@ class RunNextProcessingJob extends ChannelProcessingJobBase {
         try {
             $channelRepository->MarkChannelProcessingJobAsComplete($channel);
         }
-        catch (Exception $e) {
+        catch (\Exception $e) {
             //get the exception message
             $message = $e->getMessage();
             $logger->log("Core::ServiceAPI::ChannelProcessingJobs::RunNextProcessingJob::RunWorkflow [An exception was thrown]", \PEAR_LOG_DEBUG);

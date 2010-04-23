@@ -18,7 +18,7 @@ class ListAllChannelProcessingJobs extends ChannelProcessingJobBase {
             //Construct a new repository
             $repository = new \Swiftriver\Core\DAL\Repositories\ChannelProcessingJobRepository();
         }
-        catch (Exception $e) {
+        catch (\Exception $e) {
             //get the exception message
             $message = $e->getMessage();
             $logger->log("Core::ServiceAPI::ChannelProcessingJobs::ListAllChannelProcessingJobs::RunWorkflow [An exception was thrown]", \PEAR_LOG_DEBUG);
@@ -35,7 +35,7 @@ class ListAllChannelProcessingJobs extends ChannelProcessingJobBase {
             //Get all the channel processing jobs
             $channels = $repository->ListAllChannelProcessingJobs();
         }
-        catch (Exception $e) {
+        catch (\Exception $e) {
             //get the exception message 
             $message = $e->getMessage();
             $logger->log("Core::ServiceAPI::ChannelProcessingJobs::ListAllChannelProcessingJobs::RunWorkflow [An exception was thrown]", \PEAR_LOG_DEBUG);
@@ -52,7 +52,7 @@ class ListAllChannelProcessingJobs extends ChannelProcessingJobBase {
             //Parse the JSON input
             $json = parent::ParseChannelsToJSON($channels);
         }
-        catch (Exception $e) {
+        catch (\Exception $e) {
             //get the exception message
             $message = $e->getMessage();
             $logger->log("Core::ServiceAPI::ChannelProcessingJobs::ListAllChannelProcessingJobs::RunWorkflow [An exception was thrown]", \PEAR_LOG_DEBUG);

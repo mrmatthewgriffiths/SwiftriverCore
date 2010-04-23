@@ -16,7 +16,7 @@ class MarkContentAsChatter extends ContentServicesBase {
             $id = parent::ParseJSONToContentID($json);
             $markerId = parent::ParseJSONToMarkerID($json);
         }
-        catch (Exception $e) {
+        catch (\Exception $e) {
             //get the exception message
             $message = $e->getMessage();
             $logger->log("Core::ServiceAPI::ChannelProcessingJobs::MarkContentAsChatter::RunWorkflow [An exception was thrown]", \PEAR_LOG_DEBUG);
@@ -34,7 +34,7 @@ class MarkContentAsChatter extends ContentServicesBase {
             //Get the content repository
             $repository = new \Swiftriver\Core\DAL\Repositories\ContentRepository();
         }
-        catch (Exception $e) {
+        catch (\Exception $e) {
             //get the exception message
             $message = $e->getMessage();
             $logger->log("Core::ServiceAPI::ChannelProcessingJobs::MarkContentAsChatter::RunWorkflow [An exception was thrown]", \PEAR_LOG_DEBUG);
@@ -59,7 +59,7 @@ class MarkContentAsChatter extends ContentServicesBase {
                 throw new Exception("No content was returned for the ID: $id");
             }
         }
-        catch (Exception $e) {
+        catch (\Exception $e) {
             //get the exception message
             $message = $e->getMessage();
             $logger->log("Core::ServiceAPI::ChannelProcessingJobs::MarkContentAsChatter::RunWorkflow [An exception was thrown]", \PEAR_LOG_DEBUG);
@@ -85,7 +85,7 @@ class MarkContentAsChatter extends ContentServicesBase {
             //save the content to the repo
             $repository->SaveContent($content);
         }
-        catch (Exception $e) {
+        catch (\Exception $e) {
             //get the exception message
             $message = $e->getMessage();
             $logger->log("Core::ServiceAPI::ChannelProcessingJobs::MarkContentAsChatter::RunWorkflow [An exception was thrown]", \PEAR_LOG_DEBUG);

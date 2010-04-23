@@ -4,7 +4,7 @@
     <?php
         $service = new ServiceWrapper("http://local.swiftcore.com/ServiceAPI/ContentServices/GetPagedContentByState.php");
         $params = json_encode(array("state" => "new_content", "pagestart" => 0, "pagesize" => 20));
-        $json = $service->MakePOSTRequest(array("key" => "test", "data" => $params), 5);
+        $json = $service->MakePOSTRequest(array("key" => "aaabbbcccddd", "data" => $params), 5);
         $return = json_decode($json);
     ?>
     <?php foreach($return->contentitems as $content) : ?>
