@@ -43,13 +43,13 @@ class Setup {
 
     /**
      * @return Configuration\ConfigurationHandlers\EventDistributionConfigurationHandler
-     *
-    public static function PreProcessingStepsConfiguration() {
-        if(isset(self::$preProcessingStepsConfiguration))
-            return self::$preProcessingStepsConfiguration;
-        self::$preProcessingStepsConfiguration = new Configuration\ConfigurationHandlers\PreProcessingStepsConfigurationHandler(dirname(__FILE__)."/Configuration/ConfigurationFiles/PreProcessingStepsConfiguration.xml");
-        return self::$preProcessingStepsConfiguration;
-    }*/
+     */
+    public static function EventDistributionConfiguration() {
+        if(isset(self::$eventDistributionConfiguration))
+            return self::$eventDistributionConfiguration;
+        self::$eventDistributionConfiguration = new Configuration\ConfigurationHandlers\EventDistributionConfigurationHandler(dirname(__FILE__)."/Configuration/ConfigurationFiles/EventDistributionConfiguration.xml");
+        return self::$eventDistributionConfiguration;
+    }
 }
 //include the Loging Framework
 include_once("Log.php");
