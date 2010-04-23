@@ -48,7 +48,7 @@ class ContentRepository {
         $logger = \Swiftriver\Core\Setup::GetLogger();
         $logger->log("Core::DAL::Repositories::ContentRepository::GetContent [Method invoked]", \PEAR_LOG_DEBUG);
         $dc = new $this->dataContext();
-        $content = $dc::GetContent($content);
+        $content = $dc::GetContent($ids);
         $logger->log("Core::DAL::Repositories::ContentRepository::GetContent [Method finished]", \PEAR_LOG_DEBUG);
         return $content;
     }

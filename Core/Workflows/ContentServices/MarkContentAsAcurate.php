@@ -56,7 +56,7 @@ class MarkContentAsAcurate extends ContentServicesBase {
 
             //check that its not null
             if(!isset($content) || $content == null) {
-                throw new Exception("No content was returned for the ID: $id");
+                throw new \Exception("No content was returned for the ID: $id");
             }
         }
         catch (\Exception $e) {

@@ -4,6 +4,7 @@ class Setup {
     private static $configuration;
     private static $dalConfiguration;
     private static $preProcessingStepsConfiguration;
+    private static $eventDistributionConfiguration;
 
     public static function GetLogger() {
         $logger = &\Log::singleton('file', Setup::Configuration()->CachingDirectory."/log.log" , '   ');
@@ -39,6 +40,16 @@ class Setup {
         self::$preProcessingStepsConfiguration = new Configuration\ConfigurationHandlers\PreProcessingStepsConfigurationHandler(dirname(__FILE__)."/Configuration/ConfigurationFiles/PreProcessingStepsConfiguration.xml");
         return self::$preProcessingStepsConfiguration;
     }
+
+    /**
+     * @return Configuration\ConfigurationHandlers\EventDistributionConfigurationHandler
+     *
+    public static function PreProcessingStepsConfiguration() {
+        if(isset(self::$preProcessingStepsConfiguration))
+            return self::$preProcessingStepsConfiguration;
+        self::$preProcessingStepsConfiguration = new Configuration\ConfigurationHandlers\PreProcessingStepsConfigurationHandler(dirname(__FILE__)."/Configuration/ConfigurationFiles/PreProcessingStepsConfiguration.xml");
+        return self::$preProcessingStepsConfiguration;
+    }*/
 }
 //include the Loging Framework
 include_once("Log.php");

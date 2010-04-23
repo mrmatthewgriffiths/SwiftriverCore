@@ -8,7 +8,7 @@ class SourceFactory {
         //If there is an error in the JSON
         if(!$object || $object == null) {
             //throw an exception
-            throw new Exception("There was an error in the JSON passed in to the SourceFactory.");
+            throw new \Exception("There was an error in the JSON passed in to the SourceFactory.");
         }
 
         //create a new source
