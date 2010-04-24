@@ -82,8 +82,16 @@ class MarkContentAsAcurate extends ContentServicesBase {
         //get the source from the content
         $source = $content->source;
 
-        //increment the score of the source
-        $source->score == $source->score + 1;
+        //if the score is null - not yet rated, then set it
+        if(!isset($source->score) || $source->score == null) {
+            $source->score = 50; //baseline of 50%
+        }
+
+        //if the scoure is not already at the maximum
+        if($source->score < 100) {
+            //increment the score of the source
+            $source->score == $source->score + 1;
+        }
 
         //set the scource back to the content
         $content->source = $source;
