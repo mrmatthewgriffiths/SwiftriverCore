@@ -25,7 +25,7 @@ class ChannelProcessingJobBase extends \Swiftriver\Core\Workflows\WorkflowBase {
 
             $logger->log("Core::ServiceAPI::ChannelProcessingJobs::ChannelProcessingJobBase::ParseJSONToChannel [Method finished]", \PEAR_LOG_INFO);
 
-            return null;
+            throw new \InvalidArgumentException("The JSON passed to this method did not contain data required to construct a channel object: $message");
         }
 
         $logger->log("Core::ServiceAPI::ChannelProcessingJobs::ChannelProcessingJobBase::ParseJSONToChannel [END: Creating new Channel from the ChannelFactory]", \PEAR_LOG_DEBUG);

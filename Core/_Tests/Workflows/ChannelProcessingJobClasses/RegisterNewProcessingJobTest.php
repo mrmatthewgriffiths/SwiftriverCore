@@ -11,12 +11,10 @@ class RegisterNewProcessingJobTest extends \PHPUnit_Framework_TestCase  {
         $this->object = new Workflows\ChannelProcessingJobs\RegisterNewProcessingJob();
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
     public function testRunWorkflowWithBadJSON() {
         $json = 'this is bad json and will not pass the parser';
         $message = $this->object->RunWorkflow($json, $key);
+        $this->assertEquals(true, strpos($message, "OK") == 0);
     }
 
     public function testRunWorkflowWithGoodJSON() {
