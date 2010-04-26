@@ -97,6 +97,8 @@ class MarkContentAsChatter extends ContentServicesBase {
         $logger->log("Core::ServiceAPI::ContentServices::MarkContentAsChatter::RunWorkflow [END: Saving the content and source]", \PEAR_LOG_DEBUG);
 
         $logger->log("Core::ServiceAPI::ContentServices::MarkContentAsChatter::RunWorkflow [Method finished]", \PEAR_LOG_INFO);
+
+        return parent::FormatMessage("OK");
     }
 }
 ?>

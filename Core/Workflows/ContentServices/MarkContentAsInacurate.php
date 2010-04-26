@@ -141,6 +141,7 @@ class MarkContentAsInacurate extends ContentServicesBase {
 
         $logger->log("Core::ServiceAPI::ContentServices::MarkContentAsInacurate::RunWorkflow [Method finished]", \PEAR_LOG_INFO);
 
+        return parent::FormatMessage("OK");
     }
 }
 ?>

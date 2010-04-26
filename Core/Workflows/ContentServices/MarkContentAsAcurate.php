@@ -140,6 +140,7 @@ class MarkContentAsAcurate extends ContentServicesBase {
 
         $logger->log("Core::ServiceAPI::ContentServices::MarkContentAsAcurate::RunWorkflow [Method finished]", \PEAR_LOG_INFO);
 
+        return parent::FormatMessage("OK");
     }
 }
 ?>
