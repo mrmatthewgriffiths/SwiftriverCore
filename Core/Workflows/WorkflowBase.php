@@ -29,7 +29,7 @@ class WorkflowBase {
         //$keyRepository = new \Swiftriver\Core\DAL\Repositories\APIKeyRepository();
         //return $keyRepository->IsRegisterdCoreAPIKey($key);
         //TODO: this needs to be properly implemented before release
-        return $key = "aaabbbcccddd";
+        return $key == "swiftriver_core_dev";
     }
 }
 ?>
