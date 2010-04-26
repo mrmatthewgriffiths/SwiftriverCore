@@ -71,6 +71,7 @@ foreach($iterator as $file) {
 //Include some specific files
 include_once(dirname(__FILE__)."/Workflows/WorkflowBase.php");
 include_once(dirname(__FILE__)."/Workflows/ChannelProcessingJobs/ChannelProcessingJobBase.php");
+include_once(dirname(__FILE__)."/Workflows/ContentServices/ContentServicesBase.php");
 
 //include everything else
 $directories = array(
@@ -81,7 +82,7 @@ $directories = array(
     dirname(__FILE__)."/Workflows/",
     dirname(__FILE__)."/EventDistribution/",
     Setup::Configuration()->ModulesDirectory."/SiSW/",
-    Setup::Configuration()->ModulesDirectory."/SISPS/",
+    Setup::Configuration()->ModulesDirectory."/SiSPS/",
 );
 foreach($directories as $dir) {
     $dirItterator = new \RecursiveDirectoryIterator($dir);
