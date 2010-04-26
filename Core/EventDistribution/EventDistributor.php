@@ -3,7 +3,7 @@ namespace Swiftriver\Core\EventDistribution;
 class EventDistributor {
     private $eventHandlers;
     
-    public function __construct($modulesDirectory = null) {
+    public function __construct() {
         $logger = \Swiftriver\Core\Setup::GetLogger();
         $logger->log("Core::EventDistribution::EventDistributor::__construct [Method invoked]", \PEAR_LOG_DEBUG);
         

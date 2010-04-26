@@ -55,6 +55,7 @@ class Setup {
 include_once("Log.php");
 
 //Include the config framework
+include_once(dirname(__FILE__)."/Configuration/ConfigurationHandlers/BaseConfigurationHandler.php");
 $dirItterator = new \RecursiveDirectoryIterator(dirname(__FILE__)."/Configuration/ConfigurationHandlers/");
 $iterator = new \RecursiveIteratorIterator($dirItterator, \RecursiveIteratorIterator::SELF_FIRST);
 foreach($iterator as $file) {
@@ -78,6 +79,7 @@ $directories = array(
     dirname(__FILE__)."/StateTransition/",
     dirname(__FILE__)."/PreProcessing/",
     dirname(__FILE__)."/Workflows/",
+    dirname(__FILE__)."/EventDistribution/",
     Setup::Configuration()->ModulesDirectory."/SiSW/",
     Setup::Configuration()->ModulesDirectory."/SISPS/",
 );

@@ -1,6 +1,7 @@
 <?php
 namespace Swiftriver\Core\Configuration\ConfigurationHandlers;
 class CoreConfigurationHandler extends BaseConfigurationHandler {
+    public $Name;
 
     public $ModulesDirectory;
 
@@ -10,6 +11,7 @@ class CoreConfigurationHandler extends BaseConfigurationHandler {
 
     public function __construct($configurationFilePath) {
         $xml = simplexml_load_file($configurationFilePath);
+        $this->Name = (string) $xml["name"];
         foreach($xml->properties->property as $property) {
             switch((string) $property["name"]) {
                 case "ModulesDirectory" :
@@ -23,6 +25,11 @@ class CoreConfigurationHandler extends BaseConfigurationHandler {
                     break;
             }
         }
+    }
+
+    public function SaveToFile($configurationFilePath) {
+        $xml = simplexml_load_file($configurationFilePath);
+
     }
 }
 ?>

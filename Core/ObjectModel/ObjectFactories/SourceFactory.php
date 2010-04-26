@@ -18,6 +18,7 @@ class SourceFactory {
         $source->id = $object->id;
         $source->score = $object->score;
         $source->uniqueIdString = $object->uniqueIdString;
+        $source->name = $object->name;
 
         //return the source
         return $source;
@@ -29,6 +30,9 @@ class SourceFactory {
 
         //use the uniqueId to generate a new id
         $source->id = hash("md5", $uniqueId);
+
+        //TEMP: use the url as the name
+        $source->name = $uniqueId;
 
         //return the source
         return $source;

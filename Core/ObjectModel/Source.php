@@ -19,5 +19,11 @@ class Source {
      * @var string
      */
     public $uniqueIdString;
+
+    /**
+     * The friendly name of this source
+     * @var string
+     */
+    public $name;
 }
 ?>
