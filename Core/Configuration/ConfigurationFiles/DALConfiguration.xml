@@ -11,7 +11,7 @@
          name="DataContextPath"
          displayName="Enter the fully path relative to the modules directory where the APIKey Data Content Files are contained"
          type="string"
-         value="/DataContext/MySQL_V1/"
+         value="/DataContext/MySql_V1/"
         />
     </properties>
 </configuration>
