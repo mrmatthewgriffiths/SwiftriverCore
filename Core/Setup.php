@@ -1,5 +1,6 @@
 <?php
 namespace Swiftriver\Core;
+
 class Setup {
     private static $configuration;
     private static $dalConfiguration;
