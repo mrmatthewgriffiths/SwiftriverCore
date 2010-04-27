@@ -4,8 +4,8 @@ include_once("ServiceWrapper.php");
 
 if(isset($_POST["runnext"])) {
     //Use the service wrapper to make an async call to get an parser any new content
-    $service = new ServiceWrapper("http://local.swiftcore.com/ServiceAPI/ChannelProcessingJobServices/RunNextProcessingJob.php");
-    $service->MakeAsyncPostRequest(array("key" => "aaabbbcccddd"));
+    $service = new ServiceWrapper("http://173.203.86.44/SwiftriverCore/ServiceAPI/ChannelProcessingJobServices/RunNextProcessingJob.php");
+    $service->MakePOSTRequest(array("key" => "swiftriver_core_dev"), 200);
 }
 
 ?>

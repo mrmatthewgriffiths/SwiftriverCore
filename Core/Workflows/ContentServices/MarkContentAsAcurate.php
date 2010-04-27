@@ -90,7 +90,7 @@ class MarkContentAsAcurate extends ContentServicesBase {
         //if the scoure is not already at the maximum
         if($source->score < 100) {
             //increment the score of the source
-            $source->score == $source->score + 1;
+            $source->score = $source->score + 1;
         }
 
         //set the scource back to the content

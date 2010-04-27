@@ -10,20 +10,20 @@ if(isset($_POST)) {
             $json = '{"type":"RSS",'.
                     '"updatePeriod":"'.$_POST["updatePeriod"].'",'.
                     '"parameters":{"feedUrl":"'.$_POST["feedUrl"].'"}}';
-            $service = new ServiceWrapper("http://local.swiftcore.com/ServiceAPI/ChannelProcessingJobServices/RegisterNewProcessingJob.php");
-            $service->MakePOSTRequest(array("key" => "aaabbbcccddd", "data" => $json), 5);
+            $service = new ServiceWrapper("http://173.203.86.44/SwiftriverCore/ServiceAPI/ChannelProcessingJobServices/RegisterNewProcessingJob.php");
+            $service->MakePOSTRequest(array("key" => "swiftriver_core_dev", "data" => $json), 5);
             break;
         case "remove" :
-            $service = new ServiceWrapper("http://local.swiftcore.com/ServiceAPI/ChannelProcessingJobServices/RemoveChannelProcessingJob.php");
-            $json = $service->MakePOSTRequest(array("key" => "aaabbbcccddd", "data" => '{"id":"'.$_POST["channelId"].'"}'), 5);
+            $service = new ServiceWrapper("http://173.203.86.44/SwiftriverCore/ServiceAPI/ChannelProcessingJobServices/RemoveChannelProcessingJob.php");
+            $json = $service->MakePOSTRequest(array("key" => "swiftriver_core_dev", "data" => '{"id":"'.$_POST["channelId"].'"}'), 5);
             break;
         case "activate" :
-            $service = new ServiceWrapper("http://local.swiftcore.com/ServiceAPI/ChannelProcessingJobServices/ActivateChannelProcessingJob.php");
-            $json = $service->MakePOSTRequest(array("key" => "aaabbbcccddd", "data" => '{"id":"'.$_POST["channelId"].'"}'), 5);
+            $service = new ServiceWrapper("http://173.203.86.44/SwiftriverCore/ServiceAPI/ChannelProcessingJobServices/ActivateChannelProcessingJob.php");
+            $json = $service->MakePOSTRequest(array("key" => "swiftriver_core_dev", "data" => '{"id":"'.$_POST["channelId"].'"}'), 5);
             break;
         case "deactivate" :
-            $service = new ServiceWrapper("http://local.swiftcore.com/ServiceAPI/ChannelProcessingJobServices/DeactivateChannelProcessingJob.php");
-            $json = $service->MakePOSTRequest(array("key" => "aaabbbcccddd", "data" => '{"id":"'.$_POST["channelId"].'"}'), 5);
+            $service = new ServiceWrapper("http://173.203.86.44/SwiftriverCore/ServiceAPI/ChannelProcessingJobServices/DeactivateChannelProcessingJob.php");
+            $json = $service->MakePOSTRequest(array("key" => "swiftriver_core_dev", "data" => '{"id":"'.$_POST["channelId"].'"}'), 5);
             break;
     }
 }
@@ -37,8 +37,8 @@ if(isset($_POST)) {
     </ul>
     <?php if(!$action) : ?>
         <?php
-            $service = new ServiceWrapper("http://local.swiftcore.com/ServiceAPI/ChannelProcessingJobServices/ListAllChannelProcessingJobs.php");
-            $json = $service->MakePOSTRequest(array("key" => "test"), 5);
+            $service = new ServiceWrapper("http://173.203.86.44/SwiftriverCore/ServiceAPI/ChannelProcessingJobServices/ListAllChannelProcessingJobs.php");
+            $json = $service->MakePOSTRequest(array("key" => "swiftriver_core_dev"), 5);
             $return = json_decode($json);
             $channels = $return->channels;
         ?>
