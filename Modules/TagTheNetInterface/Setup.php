@@ -7,8 +7,8 @@ class Setup {
     public static function Configuration() {
         return array (
             "ServiceUri" => "",
-            "SwiftriverCoreDirectory" => dirname(__FILE__)."/../Core",
-            "SwiftriverModulesDirectory" => dirname(__FILE__)."/../Core/Modules",
+            "SwiftriverCoreDirectory" => dirname(__FILE__)."/../../",
+            "SwiftriverModulesDirectory" => dirname(__FILE__)."/../../Modules",
         );
     }
 }

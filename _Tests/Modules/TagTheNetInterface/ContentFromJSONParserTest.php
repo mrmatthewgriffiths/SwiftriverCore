@@ -5,11 +5,11 @@ require_once 'PHPUnit/Framework.php';
 class ContentFromJSONParserTest extends \PHPUnit_Framework_TestCase {
 
     protected function setUp() {
-        include_once(dirname(__FILE__)."/../Setup.php");
+        include_once(dirname(__FILE__)."/../../../Modules/TagTheNetInterface/Setup.php");
         $config = Setup::Configuration();
         include_once($config["SwiftriverCoreDirectory"]."/ObjectModel/Content.php");
         include_once($config["SwiftriverCoreDirectory"]."/ObjectModel/Tag.php");
-        include_once(dirname(__FILE__)."/../ContentFromJSONParser.php");
+        include_once(dirname(__FILE__)."/../../../Modules/TagTheNetInterface/ContentFromJSONParser.php");
     }
 
     public function testWithNullContentItems() {

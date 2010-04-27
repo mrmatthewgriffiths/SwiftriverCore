@@ -3,9 +3,10 @@ namespace Swiftriver\GoogleLanguageServiceInterface;
 require_once 'PHPUnit/Framework.php';
 class DetectionAndTranslationWorkflowTests extends \PHPUnit_Framework_TestCase {
     public function setup() {
-        include_once(dirname(__FILE__)."/../LanguageDetectionInterface.php");
-        include_once(dirname(__FILE__)."/../TranslationInterface.php");
-        include_once(dirname(__FILE__)."/../DetectionAndTranslationWorkflow.php");
+        include_once(dirname(__FILE__)."/../../../Modules/GoogleLanguageServiceInterface/LanguageDetectionInterface.php");
+        include_once(dirname(__FILE__)."/../../../Modules/GoogleLanguageServiceInterface/TranslationInterface.php");
+        include_once(dirname(__FILE__)."/../../../Modules/GoogleLanguageServiceInterface/DetectionAndTranslationWorkflow.php");
+        include_once("Log.php");
     }
     
     public function testWithSameAsBaseLang() {
@@ -23,14 +24,15 @@ class DetectionAndTranslationWorkflowTests extends \PHPUnit_Framework_TestCase {
                 $content,
                 $referer,
                 $baseLanguageCode);
-        $content = $workflow->RunWorkflow();
+        $logger = new MockLogger();
+        $content = $workflow->RunWorkflow($logger);
         $this->assertEquals("en", $content->text[0]->languageCode);
         $this->assertEquals(1, count($content->text));
 
     }
 
     public function testWithTranslationRequired() {
-        include_once(dirname(__FILE__)."/../../Core/ObjectModel/LanguageSpecificText.php");
+        include_once(dirname(__FILE__)."/../../../ObjectModel/LanguageSpecificText.php");
         $content = new MockContentObject();
         $content->text = array();
         $lang = new MockLanguageSpecificTextObject();
@@ -44,7 +46,8 @@ class DetectionAndTranslationWorkflowTests extends \PHPUnit_Framework_TestCase {
                 $content,
                 $referer,
                 $baseLanguageCode);
-        $content = $workflow->RunWorkflow();
+        $logger = new MockLogger();
+        $content = $workflow->RunWorkflow($logger);
         $this->assertEquals(2, count($content->text));
         $this->assertEquals("en", $content->text[0]->languageCode);
         $this->assertEquals("fr", $content->text[1]->languageCode);
@@ -59,6 +62,10 @@ class MockLanguageSpecificTextObject {
     public $languageCode;
     public $title;
     public $text;
+}
+
+class MockLogger {
+    public function Log($message, $level) {}
 }
 
 ?>
